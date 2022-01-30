@@ -1,4 +1,3 @@
 # SPASSO
 
-It is the Gildas fork
-le 30 jan 2022
+It is the Gildas fork: created le 30 jan 2022
