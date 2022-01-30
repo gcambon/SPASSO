@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MAIN_modis</title>
+  <meta name="keywords" content="MAIN_modis">
+  <meta name="description" content="This is an octave script used in cronjob_MODIS_AVISO.bsh">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; MAIN_modis.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>MAIN_modis
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is an octave script used in cronjob_MODIS_AVISO.bsh</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This is an octave script used in cronjob_MODIS_AVISO.bsh
+  to launch the analysis on the files previously downloaded</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="domain_limits.html" class="code" title="">domain_limits</a>	Limits of domain</li><li><a href="plot_modis.html" class="code" title="function plot_modis(out_path,tag,lon,lat,var,day)">plot_modis</a>	</li><li><a href="read_nc_modis.html" class="code" title="function [lon lat var] = read_nc_modis(nc_file,latN,latS,lonW,lonE);">read_nc_modis</a>	Read Modis data from converted nc file</li><li><a href="save_modis.html" class="code" title="function save_modis(Wrk_path,day,data_type,lon,lat,var)">save_modis</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% This is an octave script used in cronjob_MODIS_AVISO.bsh</span>
+0002 <span class="comment">%  to launch the analysis on the files previously downloaded</span>
+0003 
+0004 <span class="comment">%-----------------------------------------------------------</span>
+0005 <span class="comment">% Cell array with arguments passed from bash script</span>
+0006  args=argv;
+0007 <span class="comment">%</span>
+0008  Wrk_path=[args{1},<span class="string">'/'</span>];
+0009 <span class="comment">% mfiles_path=[args{2}];</span>
+0010  data_type=[args{3}]; <span class="comment">% &quot;for loop&quot; for different data in cronjob_MODIS_AVISO.bsh</span>
+0011 <span class="comment">%-----------------------------------------------------------</span>
+0012 <span class="comment">%function MAIN_modis</span>
+0013 <span class="comment">%-----------------------------------------------------------</span>
+0014  <span class="comment">%  % Uncomment this and comment above to test without need of bash script</span>
+0015  <span class="comment">% %main_path='/media/DATA/STRASSE';</span>
+0016  <span class="comment">% % Wrk_path='../Wrk/';</span>
+0017  <span class="comment">%   Wrk_path='../../presentation_2072014/';</span>
+0018  <span class="comment">% % data_type='CHL';</span>
+0019  <span class="comment">% data_type='SST';</span>
+0020  <span class="comment">%mfiles_path=[main_path,'/Mfiles/'];</span>
+0021 <span class="comment">%-----------------------------------------------------------</span>
+0022 
+0023 <span class="comment">% Move to directory with octave scripts</span>
+0024 <span class="comment">%cd(mfiles_path)</span>
+0025 <span class="comment">% Read Lon Lat limit file</span>
+0026 <a href="domain_limits.html" class="code" title="">domain_limits</a>
+0027 
+0028 <span class="comment">% use dir command to retrieve .nc file list</span>
+0029 files=dir([Wrk_path,<span class="string">'*_'</span>,data_type,<span class="string">'*.nc'</span>]);
+0030 <span class="keyword">for</span> i=1:length(files)
+0031        disp([<span class="string">'%%%%%%%%%% '</span>,files(i).name,<span class="string">' %%%%%%%%%%%%%%%%%%'</span>])
+0032        nc_name=files(i).name;
+0033        nc_file=[Wrk_path,nc_name];
+0034       <span class="comment">% nc_file=[Wrk_path,'A2014049.L3m_DAY_CHL_chlor_a_4km.nc']</span>
+0035 
+0036     disp([<span class="string">'   == Reading ==============================='</span>])
+0037     [lon lat var]=<a href="read_nc_modis.html" class="code" title="function [lon lat var] = read_nc_modis(nc_file,latN,latS,lonW,lonE);">read_nc_modis</a>(nc_file,Lat(2),Lat(1),Lon(1),Lon(2));
+0038 
+0039     day=nc_name(2:8);
+0040 <span class="comment">%    day='2014049'; %test</span>
+0041     YY=day(1:4);
+0042     doy=day(5:end);
+0043     day=datestr(str2num(doy)+datenum([str2num(YY)-1 12 31]),<span class="string">'yyyymmdd'</span>);
+0044     disp([<span class="string">'   == Plotting =============================='</span>])
+0045     <a href="plot_modis.html" class="code" title="function plot_modis(out_path,tag,lon,lat,var,day)">plot_modis</a>(Wrk_path,data_type,lon,lat,var,day);  
+0046     <span class="comment">%plot_modis_territorial_water(Wrk_path,data_type,lon,lat,var,day);  % plot + territorial waters plot</span>
+0047     
+0048     disp([<span class="string">'   == Saving .mat file ======================'</span>])
+0049     <a href="save_modis.html" class="code" title="function save_modis(Wrk_path,day,data_type,lon,lat,var)">save_modis</a>(Wrk_path,day,data_type,lon,lat,var)
+0050 <span class="keyword">end</span>
+0051 <span class="comment">% Message if no files found in Wrk</span>
+0052 <span class="keyword">if</span> length(files)==0
+0053     disp([<span class="string">'   == No MODIS '</span>,data_type,<span class="string">' processed !!!!! ========='</span>])
+0054 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of read_nc_aviso</title>
+  <meta name="keywords" content="read_nc_aviso">
+  <meta name="description" content="Read AVISO from nc file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; read_nc_aviso.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>read_nc_aviso
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Read AVISO from nc file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [lon,lat,var]=read_nc_aviso(nc_file,latN,latS,lonW,lonE,type); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Read AVISO from nc file</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [lon,lat,var]=read_nc_aviso(nc_file,latN,latS,lonW,lonE,type);</a>
+0002 <span class="comment">% Read AVISO from nc file</span>
+0003 nc=netcdf(nc_file,<span class="string">'r'</span>);
+0004 
+0005 <span class="comment">%lon=nc{'NbLongitudes'}(:);</span>
+0006 <span class="comment">%lat=nc{'NbLatitudes'}(:);</span>
+0007 lon=nc{<span class="string">'lon'</span>}(:); <span class="comment">%Longitude (degrees east 0 360)</span>
+0008 lat=nc{<span class="string">'lat'</span>}(:); <span class="comment">%Latitude (degrees north -90 90)</span>
+0009 <span class="comment">% index</span>
+0010 <span class="comment">% Mandatory: lonW and lonE are given in -180:180 !!!</span>
+0011 lonE(lonE&lt;0)=360+lonE;
+0012 lonW(lonW&lt;0)=360+lonW;
+0013 <span class="keyword">if</span> lonW&gt;lonE
+0014     good_lonW=find(lon&gt;=lonW);
+0015     good_lonE=find(lon&lt;=lonE);
+0016     good_lon=[good_lonW; good_lonE];
+0017 <span class="keyword">else</span>
+0018     good_lon=find(lon&gt;=lonW &amp; lon&lt;=lonE);
+0019 <span class="keyword">end</span>
+0020 
+0021 <span class="comment">%good_lon=find(lon&gt;=360+lonW &amp; lon&lt;=360+lonE);</span>
+0022 good_lat=find(lat&gt;=latS &amp; lat&lt;=latN);
+0023 lon=lon(good_lon);
+0024 lat=lat(good_lat);
+0025 <span class="comment">% Convert lon from 0:360 to -180:180</span>
+0026 <span class="comment">%lon(lon&gt;180)=lon(lon&gt;180)-360;</span>
+0027 <span class="comment">% Create lon and lat matrices</span>
+0028 [lon lat]=meshgrid(lon,lat);
+0029 <span class="keyword">if</span> strcmp(type,<span class="string">'uv'</span>)
+0030     <span class="comment">% Load u-component</span>
+0031     <span class="comment">%var.u=nc{'u'}(:); %(m/s) AVISO files before 2014</span>
+0032     var.u=squeeze(nc{<span class="string">'u'</span>}(:));
+0033     <span class="comment">% Clean data</span>
+0034     bad_flag=double(nc{<span class="string">'u'</span>}._FillValue);
+0035     var.u(var.u==bad_flag)=NaN;
+0036     <span class="comment">% Clean data from old netcdf files from AVISO</span>
+0037     <span class="comment">%bad=find(abs(var.u(:))&gt;1e15);</span>
+0038     <span class="comment">%var.u(bad)=NaN;</span>
+0039     <span class="comment">%var.u=var.u(good_lon,good_lat);</span>
+0040     var.u=var.u(good_lat,good_lon);
+0041         scale_factor=double(nc{<span class="string">'u'</span>}.scale_factor);
+0042         var.u=var.u*scale_factor;
+0043     <span class="comment">% Transpose matrix to have it (lat,lon) AVISO files before 2014</span>
+0044     <span class="comment">%var.u=var.u(:)'</span>
+0045 
+0046     <span class="comment">% Load v-component</span>
+0047     <span class="comment">%var.v=nc{'v'}(:); %(m/s) AVISO files before 2014</span>
+0048     var.v=squeeze(nc{<span class="string">'v'</span>}(:));
+0049     <span class="comment">% Clean data</span>
+0050         bad_flag=double(nc{<span class="string">'v'</span>}._FillValue);
+0051         var.v(var.v==bad_flag)=NaN;
+0052     <span class="comment">% Clean data from old netcdf files from AVISO</span>
+0053     <span class="comment">%bad=find(abs(var.v(:))&gt;1e15);</span>
+0054     <span class="comment">%var.v(bad)=NaN;</span>
+0055     <span class="comment">%var.v=var.v(good_lon,good_lat);</span>
+0056     var.v=var.v(good_lat,good_lon);
+0057         scale_factor=double(nc{<span class="string">'v'</span>}.scale_factor);
+0058         var.v=var.v*scale_factor;
+0059     <span class="comment">% Transpose matrix to have it (lat,lon) AVISO files before 2014</span>
+0060     <span class="comment">%var.v=var.v(:)';</span>
+0061 <span class="keyword">else</span>
+0062     <span class="comment">%var=nc{'adt'}(:); %AVISO files before 2014</span>
+0063     var=squeeze(nc{<span class="string">'adt'</span>}(:)); <span class="comment">%adt = &quot;sea_surface_height_above_geoid&quot;%convert 3-D matrix from nc file to 2-D matrix to plot</span>
+0064     <span class="comment">% Clean data</span>
+0065     bad_flag=double(nc{<span class="string">'adt'</span>}._FillValue); <span class="comment">% to remove bad values</span>
+0066     var(var==bad_flag)=NaN;
+0067     <span class="comment">% Clean data for old netcdf files</span>
+0068     <span class="comment">%bad=find(abs(var.v(:))&gt;1e15);</span>
+0069     <span class="comment">%var(bad)=NaN;</span>
+0070     <span class="comment">%var=var(good_lon,good_lat);</span>
+0071     var=var(good_lat,good_lon);
+0072     scale_factor=double(nc{<span class="string">'adt'</span>}.scale_factor);
+0073     var=var*scale_factor;
+0074     <span class="comment">% Transpose matrix to have it (lat,lon)</span>
+0075     <span class="comment">%var=var';</span>
+0076 <span class="keyword">end</span>
+0077 close(nc)
+0078 
+0079 disp([<span class="string">'     Successfully read!!!'</span>])</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

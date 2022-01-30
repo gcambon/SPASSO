@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of aviso_load</title>
+  <meta name="keywords" content="aviso_load">
+  <meta name="description" content="The function choses different functions to read AVISO velocity fields">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; aviso_load.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>aviso_load
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>The function choses different functions to read AVISO velocity fields</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function err=aviso_load(day0,dayf,product) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> The function choses different functions to read AVISO velocity fields
+ depending on the product specified;
+
+ day0 and dayf define the day range of data to be read;</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="aviso_nrt_2010_load.html" class="code" title="function ret=aviso_nrt_2010_load(day0,dayf,ssha)">aviso_nrt_2010_load</a>	addpath('/home/dovidio/octave/ocean');</li><li><a href="aviso_nrt_2014_load.html" class="code" title="function ret=aviso_nrt_2014_load(day0,dayf,ssha)">aviso_nrt_2014_load</a>	addpath('/home/dovidio/octave/ocean');</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="MAIN_Lagrangian.html" class="code" title="">MAIN_Lagrangian</a>	==============================================================================</li><li><a href="aviso_UV.html" class="code" title="function [U,V,xvc,yvc,Ucms,Vcms]=aviso_UV(dayc,lonv,latv,delta0,product)">aviso_UV</a>	</li><li><a href="aviso_bigsqadvect.html" class="code" title="function [lon0,lat0,lonf,latf,sz]=aviso_bigsqadvect(dayv,lonv,latv,delta0,numdays,product)">aviso_bigsqadvect</a>	</li><li><a href="aviso_fsle.html" class="code" title="function [lambda,xvc,yvc,out]=aviso_fsle(dayv,lonv,latv,delta0,delta,product,numdays)">aviso_fsle</a>	Compute FSLEs using:</li><li><a href="aviso_lonlatadvect.html" class="code" title="function [lonf,latf,lons,lats]=aviso_lonlatadvect(dayv,lon,lat,numdays,product)">aviso_lonlatadvect</a>	</li><li><a href="aviso_owdispersion.html" class="code" title="function posexit=aviso_owdispersion(day0,lonv,latv,delta0,numdays,tollerance,product)">aviso_owdispersion</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function err=aviso_load(day0,dayf,product)</a>
+0002 <span class="comment">% The function choses different functions to read AVISO velocity fields</span>
+0003 <span class="comment">% depending on the product specified;</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% day0 and dayf define the day range of data to be read;</span>
+0006 
+0007 <span class="keyword">if</span>(length(day0)&gt;1)
+0008     day0=datenum(day0)-datenum([1950 1 1]);
+0009 <span class="keyword">end</span>
+0010 <span class="keyword">if</span>(length(dayf)&gt;1)
+0011     dayf=datenum(dayf)-datenum([1950 1 1]);
+0012 <span class="keyword">end</span>
+0013 
+0014 
+0015 err=0;
+0016 <span class="keyword">switch</span> product
+0017     <span class="keyword">case</span> <span class="string">'upd_global_egm'</span>
+0018         aviso_upd_egm_load(floor(day0),ceil(dayf));
+0019     <span class="keyword">case</span> <span class="string">'upd_global'</span>
+0020         aviso_upd_load(floor(day0),ceil(dayf));
+0021     <span class="keyword">case</span> <span class="string">'upd_global_2010'</span>
+0022         aviso_upd_2010_load(floor(day0),ceil(dayf));
+0023     <span class="keyword">case</span> <span class="string">'upd_global_largescale'</span>
+0024         aviso_upd_largescale_load(floor(day0),ceil(dayf));
+0025     <span class="keyword">case</span> <span class="string">'upd_global_largescale_mdt'</span>
+0026         aviso_upd_largescale_mdt_load(floor(day0),ceil(dayf));
+0027     <span class="keyword">case</span> <span class="string">'upd_global_sa'</span>
+0028         aviso_sa_upd_load(floor(day0),ceil(dayf));
+0029     <span class="keyword">case</span> <span class="string">'upd_global_sa_tpj1'</span>
+0030         aviso_dt_ref_global_tpj1_msla(floor(day0),ceil(dayf));
+0031     <span class="keyword">case</span> <span class="string">'upd_global_ssh_tpj1'</span>
+0032         aviso_dt_ref_global_tpj1_ssh(floor(day0),ceil(dayf));
+0033     <span class="keyword">case</span> <span class="string">'global_mdt'</span>
+0034         aviso_mdt_load(floor(dayf-8),ceil(dayf));
+0035     <span class="keyword">case</span> <span class="string">'nrt_global'</span>
+0036         disp(<span class="string">'nrt_global obsolete, using nrt_global_2010 instead.'</span>);
+0037         err=<a href="aviso_nrt_2010_load.html" class="code" title="function ret=aviso_nrt_2010_load(day0,dayf,ssha)">aviso_nrt_2010_load</a>(floor(day0),ceil(dayf));
+0038     <span class="keyword">case</span> <span class="string">'nrt_global_2010'</span>
+0039         err=<a href="aviso_nrt_2010_load.html" class="code" title="function ret=aviso_nrt_2010_load(day0,dayf,ssha)">aviso_nrt_2010_load</a>(floor(day0),ceil(dayf));
+0040         <span class="keyword">case</span> <span class="string">'nrt_global_2014'</span>
+0041                 err=<a href="aviso_nrt_2014_load.html" class="code" title="function ret=aviso_nrt_2014_load(day0,dayf,ssha)">aviso_nrt_2014_load</a>(floor(day0),ceil(dayf));
+0042     <span class="keyword">case</span> <span class="string">'upd_med'</span>
+0043         avisomed_upd_load(floor(day0),ceil(dayf));
+0044     <span class="keyword">case</span> <span class="string">'upd_med_sa'</span>
+0045         avisomed_sa_upd_load(floor(day0),ceil(dayf));
+0046     <span class="keyword">case</span> <span class="string">'nrt_med'</span>
+0047         err=avisomed_nrt_load(floor(day0),ceil(dayf));
+0048     <span class="keyword">case</span> <span class="string">'rt_med'</span>
+0049         err=avisomed_rt_load(floor(day0),ceil(dayf));    
+0050     <span class="keyword">case</span> <span class="string">'nrt_med_sa'</span>
+0051         err=avisomed_nrt_load(floor(day0),ceil(dayf),<span class="string">'ssa'</span>,0);
+0052     <span class="keyword">case</span> <span class="string">'rt_med_sa'</span>
+0053         err=avisomed_nrt_load(floor(day0),ceil(dayf),<span class="string">'ssa'</span>,1);
+0054     <span class="keyword">case</span> <span class="string">'rt_global'</span>
+0055         disp(<span class="string">'rt_global obsolete, using nrt_global_2010 instead.'</span>);
+0056         err=<a href="aviso_nrt_2010_load.html" class="code" title="function ret=aviso_nrt_2010_load(day0,dayf,ssha)">aviso_nrt_2010_load</a>(floor(day0),ceil(dayf));    
+0057     <span class="keyword">case</span> <span class="string">'mdt_global'</span>
+0058         err=aviso_mdt_load(floor(day0),ceil(dayf));
+0059     <span class="keyword">case</span> <span class="string">'upd_kerguelen'</span>
+0060         aviso_upd_kerguelen_load(floor(day0),ceil(dayf));
+0061     <span class="keyword">case</span> <span class="string">'nrt_kerguelen'</span>
+0062         err=aviso_nrt_kerguelen_load(floor(day0),ceil(dayf));
+0063     <span class="keyword">case</span> <span class="string">'nrt_kerguelen_ekman'</span>
+0064         err=aviso_nrt_kerguelen_load(floor(day0),ceil(dayf),1);
+0065 
+0066     <span class="keyword">case</span> <span class="string">'none'</span>
+0067         disp(<span class="string">'product=none: Not loading any new AVISO velocity'</span>);
+0068     <span class="keyword">otherwise</span>
+0069         error(<span class="string">'Invalid aviso product'</span>);
+0070 <span class="keyword">end</span>
+0071</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of join_cst</title>
+  <meta name="keywords" content="join_cst">
+  <meta name="description" content="JOIN_CST  Makes continuous coastline from fragmented segments.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; join_cst.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>join_cst
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>JOIN_CST  Makes continuous coastline from fragmented segments.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [new_coast,slen]=join_cst(coast,tol); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> JOIN_CST  Makes continuous coastline from fragmented segments.
+
+   USAGE: [new_coast,slen]=join_cst(coast,tol);
+
+   Inputs: coast =  contains the x and y coastline positions
+                    in the first two columns, and coastine segments are
+                    separated by a row containing [NaN NaN] or [-99999. -99999.],
+
+           tol = the distance within which coastline segments will be joined. 
+
+   Outputs:
+            new_coast = the new joined coastline, sorted from largest segment
+                        to smallest segment.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="fixcoast.html" class="code" title="function [coast]=fixcoast(coast)">fixcoast</a>	FIXCOAST  Makes sure coastlines meet Signell's conventions.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="continenta.html" class="code" title="">continenta</a>	continenta.m from LATEX campaing</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [new_coast,slen]=join_cst(coast,tol);</a>
+0002 <span class="comment">% JOIN_CST  Makes continuous coastline from fragmented segments.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%   USAGE: [new_coast,slen]=join_cst(coast,tol);</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%   Inputs: coast =  contains the x and y coastline positions</span>
+0007 <span class="comment">%                    in the first two columns, and coastine segments are</span>
+0008 <span class="comment">%                    separated by a row containing [NaN NaN] or [-99999. -99999.],</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%           tol = the distance within which coastline segments will be joined.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%   Outputs:</span>
+0013 <span class="comment">%            new_coast = the new joined coastline, sorted from largest segment</span>
+0014 <span class="comment">%                        to smallest segment.</span>
+0015 
+0016 <span class="comment">%            slen      = vector containing the length of the resulting segments.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%   Description: Makes continous coastline from fragmented segments</span>
+0019 <span class="comment">%           joining endpoints of segments less than</span>
+0020 <span class="comment">%           TOL distance apart.   The resulting coastline can be</span>
+0021 <span class="comment">%           used for blanking or filling by adding in a few extra</span>
+0022 <span class="comment">%           points, and the islands will also be polygons.  This routine</span>
+0023 <span class="comment">%           draws the new coastline as it works so you can see it's progress.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%            Need some coastline data?  Try out the coastline extractor at:</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%                  http://crusty.er.usgs.gov/getcoast.html</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% Rich Signell               |  E-mail: rsignell@crusty.er.usgs.gov</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% requires FIXCOAST.M</span>
+0032 <span class="comment">%</span>
+0033 
+0034 coast=<a href="fixcoast.html" class="code" title="function [coast]=fixcoast(coast)">fixcoast</a>(coast);   <span class="comment">%replace -99999. with NaN, eliminate dup NaNs, etc.</span>
+0035 
+0036 <span class="comment">% plot(coast(:,1),coast(:,2));set(gca,'aspectratio',[nan 1]);</span>
+0037 <span class="comment">% figure(gcf);</span>
+0038 
+0039 iseg=find(isnan(coast(:,1)));
+0040 nseg=length(iseg)-1;
+0041 irem=ones(nseg,1);
+0042 z=coast(:,1)+sqrt(-1)*coast(:,2);
+0043 zstart=z(iseg(1:nseg)+1);
+0044 zstop=z(iseg([2:(nseg+1)])-1);
+0045 zends=[zstart(:) zstop(:)];
+0046 
+0047 znew=nan+sqrt(-1)*nan;
+0048 k=0;
+0049 
+0050 <span class="comment">%while there are remaining segments, process</span>
+0051 <span class="keyword">while</span>(~isempty(find(irem))),
+0052 <span class="comment">%start at 1st remaining segment</span>
+0053 ii=find(irem);
+0054 id0=ii(1);
+0055 id=id0;
+0056 z0=z(iseg(id)+1);   <span class="comment">%first point on segment</span>
+0057 zind=[(iseg(id)+1):(iseg(id+1)-1)];
+0058 <span class="comment">%line(real(z(zind)),imag(z(zind)),'erasemode','none','color','white')</span>
+0059 zc=z(iseg(id+1)-1); <span class="comment">%last point on segment</span>
+0060 
+0061 irem(id)=0;    <span class="comment">%add current segment to list of segments used</span>
+0062 
+0063 found_next=1;
+0064 tried_reverse=0;
+0065 <span class="keyword">while</span> (found_next),
+0066   ii=find(irem);     <span class="comment">%indices of remaining segments</span>
+0067   nrem=length(ii);
+0068   dgap=abs((ones(size(zends(ii,:))))*zc-zends(ii,:));  
+0069   id=find(dgap&lt;tol);
+0070   <span class="keyword">if</span>(~isempty(id)),
+0071     idt=find(dgap==min(dgap(:)));                       <span class="comment">% find closest points</span>
+0072     idt=idt(1);                                <span class="comment">%take first if  equal dist</span>
+0073     <span class="keyword">if</span>(idt&gt;nrem),                              <span class="comment">%found stop point of segment</span>
+0074       id=ii(idt-nrem);                   <span class="comment">%find which segment we matched</span>
+0075       zi=[(iseg(id+1)-1):-1:(iseg(id)+1)];  <span class="comment">%segment coordinates</span>
+0076     <span class="keyword">else</span>                                       <span class="comment">%found start point of segment</span>
+0077       id=ii(idt);                        <span class="comment">%find which segment we matched</span>
+0078       zi=[(iseg(id)+1):1:(iseg(id+1)-1)];   <span class="comment">%segment coordinates</span>
+0079     <span class="keyword">end</span>
+0080     ni=length(zi);
+0081     line(real(z(zi)),imag(z(zi)),<span class="string">'erasemode'</span>,<span class="string">'none'</span>,<span class="string">'color'</span>,<span class="string">'white'</span>) <span class="comment">%draw seg</span>
+0082     irem(id)=0;             <span class="comment">%mask out segment</span>
+0083     zc=z(zi(ni));              <span class="comment">%next connecting point</span>
+0084     zind=[zind zi];         <span class="comment">%add segment to index list</span>
+0085   <span class="keyword">else</span>
+0086     <span class="keyword">if</span>(~tried_reverse),
+0087       zc=z0;
+0088       nzind=length(zind);
+0089       zind=zind([nzind:-1:1]);
+0090       tried_reverse=1;
+0091     <span class="keyword">else</span>
+0092       found_next=0;
+0093     <span class="keyword">end</span>
+0094   <span class="keyword">end</span>
+0095 <span class="keyword">end</span>
+0096 <span class="comment">%k=k+1</span>
+0097 znew=[znew; nan+sqrt(-1)*nan; z(zind)];   <span class="comment">%add on new contatenated segment</span>
+0098 <span class="keyword">end</span>
+0099 znew=[znew; nan+sqrt(-1)*nan];  <span class="comment">%add nan on end</span>
+0100 iseg=find(isnan(znew));
+0101 nseg=length(iseg)-1;
+0102 slen=(iseg([2:(nseg+1)])-iseg(1:nseg)-2);    <span class="comment">%data pts in segments</span>
+0103 [y,isort]=sort(slen);
+0104 isort=flipud(isort);
+0105 zind=[];
+0106 <span class="comment">%sort largest to smallest</span>
+0107 <span class="keyword">for</span> i=1:nseg;
+0108   zind=[zind (iseg(isort(i)):iseg(isort(i)+1))];
+0109 <span class="keyword">end</span>
+0110 znew=znew(zind);
+0111 new_coast=[real(znew) imag(znew)];
+0112 new_coast=<a href="fixcoast.html" class="code" title="function [coast]=fixcoast(coast)">fixcoast</a>(new_coast);
+0113 iseg=find(isnan(new_coast(:,1)));
+0114 nseg=length(iseg)-1;
+0115 slen=(iseg([2:(nseg+1)])-iseg(1:nseg)-2);    <span class="comment">%data pts in segments</span></pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

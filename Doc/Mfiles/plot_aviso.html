@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plot_aviso</title>
+  <meta name="keywords" content="plot_aviso">
+  <meta name="description" content="This is an octave script used in cronjob_MODIS_AVISO.bsh">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; plot_aviso.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>plot_aviso
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is an octave script used in cronjob_MODIS_AVISO.bsh</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This is an octave script used in cronjob_MODIS_AVISO.bsh
+ to plot the aviso data previously saved in mat files</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="continenta.html" class="code" title="">continenta</a>	continenta.m from LATEX campaing</li><li><a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>	Limits of strasse campaign</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% This is an octave script used in cronjob_MODIS_AVISO.bsh</span>
+0002 <span class="comment">% to plot the aviso data previously saved in mat files</span>
+0003 
+0004 <span class="comment">%-----------------------------------------------------------</span>
+0005 <span class="comment">%% Cell array with arguments passed from bash script</span>
+0006 args=argv;
+0007 
+0008 Wrk_path=[args{1},<span class="string">'/'</span>];
+0009 <span class="comment">%mfiles_path=[args{2}];</span>
+0010 <span class="comment">%-----------------------------------------------------------</span>
+0011 
+0012 <span class="comment">%-----------------------------------------------------------</span>
+0013 <span class="comment">% % Uncomment this and comment above to test without need of bash script</span>
+0014 <span class="comment">% %main_path='/media/DATA/STRASSE';</span>
+0015 <span class="comment">% main_path='/home/ENS/apogee/r1003867/Stage_OUTPACE/OUTPACE';</span>
+0016 <span class="comment">% Wrk_path=[main_path,'/Wrk/'];</span>
+0017 <span class="comment">%% mfiles_path=[main_path,'/MODIS_map/Mfiles/'];</span>
+0018  out_path=Wrk_path;
+0019 <span class="comment">%-----------------------------------------------------------</span>
+0020 
+0021 <span class="comment">% Move to directory with octave scripts</span>
+0022 <span class="comment">%cd(mfiles_path)</span>
+0023 
+0024 <span class="comment">% use dir command to retrieve .mat file list in Wrk_dir</span>
+0025 files=dir([Wrk_path,<span class="string">'*AVISO*.mat'</span>]);
+0026 <span class="keyword">for</span> i=1:length(files)
+0027         disp([<span class="string">'%%%%%%%%%% '</span>,files(i).name,<span class="string">' %%%%%%%%%%%%%%%'</span>])
+0028         fname=files(i).name;
+0029         fname=[Wrk_path,fname];
+0030         <span class="comment">%fname='/home/ENS/apogee/r1003867/Stage_OUTPACE/OUTPACE/DATA_NRT/WORK/PROCESSED/20140617_AVISO_d0_uv.mat';</span>
+0031         disp([<span class="string">'   == Reading ==============================='</span>])
+0032         load(fname)
+0033         disp([<span class="string">'     Successfully read!!!'</span>])
+0034 <span class="keyword">end</span> <span class="comment">%first load all variables needed</span>
+0035 
+0036         disp([<span class="string">'   == Plotting =============================='</span>])
+0037         h2=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>); 
+0038 <span class="comment">%        h2=figure; %test</span>
+0039         
+0040     lonv=lon(1,:);
+0041         latv=lat(:,1)';
+0042         <span class="comment">% Plot SSH</span>
+0043 <span class="comment">%        if ~isempty(var2)</span>
+0044     <span class="keyword">if</span> exist(<span class="string">'var2'</span>,<span class="string">'var'</span>)
+0045         ssh=var2;<span class="comment">% save var2 in ssh variable</span>
+0046                 hi=imagesc(lonv,latv,ssh);<span class="comment">%plot ssh ok !</span>
+0047         <span class="keyword">end</span>
+0048         <span class="comment">%caxis([-20 80])</span>
+0049         set(gca,<span class="string">'fontsize'</span>,20);
+0050 <span class="comment">% Plot velocities</span>
+0051     <span class="keyword">if</span> exist(<span class="string">'var1'</span>,<span class="string">'var'</span>)
+0052         u=var1.u; <span class="comment">%save u and v variables</span>
+0053         v=var1.v;
+0054                fac=.025;
+0055         hold on;
+0056         quiver(lon,lat,u*fac,v*fac,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5)
+0057                 plot([148 150],[-28.7 -29.7],<span class="string">'-w'</span>);
+0058                 quiver(149,-29,1,0,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5);
+0059                 text(148.8,-29.5,<span class="string">'cm/s'</span>);
+0060     <span class="keyword">else</span>
+0061         disp([<span class="string">'No uv variables available'</span>])
+0062         <span class="keyword">end</span>
+0063         <span class="comment">% Flip axis</span>
+0064         axis xy
+0065         <span class="comment">% Draw coastline</span>
+0066         <a href="continenta.html" class="code" title="">continenta</a>
+0067         <span class="comment">% Set axis limits</span>
+0068         xlim([min(lonv) max(lonv)])
+0069         ylim([min(latv) max(latv)])
+0070         <span class="comment">% Draw strasse domain</span>
+0071         <a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>
+0072         line([Lon(1) Lon(1) Lon(2) Lon(2) Lon(1)], <span class="keyword">...</span>
+0073              [Lat(1) Lat(2) Lat(2) Lat(1) Lat(1)], <span class="keyword">...</span>
+0074                      <span class="string">'color'</span>,<span class="string">'m'</span>,<span class="string">'linewidth'</span>,10)
+0075     <span class="comment">% Set colorbar</span>
+0076 <span class="comment">%        colormap(jet)</span>
+0077  <span class="comment">%       colorbar;</span>
+0078         <span class="comment">% Get tags for figure title</span>
+0079         [pathstr, fname, ext] = fileparts(fname);
+0080         day=fname(1:8);
+0081         dtype=fname(10:11);
+0082         data_type=fname(19:end);
+0083         data_type=strrep(data_type,<span class="string">'_'</span>,<span class="string">' '</span>);
+0084         
+0085 <span class="comment">%- Stations positions -% (degres east)</span>
+0086 lat_stat = -19;
+0087 lon_stat_A = 155;
+0088 lon_stat_B = 176.32;
+0089 lon_stat_C = 200; <span class="comment">%(°E)</span>
+0090 SD_stat=load(<span class="string">'SD_stations_coord.txt'</span>);
+0091 lon_stat_SD=SD_stat(2:18,2);
+0092 lat_stat_SD=SD_stat(2:18,1);
+0093 
+0094 <span class="comment">%- Plot stations -%</span>
+0095 plot(lon_stat_A,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>,<span class="string">'Markersize'</span>,15);
+0096 text(lon_stat_A,lat_stat+1.2,<span class="string">'A'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0097 plot(lon_stat_B,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>,<span class="string">'Markersize'</span>,15);
+0098 text(lon_stat_B,lat_stat+1.2,<span class="string">'B'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0099 plot(lon_stat_C,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>,<span class="string">'Markersize'</span>,15);
+0100 text(lon_stat_C,lat_stat+1.2,<span class="string">'C'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0101 plot(lon_stat_SD,lat_stat_SD,<span class="string">'+'</span>,<span class="string">'Markersize'</span>,6,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0102 text(lon_stat_SD(1:8),lat_stat_SD(1:8)+0.9,num2str([2:9]'),<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0103 text(lon_stat_SD(9:end)-0.5,lat_stat_SD(9:end)+0.9,num2str([11:19]'),<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0104 
+0105 <span class="comment">%- Plot territorial waters -%</span>
+0106 
+0107 <span class="comment">%- Plot VANUATU territorial water limits -%</span>
+0108 plot([165 165],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0109 plot([174.5 174.5],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0110 text(167,-21,<span class="string">'VANUATU'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0111 
+0112 <span class="comment">%- Plot TONGA territorial water limits -%</span>
+0113 plot([189 189],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0114 plot([194 194],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0115 text(188.5,-21,<span class="string">'TONGA'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0116 
+0117 <span class="comment">%- Plot ILES COOK territorial water limits -%</span>
+0118 plot([199 199],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0119 plot([209 209],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0120 text(201,-21,<span class="string">'ILES'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0121 text(201,-22,<span class="string">'COOK'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0122 
+0123 <span class="comment">%- Plot NIUE territorial water limits -%</span>
+0124 plot([194 194],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0125 plot([199 199],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0126 text(194.5,-17,<span class="string">'NIUE'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0127 
+0128 <span class="comment">%- Plot FIDJI territorial water limits -%</span>
+0129 plot([174.5 174.5],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0130 plot([189 189],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0131 text(180.5,-21,<span class="string">'FIDJI'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0132 
+0133         <span class="comment">% Set colorbar</span>
+0134         colormap(jet)
+0135         colorbar;
+0136 
+0137     <span class="comment">% Title</span>
+0138         title([<span class="string">'AVISO '</span>,data_type,<span class="string">' '</span>,dtype,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' (m)'</span>],<span class="string">'fontsize'</span>,30);
+0139         xlabel(<span class="string">'Longitudes'</span>);
+0140     ylabel(<span class="string">'Latitudes'</span>);
+0141     hold off
+0142         <span class="comment">% Save figure</span>
+0143         print(h2,[out_path,fname,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0144         disp([<span class="string">'     Figure '</span>,[out_path,fname],<span class="string">' saved'</span>])
+0145         disp([<span class="string">'   =========================================='</span>])
+0146 
+0147 <span class="comment">%%%%% Plot uv and ssh near stations A,B,C %%%%%</span>
+0148 
+0149 <span class="comment">%- Stations positions -% (degres east)</span>
+0150 lat_stat = -19;
+0151 lon_stat_A = 155;
+0152 lon_stat_B = 176.32;
+0153 lon_stat_C = 200; <span class="comment">%(°E)</span>
+0154 
+0155 <span class="keyword">if</span> (exist(<span class="string">'ssh'</span>,<span class="string">'var'</span>) &amp; exist(<span class="string">'u'</span>,<span class="string">'var'</span>) &amp; exist(<span class="string">'v'</span>,<span class="string">'var'</span>))
+0156 
+0157     <span class="comment">%- Station A -%</span>
+0158 
+0159     h3=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0160     imagesc(lon,lat,ssh);
+0161     hold on;
+0162     <span class="comment">%caxis([0 2]) %test (m)</span>
+0163         set(gca,<span class="string">'fontsize'</span>,20);
+0164     quiver(lon,lat,u*fac,v*fac,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5)
+0165     xlim([lon_stat_A-0.5 159]) <span class="comment">%set limits near station A</span>
+0166     ylim([-21 -17])
+0167     axis xy
+0168     colormap(jet)
+0169     plot(lon_stat_A,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>,<span class="string">'markersize'</span>,20);<span class="comment">%'MarkerFaceColor','r','MarkerEdgeColor','r');</span>
+0170         text(lon_stat_A+0.1,lat_stat+0.1,<span class="string">'A'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0171     colorbar;
+0172         plot([154.5 154.5],[-20.9 -21],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,175);
+0173         quiver(154.5,-20.8,1,0,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5);
+0174         text(154.6,-20.9,<span class="string">'cm/s'</span>);
+0175     xlabel(<span class="string">'Longitudes'</span>);
+0176     ylabel(<span class="string">'Latitudes'</span>);
+0177         title([<span class="string">'AVISO '</span>,data_type,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station A (m)'</span>],<span class="string">'fontsize'</span>,30);
+0178         hold off;
+0179     <span class="comment">%- Save figure</span>
+0180     print(h3,[out_path,fname,<span class="string">'_stationA'</span>,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0181         disp([<span class="string">'     Figure '</span>,[out_path,fname,<span class="string">'_stationA'</span>],<span class="string">' saved'</span>])
+0182 
+0183     <span class="comment">%- Station B -%</span>
+0184         
+0185     h4=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0186         imagesc(lon,lat,ssh);
+0187         hold on;
+0188         <span class="comment">%caxis([0 2]) %test (m)</span>
+0189         set(gca,<span class="string">'fontsize'</span>,20);
+0190         quiver(lon,lat,u*fac,v*fac,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5)
+0191         xlim([174.5 178.5]) <span class="comment">% Map from West Vanuatu limit (174.5°E) to 178.5°E for station B to be in the middle of the map</span>
+0192         ylim([-21 -17])
+0193         axis xy
+0194         colormap(jet)
+0195         plot(lon_stat_B,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>,<span class="string">'Markersize'</span>,20);
+0196         text(lon_stat_B+0.1,lat_stat+0.1,<span class="string">'B'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0197         plot([174.5 174.5],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5)
+0198         text(175,-20,<span class="string">'FIDJI'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0199         colorbar;
+0200         plot([174.5 174.5],[-20.9 -21],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,175);
+0201         quiver(174.5,-20.8,1,0,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5);
+0202         text(174.6,-20.9,<span class="string">'cm/s'</span>);
+0203         xlabel(<span class="string">'Longitudes'</span>);
+0204         ylabel(<span class="string">'Latitudes'</span>);
+0205         title([<span class="string">'AVISO '</span>,data_type,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station B (m)'</span>],<span class="string">'fontsize'</span>,30);
+0206         hold off;
+0207     <span class="comment">%- Save figure</span>
+0208         print(h4,[out_path,fname,<span class="string">'_stationB'</span>,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0209         disp([<span class="string">'     Figure '</span>,[out_path,fname,<span class="string">'_stationB'</span>],<span class="string">' saved'</span>])
+0210 
+0211         <span class="comment">%- Station C -%</span>
+0212         
+0213         h5=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0214         imagesc(lon,lat,ssh);
+0215         hold on;
+0216         <span class="comment">%caxis([0 2]) %test (m)</span>
+0217         set(gca,<span class="string">'fontsize'</span>,20);
+0218         quiver(lon,lat,u*fac,v*fac,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5)
+0219         xlim([196 lon_stat_C+0.5]) <span class="comment">% Map from 196°E to station C</span>
+0220         ylim([-21 -17])
+0221         axis xy
+0222         colormap(jet)
+0223         plot(lon_stat_C,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>,<span class="string">'Markersize'</span>,20);
+0224         text(lon_stat_C-0.1,lat_stat+0.1,<span class="string">'C'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0225         plot([194 194],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5);
+0226         text(197.5,-20,<span class="string">'NIUE'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0227 
+0228         plot([199 199],[-19.7 -18.3],<span class="string">'-k'</span>,<span class="string">'Linewidth'</span>,5);
+0229         text(199.5,-19.8,<span class="string">'ILES'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0230         text(199.5,-20,<span class="string">'COOK'</span>,<span class="string">'Color'</span>,<span class="string">'k'</span>);
+0231 
+0232         colorbar;
+0233         plot([196 196],[-20.955 -21],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,175);
+0234         quiver(196,-20.8,1,0,5,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5);
+0235         text(196.1,-20.9,<span class="string">'cm/s'</span>);
+0236         xlabel(<span class="string">'Longitudes'</span>);
+0237         ylabel(<span class="string">'Latitudes'</span>);
+0238         title([<span class="string">'AVISO '</span>,data_type,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station C (m)'</span>],<span class="string">'fontsize'</span>,30);
+0239         hold off;
+0240         <span class="comment">%- Save figure</span>
+0241         print(h5,[out_path,fname,<span class="string">'_stationC'</span>,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0242         disp([<span class="string">'     Figure '</span>,[out_path,fname,<span class="string">'_stationC'</span>],<span class="string">' saved'</span>])
+0243 
+0244 
+0245 <span class="keyword">end</span>
+0246 <span class="comment">% Message if no files found in Wrk</span>
+0247 <span class="keyword">if</span> length(files)==0
+0248         disp([<span class="string">'   == No AVISO .mat files to plot !!!!! ========='</span>])
+0249 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

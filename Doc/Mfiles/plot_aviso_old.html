@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plot_aviso_old</title>
+  <meta name="keywords" content="plot_aviso_old">
+  <meta name="description" content="This is an octave script used in cronjob_MODIS_AVISO.bsh">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; plot_aviso_old.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>plot_aviso_old
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is an octave script used in cronjob_MODIS_AVISO.bsh</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This is an octave script used in cronjob_MODIS_AVISO.bsh
+ to plot the aviso data previously saved in mat files</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="continenta.html" class="code" title="">continenta</a>	continenta.m from LATEX campaing</li><li><a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>	Limits of strasse campaign</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% This is an octave script used in cronjob_MODIS_AVISO.bsh</span>
+0002 <span class="comment">% to plot the aviso data previously saved in mat files</span>
+0003 
+0004 <span class="comment">%-----------------------------------------------------------</span>
+0005 <span class="comment">% Cell array with arguments passed from bash script</span>
+0006 <span class="comment">%args=argv;</span>
+0007 
+0008 <span class="comment">%Wrk_path=[args{1},'/'];</span>
+0009 <span class="comment">%mfiles_path=[args{2}];</span>
+0010 <span class="comment">%-----------------------------------------------------------</span>
+0011 
+0012 <span class="comment">%-----------------------------------------------------------</span>
+0013 <span class="comment">% % Uncomment this and comment above to test without need of bash script</span>
+0014 <span class="comment">% %main_path='/media/DATA/STRASSE';</span>
+0015  main_path=<span class="string">'/home/ENS/apogee/r1003867/Stage_OUTPACE/OUTPACE'</span>;
+0016  Wrk_path=[main_path,<span class="string">'/DATA_NRT/WORK/PROCESSED/'</span>];
+0017  mfiles_path=[main_path,<span class="string">'/MODIS_map/Mfiles/'</span>];
+0018  out_path=[main_path,<span class="string">'/DATA_NRT/WORK/FIGURES/'</span>];
+0019 <span class="comment">%-----------------------------------------------------------</span>
+0020 
+0021 <span class="comment">% Move to directory with octave scripts</span>
+0022 cd(mfiles_path)
+0023 
+0024 <span class="comment">% use dir command to retrieve .mat file list in Wrk_dir</span>
+0025 files=dir([Wrk_path,<span class="string">'*AVISO*.mat'</span>]);
+0026 <span class="keyword">for</span> i=1:length(files)
+0027     disp([<span class="string">'%%%%%%%%%% '</span>,files(i).name,<span class="string">' %%%%%%%%%%%%%%%'</span>])
+0028     fname=files(i).name;
+0029     fname=[Wrk_path,fname];
+0030     <span class="comment">%fname='/home/ENS/apogee/r1003867/Stage_OUTPACE/OUTPACE/DATA_NRT/WORK/PROCESSED/20140617_AVISO_d0_uv.mat';</span>
+0031     disp([<span class="string">'   == Reading ==============================='</span>])
+0032     load(fname)
+0033     disp([<span class="string">'     Successfully read!!!'</span>])
+0034 
+0035     disp([<span class="string">'   == Plotting =============================='</span>])
+0036     <span class="comment">%h2=figure('visible','off');</span>
+0037     h2=figure; <span class="comment">%test</span>
+0038     
+0039     lonv=lon(1,:);
+0040     latv=lat(:,1)';
+0041     <span class="comment">% Plot SSH</span>
+0042     <span class="keyword">if</span> ~isempty(var2)
+0043         hi=imagesc(lonv,latv,var2);<span class="comment">%plot ssh ok !</span>
+0044     <span class="keyword">end</span>
+0045     <span class="comment">%caxis([-20 80])</span>
+0046     caxis([0 2]) <span class="comment">%test (m)</span>
+0047     set(gca,<span class="string">'fontsize'</span>,20);
+0048     hold on
+0049 keyboard    
+0050 <span class="comment">% Plot velocities</span>
+0051     <span class="keyword">if</span> ~isempty(var1.u | var1.v) <span class="comment">%test error: invalid conversion of NaN to logical; evaluating argument list element number 1</span>
+0052        <span class="comment">%empty=isempty(var1.u | var1.v); %test -&gt; same error</span>
+0053     <span class="comment">%if empty==0</span>
+0054     fac=.025;
+0055         quiver(lon,lat,var1.u*fac,var1.v*fac,0,<span class="string">'k'</span>,<span class="string">'linewidth'</span>,1.5)
+0056     <span class="keyword">end</span>
+0057     <span class="comment">% Flip axis</span>
+0058     axis xy
+0059     <span class="comment">% Draw coastline</span>
+0060     <a href="continenta.html" class="code" title="">continenta</a>
+0061     <span class="comment">% Set axis limits</span>
+0062     xlim([min(lonv) max(lonv)])
+0063     ylim([min(latv) max(latv)])
+0064     <span class="comment">% Draw strasse domain</span>
+0065     <a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>
+0066     line([Lon(1) Lon(1) Lon(2) Lon(2) Lon(1)], <span class="keyword">...</span>
+0067          [Lat(1) Lat(2) Lat(2) Lat(1) Lat(1)], <span class="keyword">...</span>
+0068                  <span class="string">'color'</span>,<span class="string">'m'</span>,<span class="string">'linewidth'</span>,10)
+0069     <span class="comment">% Set colorbar</span>
+0070     colormap(jet)
+0071     H= colorbar;
+0072     set(H,<span class="string">'fontsize'</span>,20);
+0073     <span class="comment">% Get tags for figure title</span>
+0074     [pathstr, fname, ext] = fileparts(fname);
+0075     day=fname(1:8);
+0076     dtype=fname(10:11);
+0077     data_type=fname(19:end);
+0078     data_type=strrep(data_type,<span class="string">'_'</span>,<span class="string">' '</span>);
+0079     <span class="comment">% Title</span>
+0080     title([<span class="string">'AVISO '</span>,data_type,<span class="string">' '</span>,dtype,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>))],<span class="string">'fontsize'</span>,30);
+0081     hold off
+0082     <span class="comment">% Save figure</span>
+0083     print(h2,[out_path,fname,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0084     print(h2,[out_path,fname,<span class="string">'.eps'</span>],<span class="string">'-depsc'</span>)<span class="comment">%,'-r250')</span>
+0085     disp([<span class="string">'     Figure '</span>,[out_path,fname],<span class="string">' saved'</span>])
+0086     disp([<span class="string">'   =========================================='</span>])
+0087 
+0088 <span class="keyword">end</span>
+0089 <span class="comment">% Message if no files found in Wrk</span>
+0090 <span class="keyword">if</span> length(files)==0
+0091     disp([<span class="string">'   == No AVISO .mat files to plot !!!!! ========='</span>])
+0092 <span class="keyword">end</span>
+0093</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

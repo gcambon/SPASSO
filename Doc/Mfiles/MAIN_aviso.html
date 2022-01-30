@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of MAIN_aviso</title>
+  <meta name="keywords" content="MAIN_aviso">
+  <meta name="description" content="This is an octave script used in cronjob_MODIS_AVISO.bsh">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; MAIN_aviso.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>MAIN_aviso
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is an octave script used in cronjob_MODIS_AVISO.bsh</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This is an octave script used in cronjob_MODIS_AVISO.bsh
+ to launch the analysis on the files previously downloaded
+
+ IMPORTANT: Only d0 and d6 data are processed !!!
+            Plotting done outside of this script !!!
+            (uv and ssh plotted together from the generated .mat file)
+
+ 06/06/2014: louise.rousselet@etu.univ-amu.fr : only d0 files + (read_nc_aviso)
+ remove 'clean data' because ---&gt; error
+-----------------------------------------------------------
+ Cell array with arguments passed from bash script
+  args=argv;
+  %
+  Wrk_path=[args{1},'/'];
+  mfiles_path=[args{2}];
+  data_type=[args{3}]; % for loop for different data in cronjob_MODIS_AVISO.bsh
+-----------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="domain_limits.html" class="code" title="">domain_limits</a>	Limits of domain</li><li><a href="save_aviso.html" class="code" title="function save_aviso(Wrk_path,data_type,dd,dtype,lon,lat,var)">save_aviso</a>	Case uv</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% This is an octave script used in cronjob_MODIS_AVISO.bsh</span>
+0002 <span class="comment">% to launch the analysis on the files previously downloaded</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% IMPORTANT: Only d0 and d6 data are processed !!!</span>
+0005 <span class="comment">%            Plotting done outside of this script !!!</span>
+0006 <span class="comment">%            (uv and ssh plotted together from the generated .mat file)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% 06/06/2014: louise.rousselet@etu.univ-amu.fr : only d0 files + (read_nc_aviso)</span>
+0009 <span class="comment">% remove 'clean data' because ---&gt; error</span>
+0010 <span class="comment">%-----------------------------------------------------------</span>
+0011 <span class="comment">% Cell array with arguments passed from bash script</span>
+0012 <span class="comment">%  args=argv;</span>
+0013 <span class="comment">%  %</span>
+0014 <span class="comment">%  Wrk_path=[args{1},'/'];</span>
+0015 <span class="comment">%  mfiles_path=[args{2}];</span>
+0016 <span class="comment">%  data_type=[args{3}]; % for loop for different data in cronjob_MODIS_AVISO.bsh</span>
+0017 <span class="comment">%-----------------------------------------------------------</span>
+0018 
+0019 <span class="comment">%-----------------------------------------------------------</span>
+0020 <span class="comment">% % Uncomment this and comment above to test without need of bash script</span>
+0021  <span class="comment">%main_path='/media/DATA/STRASSE';</span>
+0022   main_path=<span class="string">'/home/ENS/apogee/r1003867/Stage_OUTPACE/OUTPACE'</span>;
+0023  <span class="comment">% Wrk_path=[main_path,'/Wrk/'];</span>
+0024    Wrk_path=<span class="string">'/home/ENS/apogee/r1003867/Stage_OUTPACE/presentation_2072014/'</span>; 
+0025  mfiles_path=[main_path,<span class="string">'/Mfiles/'</span>];
+0026  <span class="comment">% % Change data_type</span>
+0027  <span class="comment">% data_type='uv';</span>
+0028   data_type=<span class="string">'h'</span>;
+0029 <span class="comment">%-----------------------------------------------------------</span>
+0030 
+0031 <span class="comment">% Move to directory with octave scripts</span>
+0032 cd(mfiles_path)
+0033 <span class="comment">% Read Lon Lat limit file</span>
+0034 <a href="domain_limits.html" class="code" title="">domain_limits</a>
+0035 
+0036 <span class="comment">% use dir command to retrieve .nc file list</span>
+0037 files=dir([Wrk_path,<span class="string">'/*_'</span>,data_type,<span class="string">'_20*.nc'</span>]);
+0038 <span class="keyword">for</span> i=1:length(files) 
+0039     nc_name=files(i).name;
+0040     nc_file=[Wrk_path,<span class="string">'/'</span>,nc_name];
+0041     <span class="comment">% Retrieve the type of data (d0 d3 or d6)</span>
+0042     ldata=length(data_type);
+0043     dd=nc_name(25+ldata:32+ldata);
+0044     DD=nc_name(34+ldata:41+ldata);
+0045     <span class="comment">% dtype used to distinguish d0 and d6 files</span>
+0046     dtype=datenum(DD,<span class="string">'yyyymmdd'</span>)-datenum(dd,<span class="string">'yyyymmdd'</span>);
+0047     <span class="comment">% Day used for saving</span>
+0048     <span class="comment">% (AVISO data are always from dd-1)</span>
+0049     dd=datestr(datenum(dd,<span class="string">'yyyymmdd'</span>)-1,<span class="string">'yyyymmdd'</span>);
+0050     <span class="comment">%dtype=0; % test</span>
+0051     <span class="keyword">if</span> dtype==0 | dtype==6
+0052         disp([<span class="string">'%%%%%%%%%% '</span>,files(i).name,<span class="string">' %%%%%%%%%%%'</span>])
+0053         disp([<span class="string">'   == Reading ==============================='</span>])
+0054         [lon lat var]=read_nc_aviso_2013(nc_file, <span class="keyword">...</span>
+0055             Lat(2),Lat(1),Lon(1),Lon(2), <span class="keyword">...</span>
+0056             data_type);
+0057 
+0058         disp([<span class="string">'   == Saving .mat file ======================'</span>])
+0059         <a href="save_aviso.html" class="code" title="function save_aviso(Wrk_path,data_type,dd,dtype,lon,lat,var)">save_aviso</a>(Wrk_path,data_type,dd,dtype,lon,lat,var)
+0060         disp([<span class="string">'   =========================================='</span>])
+0061     
+0062 
+0063     <span class="keyword">end</span>
+0064 <span class="keyword">end</span>
+0065 <span class="comment">%                disp(['   == Plotting file ======================'])</span>
+0066 <span class="comment">%                plot_aviso_new</span>
+0067 <span class="comment">%                disp(['   =========================================='])</span>
+0068 
+0069 
+0070 <span class="comment">% Message if no files found in Wrk</span>
+0071 <span class="keyword">if</span> length(files)==0
+0072     disp([<span class="string">'   == No AVISO '</span>,data_type,<span class="string">' processed !!!!! ========='</span>])
+0073 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

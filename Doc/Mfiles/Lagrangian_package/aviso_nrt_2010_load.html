@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of aviso_nrt_2010_load</title>
+  <meta name="keywords" content="aviso_nrt_2010_load">
+  <meta name="description" content="addpath('/home/dovidio/octave/ocean');">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; aviso_nrt_2010_load.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>aviso_nrt_2010_load
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>addpath('/home/dovidio/octave/ocean');</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ret=aviso_nrt_2010_load(day0,dayf,ssha) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">addpath('/home/dovidio/octave/ocean');
+addpath('../../');</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="getncUV_nrt_global_2010.html" class="code" title="function [Uw,Vw,lonw,latw,U,V]=getncUV_nrt_global_2010(nday,ssha)">getncUV_nrt_global_2010</a>	</li><li><a href="getncUV_upd_global_2010.html" class="code" title="function [Uw,Vw,lonw,latw,U,V]=getncUV_upd_global_2010(nday)">getncUV_upd_global_2010</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="aviso_load.html" class="code" title="function err=aviso_load(day0,dayf,product)">aviso_load</a>	The function choses different functions to read AVISO velocity fields</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ret=aviso_nrt_2010_load(day0,dayf,ssha)</a>
+0002 <span class="comment">%addpath('/home/dovidio/octave/ocean');</span>
+0003 <span class="comment">%addpath('../../');</span>
+0004 
+0005 ret=0;
+0006 
+0007 <span class="keyword">if</span>(nargin==2)
+0008     <span class="comment">% used to distinguish if its SSH or SLA (ssa) !!!</span>
+0009     ssha=<span class="string">'ssh'</span>;
+0010 <span class="keyword">end</span>
+0011 
+0012 <span class="comment">% Test day to be loaded and retrieve values for few paramters</span>
+0013 onedayinupd=datenum([2007 12 5])-datenum([1950 1 1]);
+0014 
+0015 disp(<span class="string">' '</span>)
+0016 disp(<span class="string">'%--- Define the type of velocity field ---'</span>)
+0017 <span class="comment">% Function in lamta.dev/lamta_all.cc which call select_sys</span>
+0018 <span class="comment">% from lamta.dev/field.h</span>
+0019 <span class="comment">% It defines the type of velocity field (4 =&gt; user defined Lut_field)</span>
+0020 select(4); 
+0021 
+0022 <span class="comment">% Load test day</span>
+0023 [Uw,Vw,lonw,latw]=<a href="getncUV_upd_global_2010.html" class="code" title="function [Uw,Vw,lonw,latw,U,V]=getncUV_upd_global_2010(nday)">getncUV_upd_global_2010</a>(onedayinupd);
+0024 
+0025 <span class="keyword">if</span>(isempty(Uw))
+0026     disp(sprintf(<span class="string">'Error in finding velocity files for reference day %d (upd).'</span>,onedayinupd));
+0027     ret=2;
+0028     <span class="keyword">return</span>;
+0029 <span class="keyword">end</span>
+0030 
+0031 [glon,glat]=meshgrid(lonw,latw);
+0032 sz=size(Uw);
+0033 
+0034 numdays=(dayf-day0)+1;
+0035 
+0036 disp(<span class="string">' '</span>)
+0037 disp(<span class="string">'%--- Set parameters of LUT field --- '</span>)
+0038 <span class="comment">% set_par defined in lamta.dev/field.h for each field</span>
+0039 set_par([lonw(1) lonw(end) sz(1) latw(1) latw(end) sz(2) day0*60*60*24 dayf*60*60*24 numdays]');
+0040 <span class="comment">% No need to print_par: already in set_par !!!</span>
+0041 <span class="comment">%print_par();</span>
+0042 disp(<span class="string">' '</span>)
+0043 
+0044 disp(<span class="string">'%--- Set geometry of LUT field --- '</span>)
+0045 <span class="comment">% field_geometry(disttype,datatype,gridtype) defined in lamta.dev/lamta_all.cc</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% disttype=1 (Euclidean), 2 (sphere).</span>
+0048 <span class="comment">% datatype=1 (deg./sec.), 2 (cm/sec.)</span>
+0049 <span class="comment">% gridtype=0 (flat), 1 (sphere, regular), 2 (sphere Mercator)</span>
+0050 field_geometry(2,1,2);
+0051 <span class="comment">% No need to print_par: field geometry is not displayed !!!</span>
+0052 <span class="comment">% print_par();</span>
+0053 disp(<span class="string">' '</span>)
+0054 
+0055 disp(<span class="string">'%--- Load velocities ---'</span>)
+0056 ctr=0;
+0057 <span class="comment">% Cycle through each day</span>
+0058 <span class="keyword">for</span> ctday=day0:1:dayf
+0059     <span class="comment">% Read nrt global velocity field</span>
+0060     [Uw,Vw,lonw,latw]=<a href="getncUV_nrt_global_2010.html" class="code" title="function [Uw,Vw,lonw,latw,U,V]=getncUV_nrt_global_2010(nday,ssha)">getncUV_nrt_global_2010</a>(ctday,ssha);
+0061     <span class="comment">%[Uw,Vw,lonw,latw]=getncUV_rt_global(ctday);</span>
+0062 
+0063     <span class="keyword">if</span>(isempty(Uw))
+0064         disp(sprintf(<span class="string">'Error in finding nrt velocity files (day %d)'</span>,ctday));
+0065         ret=1;
+0066         <span class="keyword">return</span>;
+0067     <span class="keyword">end</span>
+0068     <span class="comment">% Update the velocity field in the LUT field used</span>
+0069     <span class="comment">% for the Lagrangian analysis</span>
+0070     disp([<span class="string">'% '</span>,datestr(ctday+datenum([1950 1 1]))])
+0071     LUT_frame_fill(Uw,Vw,ctr);
+0072     ctr=ctr+1;
+0073 <span class="keyword">end</span>
+0074</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

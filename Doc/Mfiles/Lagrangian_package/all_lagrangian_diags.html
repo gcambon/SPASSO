@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of all_lagrangian_diags</title>
+  <meta name="keywords" content="all_lagrangian_diags">
+  <meta name="description" content="Modified from:">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; all_lagrangian_diags.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>all_lagrangian_diags
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Modified from:</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function fname=all_lagrangian_diags(day0,product,out_path,ctday) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Modified from:
+ $DATA/KEOPS2/octave/keops/analysis/realtime_cron/all_lagrangiandiags_keops2.m
+
+ Launches all the functions to compute the lagrangian diagnostics</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="aviso_UV.html" class="code" title="function [U,V,xvc,yvc,Ucms,Vcms]=aviso_UV(dayc,lonv,latv,delta0,product)">aviso_UV</a>	</li><li><a href="aviso_bigsqadvect.html" class="code" title="function [lon0,lat0,lonf,latf,sz]=aviso_bigsqadvect(dayv,lonv,latv,delta0,numdays,product)">aviso_bigsqadvect</a>	</li><li><a href="aviso_fsle.html" class="code" title="function [lambda,xvc,yvc,out]=aviso_fsle(dayv,lonv,latv,delta0,delta,product,numdays)">aviso_fsle</a>	Compute FSLEs using:</li><li><a href="aviso_ow.html" class="code" title="function [ow,dUdx,dUdy,dVdx,dVdy,Ucms,Vcms]=aviso_ow(dayc,lonv,latv,ds,product)">aviso_ow</a>	</li><li><a href="domain_limits.html" class="code" title="">domain_limits</a>	Limits of domain</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="MAIN_Lagrangian.html" class="code" title="">MAIN_Lagrangian</a>	==============================================================================</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function fname=all_lagrangian_diags(day0,product,out_path,ctday)</a>
+0002 <span class="comment">% Modified from:</span>
+0003 <span class="comment">% $DATA/KEOPS2/octave/keops/analysis/realtime_cron/all_lagrangiandiags_keops2.m</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Launches all the functions to compute the lagrangian diagnostics</span>
+0006     
+0007 <span class="comment">% Load domain limits</span>
+0008 <span class="comment">% (domain_limits.m is a hard link to domain_limits.m in Mfiles directory)</span>
+0009 <a href="domain_limits.html" class="code" title="">domain_limits</a>
+0010 lonv=Lon;
+0011 latv=Lat;
+0012 clear Lon Lat
+0013 <span class="comment">% Load local vars</span>
+0014 <span class="comment">%lvars=localvars;</span>
+0015 
+0016 <span class="comment">%--- Set parameters for Lagrangian analyses</span>
+0017 <span class="comment">%delta0=.05;</span>
+0018 delta0=.1; <span class="comment">% Initial particle separation</span>
+0019 delta=.6;  <span class="comment">% Final particle separation</span>
+0020 ds=1/6; <span class="comment">% Not used; What to do with this???</span>
+0021 <span class="comment">% Maximum number of days to compute particle trajectories</span>
+0022 <span class="comment">%numdays=120;</span>
+0023 numdays=10;
+0024 <span class="comment">% parameter for OW dispersion analysis</span>
+0025 tollerance=10;
+0026 <span class="comment">% lon lat matrices for Lagrangian analysis</span>
+0027 lonvv=lonv(1):delta0:lonv(end);
+0028 latvv=latv(1):delta0:latv(end);
+0029 [long,latg]=meshgrid(lonvv,latvv);
+0030 sz=size(long);
+0031 
+0032 <span class="comment">%--- Begin Lagrangian analysis</span>
+0033  disp([<span class="string">'%   aviso_fsle'</span>])
+0034  [lambda,xvc,yvc,out]=<a href="aviso_fsle.html" class="code" title="function [lambda,xvc,yvc,out]=aviso_fsle(dayv,lonv,latv,delta0,delta,product,numdays)">aviso_fsle</a>(day0,lonv,latv,delta0,delta,<span class="string">'none'</span>,numdays);
+0035  theta=reshape(out(3,:),length(yvc),length(xvc));
+0036  disp(<span class="string">' '</span>)
+0037  
+0038  <span class="comment">%---------------------------------------------------</span>
+0039  <span class="comment">%disp(['%   owdispersion'])</span>
+0040  <span class="comment">%OWdispersion_b=aviso_owdispersion(day0,lonv,latv,delta0,-numdays/2,tollerance,'none');</span>
+0041  <span class="comment">%disp(' ')</span>
+0042  <span class="comment">%---------------------------------------------------</span>
+0043  
+0044  disp([<span class="string">'%   aviso_ow'</span>])
+0045  owm=<a href="aviso_ow.html" class="code" title="function [ow,dUdx,dUdy,dVdx,dVdy,Ucms,Vcms]=aviso_ow(dayc,lonv,latv,ds,product)">aviso_ow</a>(day0,lonv,latv,1/16,<span class="string">'none'</span>);
+0046  disp(<span class="string">' '</span>)
+0047  <span class="comment">% Interpolate OW parameter to FSLE grid</span>
+0048  lonvo=lonv(1):1/16:lonv(end);
+0049  latvo=latv(1):1/16:latv(end);
+0050  [glono,glato]=meshgrid(lonvo,latvo);
+0051  owmi=interp2(glono,glato,owm,long,latg,<span class="string">'cubic'</span>);
+0052 
+0053 [U,V,xvc,yvc,Ucms,Vcms]=<a href="aviso_UV.html" class="code" title="function [U,V,xvc,yvc,Ucms,Vcms]=aviso_UV(dayc,lonv,latv,delta0,product)">aviso_UV</a>(day0,lonv,latv,delta0,<span class="string">'none'</span>);
+0054 
+0055  <span class="comment">% Replace with MODIS SST?</span>
+0056  
+0057  <span class="comment">%disp(['          amsre_adv'])</span>
+0058  <span class="comment">%[ssth,sstf,lonsstf,latsstf,sst]=amsre_adv(day0,lonv,latv,.1,-3,0,0,'none');</span>
+0059  
+0060  disp([<span class="string">'%   aviso_bigsquadvec1'</span>])
+0061  [lon0,lat0,lonf15,latf15,sz15]=<a href="aviso_bigsqadvect.html" class="code" title="function [lon0,lat0,lonf,latf,sz]=aviso_bigsqadvect(dayv,lonv,latv,delta0,numdays,product)">aviso_bigsqadvect</a>(day0,lonv,latv,delta0,-15,<span class="string">'none'</span>);
+0062  disp(<span class="string">' '</span>)
+0063   
+0064   disp([<span class="string">'%   aviso_bigsquadvec2'</span>])
+0065   [lon0,lat0,lonf45,latf45,sz]=<a href="aviso_bigsqadvect.html" class="code" title="function [lon0,lat0,lonf,latf,sz]=aviso_bigsqadvect(dayv,lonv,latv,delta0,numdays,product)">aviso_bigsqadvect</a>(day0,lonv,latv,delta0,-45,<span class="string">'none'</span>);
+0066   disp(<span class="string">' '</span>)
+0067   
+0068  disp([<span class="string">'%   aviso_bigsquadvec3'</span>])
+0069  [lon0,lat0,lonf90,latf90,sz]=<a href="aviso_bigsqadvect.html" class="code" title="function [lon0,lat0,lonf,latf,sz]=aviso_bigsqadvect(dayv,lonv,latv,delta0,numdays,product)">aviso_bigsqadvect</a>(day0,lonv,latv,delta0,-90,<span class="string">'none'</span>);
+0070  disp(<span class="string">' '</span>)
+0071   
+0072   lon0=reshape(lon0,sz);
+0073   lat0=reshape(lat0,sz);
+0074   lonf=reshape(lonf15,sz);
+0075   latf=reshape(latf15,sz);
+0076 
+0077 <span class="comment">%---------------------------------------------------</span>
+0078 <span class="comment">% possegday0b=find((OWdispersion_b(:)&gt;20));</span>
+0079 <span class="comment">%</span>
+0080 <span class="comment">%  disp(['%   aviso_lonlatadvect1'])</span>
+0081 <span class="comment">%  [lonfowadv15,latfowadv15,lonsmowadv15,latsmowadv15]=aviso_lonlatadvect(day0,long(possegday0b),latg(possegday0b),-15,'none');</span>
+0082 <span class="comment">%  disp(' ')</span>
+0083 <span class="comment">%</span>
+0084 <span class="comment">%  disp(['%   aviso_lonlatadvect2'])</span>
+0085 <span class="comment">%  [lonfowadv60,latfowadv60,lonsmowadv60,latsmowadv60]=aviso_lonlatadvect(day0,long(possegday0b),latg(possegday0b),-60,'none');</span>
+0086 <span class="comment">%  disp(' ')</span>
+0087 <span class="comment">%---------------------------------------------------</span>
+0088 
+0089 <span class="comment">% Replace with time from STRASSE domain?</span>
+0090 <span class="comment">%</span>
+0091 <span class="comment">%disp(['          timefrombathy'])</span>
+0092 <span class="comment">%touched=timefrombathy(day0,long,latg,-700,-numdays,'none');</span>
+0093 <span class="comment">%disp(['          '])</span>
+0094 
+0095 <span class="comment">%--- Save workspace;</span>
+0096 <span class="comment">%    (loaded afterwards to plot figures)</span>
+0097 todayv=datevec(now);
+0098 <span class="comment">%fname=sprintf('%s/all_lagr_diag_%s_%d%02d%02d_%d%02d%02d.mat',out_path,product,day0(1),day0(2),day0(3),todayv(1),todayv(2),todayv(3));</span>
+0099 fname=sprintf(<span class="string">'%s/%d%02d%02d_%s_d%s.mat'</span>,out_path,day0(1),day0(2),day0(3),product,num2str(ctday-1));
+0100 
+0101 save(<span class="string">'-mat-binary'</span>,fname);
+0102 <span class="keyword">end</span>
+0103</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

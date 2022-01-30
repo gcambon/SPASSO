@@ -1,0 +1,987 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2019.7.25)  25 JUL 2019 13:23
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**spasso_userguide.tex
+(./spasso_userguide.tex
+LaTeX2e <2011/06/27>
+Babel <3.9h> and hyphenation patterns for 78 languages loaded.
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks14
+\ex@=\dimen103
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen104
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count87
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count88
+\leftroot@=\count89
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count90
+\DOTSCASE@=\count91
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen105
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count92
+\c@MaxMatrixCols=\count93
+\dotsspace@=\muskip10
+\c@parentequation=\count94
+\dspbrk@lvl=\count95
+\tag@help=\toks15
+\row@=\count96
+\column@=\count97
+\maxfields@=\count98
+\andhelp@=\toks16
+\eqnshift@=\dimen106
+\alignsep@=\dimen107
+\tagshift@=\dimen108
+\tagwidth@=\dimen109
+\totwidth@=\dimen110
+\lineht@=\dimen111
+\@envbody=\toks17
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks18
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count99
+))
+\Gin@req@height=\dimen112
+\Gin@req@width=\dimen113
+)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip11
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/dirtree/dirtree.sty
+Package: dirtree 2012/12/11 v0.32 package wrapper for dirtree
+
+(/usr/share/texlive/texmf-dist/tex/generic/dirtree/dirtree.tex
+`dirtree' v0.32, 2012/12/11 (jcc)
+\DT@offset=\dimen114
+\DT@width=\dimen115
+\DT@sep=\dimen116
+\DT@all=\dimen117
+\DT@rulewidth=\dimen118
+\DT@dotwidth=\dimen119
+\DTbaselineskip=\dimen120
+\DT@counti=\count100
+\DT@countii=\count101
+\DT@countiii=\count102
+\DT@countiv=\count103
+\DT@indent=\dimen121
+\DT@parskip=\dimen122
+\DT@baselineskip=\dimen123
+)
+File: dirtree.tex 2012/12/11 v0.32 `dirtree' (jcc)
+)
+(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/import/import.sty
+Package: import 2009/03/23  v 5.1
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2012/05/28 v1.13 Construct package bundles (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
+Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
+)
+Package: bitset 2011/01/30 v1.1 Handle bit-vector datatype (HO)
+Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
+)
+Package hobsub Info: Skipping package `hobsub' (already loaded).
+Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
+Package: hopatch 2012/05/28 v1.2 Wrapper for package hooks (HO)
+Package: xcolor-patch 2011/01/30 xcolor patch
+Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
+Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/auxhook.sty
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+)
+\@linkdim=\dimen124
+\Hy@linkcounter=\count104
+\Hy@pagecounter=\count105
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
+)
+\Hy@SavedSpaceFactor=\count106
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Hyper figures OFF on input line 4443.
+Package hyperref Info: Link nesting OFF on input line 4448.
+Package hyperref Info: Hyper index ON on input line 4451.
+Package hyperref Info: Plain pages OFF on input line 4458.
+Package hyperref Info: Backreferencing OFF on input line 4463.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4688.
+\c@Hy@tempcnt=\count107
+LaTeX Info: Redefining \url on input line 5041.
+\XeTeXLinkMargin=\dimen125
+\Fld@menulength=\count108
+\Field@Width=\dimen126
+\Fld@charsize=\dimen127
+Package hyperref Info: Hyper figures OFF on input line 6295.
+Package hyperref Info: Link nesting OFF on input line 6300.
+Package hyperref Info: Hyper index ON on input line 6303.
+Package hyperref Info: backreferencing OFF on input line 6310.
+Package hyperref Info: Link coloring OFF on input line 6315.
+Package hyperref Info: Link coloring with OCG OFF on input line 6320.
+Package hyperref Info: PDF/A mode OFF on input line 6325.
+LaTeX Info: Redefining \ref on input line 6365.
+LaTeX Info: Redefining \pageref on input line 6369.
+\Hy@abspage=\count109
+\c@Item=\count110
+\c@Hfootnote=\count111
+)
+
+Package hyperref Message: Driver (autodetected): hpdftex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+\Fld@listcount=\count112
+\c@bookmark@seq@number=\count113
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+82.
+)
+\Hy@SectionHShift=\skip46
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 21.
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+Package: pdfpages 2013/08/25 v0.4v Insert pages of external PDF documents (AM)
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count114
+\calc@Bcount=\count115
+\calc@Adimen=\dimen128
+\calc@Bdimen=\dimen129
+\calc@Askip=\skip47
+\calc@Bskip=\skip48
+LaTeX Info: Redefining \setlength on input line 76.
+LaTeX Info: Redefining \addtolength on input line 77.
+\calc@Ccount=\count116
+\calc@Cskip=\skip49
+)
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+Package: eso-pic 2013/10/06 v2.0d eso-pic (RN)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def
+File: pppdftex.def 2013/08/25 v0.4v Pdfpages driver for pdfTeX (AM)
+)
+\AM@pagebox=\box28
+\AM@toc@title=\toks20
+\c@AM@survey=\count117
+\AM@templatesizebox=\box29
+)
+(./spasso_userguide.aux)
+\openout1 = `spasso_userguide.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 28.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count118
+\scratchdimen=\dimen130
+\scratchbox=\box30
+\nofMPsegments=\count119
+\nofMParguments=\count120
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count121
+\MPscratchDim=\dimen131
+\MPnumerator=\count122
+\makeMPintoPDFobject=\count123
+\everyMPtoPDFconversion=\toks22
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+\AtBeginShipoutBox=\box31
+Package hyperref Info: Link coloring ON on input line 28.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count124
+)
+LaTeX Info: Redefining \ref on input line 28.
+LaTeX Info: Redefining \pageref on input line 28.
+LaTeX Info: Redefining \nameref on input line 28.
+
+(./spasso_userguide.out) (./spasso_userguide.out)
+\@outlinefile=\write3
+\openout3 = `spasso_userguide.out'.
+
+
+<Figures/20151023_d-OC_CNR-L3-CHL-MedOC3AD4_A_1KM-MED-NRT.png, id=60, 1204.5pt 
+x 903.375pt>
+File: Figures/20151023_d-OC_CNR-L3-CHL-MedOC3AD4_A_1KM-MED-NRT.png Graphic file
+ (type png)
+
+<use Figures/20151023_d-OC_CNR-L3-CHL-MedOC3AD4_A_1KM-MED-NRT.png>
+Package pdftex.def Info: Figures/20151023_d-OC_CNR-L3-CHL-MedOC3AD4_A_1KM-MED-N
+RT.png used on input line 42.
+(pdftex.def)             Requested size: 493.8482pt x 370.38615pt.
+ [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Figures/20151023_d-OC_CN
+R-L3-CHL-MedOC3AD4_A_1KM-MED-NRT.png>]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 54.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <19> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 54.
+LaTeX Font Info:    Try loading font information for U+msa on input line 60.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 60.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Missing character: There is no â in font ptmb7t!
+Missing character: There is no € in font ptmb7t!
+Missing character: There is no ¢ in font ptmb7t!
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--62
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 54--62
+
+ []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.62 \newpage
+              [1]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+ (./spasso_userguide.toc)
+\tf@toc=\write4
+\openout4 = `spasso_userguide.toc'.
+
+ [2]
+<diagram_tree.pdf, id=101, 597.50829pt x 845.0471pt>
+File: diagram_tree.pdf Graphic file (type pdf)
+ <use diagram_tree.pdf>
+Package pdftex.def Info: diagram_tree.pdf used on input line 66.
+(pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
+File: diagram_tree.pdf Graphic file (type pdf)
+
+<use diagram_tree.pdf>
+Package pdftex.def Info: diagram_tree.pdf used on input line 66.
+(pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
+
+<diagram_tree.pdf, id=104, page=1, 597.50829pt x 845.0471pt>
+File: diagram_tree.pdf Graphic file (type pdf)
+
+<use diagram_tree.pdf, page 1>
+Package pdftex.def Info: diagram_tree.pdf, page1 used on input line 66.
+(pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
+File: diagram_tree.pdf Graphic file (type pdf)
+ <use diagram_tree.pdf, page 1>
+Package pdftex.def Info: diagram_tree.pdf, page1 used on input line 66.
+(pdftex.def)             Requested size: 448.13011pt x 633.78378pt.
+File: diagram_tree.pdf Graphic file (type pdf)
+
+<use diagram_tree.pdf, page 1>
+Package pdftex.def Info: diagram_tree.pdf, page1 used on input line 66.
+(pdftex.def)             Requested size: 448.13011pt x 633.78378pt.
+File: diagram_tree.pdf Graphic file (type pdf)
+ <use diagram_tree.pdf, page 1>
+Package pdftex.def Info: diagram_tree.pdf, page1 used on input line 66.
+(pdftex.def)             Requested size: 448.13011pt x 633.78378pt.
+File: diagram_tree.pdf Graphic file (type pdf)
+
+<use diagram_tree.pdf, page 1>
+Package pdftex.def Info: diagram_tree.pdf, page1 used on input line 66.
+(pdftex.def)             Requested size: 448.13011pt x 633.78378pt.
+ [3 <./diagram_tree.pdf>]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 69.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 67--85
+
+ []
+
+
+Overfull \hbox (12.14648pt too wide) in paragraph at lines 67--85
+[][]\OT1/pcr/m/n/12 -Logs/\OT1/ptm/m/n/12 : Event his-tory .txt file that recor
+ds linux com-ments dur-ing \OT1/ptm/m/it/12 spasso.sh
+ []
+
+
+Overfull \hbox (3.21175pt too wide) in paragraph at lines 67--85
+\OT1/pcr/m/n/12 -Data/\OT1/ptm/m/n/12 : near-real-time data in NetCDF files for
+-mat down-loaded dur-ing \OT1/ptm/m/it/12 spasso.sh
+ []
+
+
+Overfull \hbox (15.39394pt too wide) in paragraph at lines 67--85
+\OT1/ptm/m/n/12 on-line on your own web page (to do it, you have to gen-er-ate 
+an in-dex[]web[]page.html). 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 67--85
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 88.
+
+Overfull \hbox (11.66013pt too wide) in paragraph at lines 89--95
+\OT1/ptm/m/n/12 This dataset: dataset-duacs-nrt-europe-merged-allsat-phy-l4 is 
+grid-ded on a 0.125^^Wx
+ []
+
+
+Overfull \hbox (55.13661pt too wide) in paragraph at lines 89--95
+\OT1/ptm/m/n/12 com[]csw & view = details & \OMS/cmsy/m/n/12 n\OT1/ptm/m/n/12 p
+roduct[]id = SEALEVEL[]EUR[]PHY[]L4[]NRT[]OBSERVATIONS[]
+ []
+
+[4]
+
+LaTeX Warning: Command \degre invalid in math mode on input line 113.
+
+
+Overfull \hbox (3.36969pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 The Ocean Color Data OCEAN-COLOUR[]GLO[]CHL[]L3[]NRT[]OBSERVATI
+ONS 
+ []
+
+
+Overfull \hbox (11.56262pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 tra-tion): [][]$http : / / marine . copernicus . eu / services-
+[]portfolio / access-[]to-[]products / ?option =
+ []
+
+
+Overfull \hbox (79.79633pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 com[]csw & view = details & product[]id = OCEANCOLOUR[]GLO[]CHL
+[]L3[]NRT[]OBSERVATIONS[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--159
+
+ []
+
+
+Overfull \hbox (5.37361pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 The Ocean Color Data OCEAN-COLOUR[]MED[]CHL[]L3[]NRT[]OBSERVATI
+ONS 
+ []
+
+
+Overfull \hbox (11.56262pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 tra-tion): [][]$http : / / marine . copernicus . eu / services-
+[]portfolio / access-[]to-[]products / ?option =
+ []
+
+
+Overfull \hbox (73.79634pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 com[]csw & view = details & product[]id = OEANCOLOUR[]MED[]CHL[
+]L3[]NRT[]OBSERVATIONS[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--159
+
+ []
+
+
+Overfull \hbox (5.37361pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 The Ocean Color Data OCEAN-COLOUR[]MED[]CHL[]L4[]NRT[]OBSERVATI
+ONS 
+ []
+
+
+Overfull \hbox (11.56262pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 tra-tion): [][]$http : / / marine . copernicus . eu / services-
+[]portfolio / access-[]to-[]products / ?option =
+ []
+
+
+Overfull \hbox (73.79634pt too wide) in paragraph at lines 112--159
+\OT1/ptm/m/n/12 com[]csw & view = details & product[]id = OEANCOLOUR[]MED[]CHL[
+]L4[]NRT[]OBSERVATIONS[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--159
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--159
+
+ []
+
+[5]
+Overfull \hbox (1.10196pt too wide) in paragraph at lines 160--178
+\OT1/ptm/m/n/12 Sea SST[]MED[]SST[]L3S[]NRT[]OBSERVATIONS[]010[]012 is pro-vide
+d by the Na-
+ []
+
+
+Overfull \hbox (22.51874pt too wide) in paragraph at lines 160--178
+[][]$\OT1/ptm/m/n/12 http : / / marine . copernicus . eu / services-[]portfolio
+ / access-[]to-[]products / ?option = com[]csw &
+ []
+
+
+Overfull \hbox (2.50511pt too wide) in paragraph at lines 160--178
+\OT1/ptm/m/n/12 view = details & product[]id = SST[]MED[]SST[]L3S[]NRT[]OBSERVA
+TIONS[]010[]012$[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--178
+
+ []
+
+
+Overfull \hbox (1.36551pt too wide) in paragraph at lines 160--178
+\OT1/ptm/m/n/12 Sea SST[]MED[]SST[]L4[]NRT[]OBSERVATIONS[]010[]004 are remotely
+-sensed L4
+ []
+
+
+Overfull \hbox (21.44109pt too wide) in paragraph at lines 160--178
+\OT1/ptm/m/n/12 prod-uct con-tains the daataset: SST[]MED[]SST[]L4[]NRT[]OBSERV
+ATIONS[]010[]004[]a
+ []
+
+
+Overfull \hbox (22.51874pt too wide) in paragraph at lines 160--178
+[][]$\OT1/ptm/m/n/12 http : / / marine . copernicus . eu / services-[]portfolio
+ / access-[]to-[]products / ?option = com[]csw &
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--178
+
+ []
+
+
+Overfull \hbox (9.9451pt too wide) in paragraph at lines 160--178
+\OT1/ptm/m/n/12 The JPL OurO-cean group pro-vides the JPL[]OUROCEAN-L4UHfnd-GLO
+B-G1SST
+ []
+
+
+Overfull \hbox (59.18987pt too wide) in paragraph at lines 160--178
+\OT1/ptm/m/n/12 (with reg-is-tra-tion): [][]$https : / / podaac . jpl . nasa . 
+gov / datasetlist ? ids = Measurement : ProcessingLevel :
+ []
+
+
+Overfull \hbox (3.33147pt too wide) in paragraph at lines 160--178
+\OT1/ptm/m/n/12 Variable : Availability : SpatialCoverage & values = Ocean % 20
+Temperature : *4* : Sea %
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--178
+
+ []
+
+[6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 183--184
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 185.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 185.
+
+Underfull \hbox (badness 10000) in paragraph at lines 185--189
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 185--189
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--194
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--194
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 194--196
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 194--196
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 196--200
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 196--200
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 200--202
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 204--205
+
+ []
+
+<Figures/nrt_med_allsat_phy_l4.png, id=160, 462.528pt x 346.896pt>
+File: Figures/nrt_med_allsat_phy_l4.png Graphic file (type png)
+
+<use Figures/nrt_med_allsat_phy_l4.png>
+Package pdftex.def Info: Figures/nrt_med_allsat_phy_l4.png used on input line 2
+08.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<Figures/GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED.png, id=161, 462.528pt x 346.896
+pt>
+File: Figures/GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED.png Graphic file (type png)
+
+ <use Figures/GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED.png>
+Package pdftex.def Info: Figures/GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED.png used
+ on input line 209.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+Overfull \hbox (74.80688pt too wide) in paragraph at lines 208--210
+[][] [] 
+ []
+
+
+<Figures/d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT.png, id=162, 462.528pt x 346.
+896pt>
+File: Figures/d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT.png Graphic file (type p
+ng)
+ <use Figures/d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT.png>
+Package pdftex.def Info: Figures/d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT.png u
+sed on input line 211.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 224--225
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
+
+ []
+
+
+Overfull \hbox (6.2231pt too wide) in paragraph at lines 228--229
+[]$\OMS/cmsy/m/n/12 !$ \OT1/ptm/m/n/12 all[]lagrangian[]diags: Launches all the
+ func-tions to com-pute the la-grangian
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 228--229
+
+ []
+
+[9 <./Figures/nrt_med_allsat_phy_l4.png> <./Figures/GOS-L4_GHRSST-SSTfnd-OISST_
+HR_NRT-MED.png> <./Figures/d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 230--231
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 232--240
+
+ []
+
+<Figures/FSLE.png, id=175, 462.528pt x 346.896pt>
+File: Figures/FSLE.png Graphic file (type png)
+ <use Figures/FSLE.png>
+Package pdftex.def Info: Figures/FSLE.png used on input line 242.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<Figures/Lat_adv.png, id=176, 462.528pt x 346.896pt>
+File: Figures/Lat_adv.png Graphic file (type png)
+ <use Figures/Lat_adv.png>
+Package pdftex.def Info: Figures/Lat_adv.png used on input line 243.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<Figures/AVISO_vel.png, id=177, 462.528pt x 346.896pt>
+File: Figures/AVISO_vel.png Graphic file (type png)
+
+<use Figures/AVISO_vel.png>
+Package pdftex.def Info: Figures/AVISO_vel.png used on input line 244.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<Figures/Lon_adv.png, id=178, 462.528pt x 346.896pt>
+File: Figures/Lon_adv.png Graphic file (type png)
+ <use Figures/Lon_adv.png>
+Package pdftex.def Info: Figures/Lon_adv.png used on input line 245.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+Overfull \hbox (74.80688pt too wide) in paragraph at lines 242--247
+[][] []
+ []
+
+
+Overfull \hbox (74.80688pt too wide) in paragraph at lines 242--247
+[] [] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[10]
+Underfull \hbox (badness 10000) in paragraph at lines 254--259
+
+ []
+
+[11 <./Figures/FSLE.png> <./Figures/Lat_adv.png> <./Figures/AVISO_vel.png> <./F
+igures/Lon_adv.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 261--265
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 266--268
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 269--271
+
+ []
+
+Missing character: There is no â in font ptmb7t!
+Missing character: There is no € in font ptmb7t!
+Missing character: There is no ¢ in font ptmb7t!
+
+Underfull \hbox (badness 10000) in paragraph at lines 273--278
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 273--278
+
+ []
+
+[12] <Figures/mvp_sampling_demo.png, id=200, 537.00626pt x 327.2225pt>
+File: Figures/mvp_sampling_demo.png Graphic file (type png)
+
+<use Figures/mvp_sampling_demo.png>
+Package pdftex.def Info: Figures/mvp_sampling_demo.png used on input line 286.
+(pdftex.def)             Requested size: 214.79869pt x 130.88667pt.
+
+<Figures/mvp_sampling_demo2.png, id=201, 545.03625pt x 323.2075pt>
+File: Figures/mvp_sampling_demo2.png Graphic file (type png)
+
+<use Figures/mvp_sampling_demo2.png>
+Package pdftex.def Info: Figures/mvp_sampling_demo2.png used on input line 287.
+
+(pdftex.def)             Requested size: 218.01064pt x 129.2807pt.
+
+<Figures/20140217_AVISO_d0_uv.png, id=202, 1204.5pt x 903.375pt>
+File: Figures/20140217_AVISO_d0_uv.png Graphic file (type png)
+
+<use Figures/20140217_AVISO_d0_uv.png>
+Package pdftex.def Info: Figures/20140217_AVISO_d0_uv.png used on input line 29
+5.
+(pdftex.def)             Requested size: 216.80064pt x 162.60048pt.
+
+<Figures/20140217_MODIS_CHL.png, id=203, 1204.5pt x 903.375pt>
+File: Figures/20140217_MODIS_CHL.png Graphic file (type png)
+
+<use Figures/20140217_MODIS_CHL.png>
+Package pdftex.def Info: Figures/20140217_MODIS_CHL.png used on input line 296.
+
+(pdftex.def)             Requested size: 216.80064pt x 162.60048pt.
+
+<Figures/20140217_MODIS_SST.png, id=204, 1204.5pt x 903.375pt>
+File: Figures/20140217_MODIS_SST.png Graphic file (type png)
+
+<use Figures/20140217_MODIS_SST.png>
+Package pdftex.def Info: Figures/20140217_MODIS_SST.png used on input line 297.
+
+(pdftex.def)             Requested size: 216.80064pt x 162.60048pt.
+
+<Figures/20140217_AVISO_d0_uv_stationA.png, id=205, 1204.5pt x 903.375pt>
+File: Figures/20140217_AVISO_d0_uv_stationA.png Graphic file (type png)
+
+<use Figures/20140217_AVISO_d0_uv_stationA.png>
+Package pdftex.def Info: Figures/20140217_AVISO_d0_uv_stationA.png used on inpu
+t line 298.
+(pdftex.def)             Requested size: 216.80064pt x 162.60048pt.
+
+<Figures/20140217_MODIS_stationA_CHL.png, id=206, 1204.5pt x 903.375pt>
+File: Figures/20140217_MODIS_stationA_CHL.png Graphic file (type png)
+
+<use Figures/20140217_MODIS_stationA_CHL.png>
+Package pdftex.def Info: Figures/20140217_MODIS_stationA_CHL.png used on input 
+line 299.
+(pdftex.def)             Requested size: 216.80064pt x 162.60048pt.
+
+<Figures/20140217_MODIS_stationA_SST.png, id=207, 1204.5pt x 903.375pt>
+File: Figures/20140217_MODIS_stationA_SST.png Graphic file (type png)
+
+<use Figures/20140217_MODIS_stationA_SST.png>
+Package pdftex.def Info: Figures/20140217_MODIS_stationA_SST.png used on input 
+line 300.
+(pdftex.def)             Requested size: 216.80064pt x 162.60048pt.
+
+Overfull \hbox (45.88132pt too wide) in paragraph at lines 295--302
+[] []
+ []
+
+
+Overfull \hbox (45.88132pt too wide) in paragraph at lines 295--302
+[] []
+ []
+
+
+Overfull \hbox (45.88132pt too wide) in paragraph at lines 295--302
+[] []
+ []
+
+[13 <./Figures/mvp_sampling_demo.png> <./Figures/mvp_sampling_demo2.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 304.
+
+[14 <./Figures/20140217_AVISO_d0_uv.png> <./Figures/20140217_MODIS_CHL.png> <./
+Figures/20140217_MODIS_SST.png> <./Figures/20140217_AVISO_d0_uv_stationA.png> <
+./Figures/20140217_MODIS_stationA_CHL.png> <./Figures/20140217_MODIS_stationA_S
+ST.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 304.
+ (./spasso_userguide.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 304.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 304.
+Package rerunfilecheck Info: File `spasso_userguide.out' has not changed.
+(rerunfilecheck)             Checksum: 77EBACC042AF570BA3A4B0294952EE1B;928.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 304.
+ ) 
+Here is how much of TeX's memory you used:
+ 7385 strings out of 493304
+ 107341 string characters out of 6139871
+ 200279 words of memory out of 5000000
+ 10666 multiletter control sequences out of 15000+600000
+ 38362 words of font info for 76 fonts, out of 8000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 40i,19n,48p,1225b,447s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
+w/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8
+a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on spasso_userguide.pdf (15 pages, 1959396 bytes).
+PDF statistics:
+ 255 PDF objects out of 1000 (max. 8388607)
+ 200 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 213 words of extra memory for PDF output out of 10000 (max. 10000000)
+

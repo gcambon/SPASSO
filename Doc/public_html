@@ -1,0 +1,16 @@
+<HTML>
+<HEAD>
+<TITLE>SPASSO's web page</TITLE>
+<META content="SPASSO" name=KeyWords>
+<LINK href="./style.css" type=text/css rel=stylesheet>
+<LINK REL="SHORTCUT ICON" HREF="home_logo_mioEN.jpg"></HEAD>
+
+<FRAMESET rows="10%,85%" border=2 >
+<FRAME marginWidth=1 marginHeight=1 src="./banner.htm" scrolling=auto>
+<FRAME name=MAIN-WINDOW src="./home.htm">
+</FRAMESET>
+
+</HTML> 
+
+
+

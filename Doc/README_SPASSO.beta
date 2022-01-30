@@ -1,0 +1,84 @@
+README_SPASSO.beta.txt
+
+Follow this guide to launch SPASSO.sh in operational mode under the cruise of your choice. By default, SPASSO.sh is launching in operational mode to DEMO cruise
+
+Create an account on websites providing products and services of interest
+Save your login and password
+
+1st step
+- Define all the paths to the different directories
+
+2d step
+-add your login and password
+-select which data you need with the YES/NO option
+-select your extra options 
+
+3rd step 
+-fix the date of files name of your dataset
+
+4th step
+-start downloading data
+
+5th step
+-start launching python and octave scripts
+-start Lagrangian analysis
+
+6th step
+-start compressing and coying phases
+
+7th step
+-putting figures on the website
+
+8th step
+-start emailing to the mailing list
+-define your recipients and choose what you want to send
+
+
+#########################################
+     SPASSO.beta satellite
+#########################################
+
+########### manual launch ###########
+########## Data Processing ########## 
+cd Scripts
+
+python -W ignore /home/SPASSO.beta/Scripts/MAIN_ALTI.py /home/SPASSO.beta/Cruises/DEMO/Wrk /home/SPASSO.beta/Cruises/DEMO
+
+python -W ignore /home/SPASSO.beta/Scripts/plot_ALTI.py /home/SPASSO.beta/Cruises/DEMO/Wrk /home/SPASSO.beta/Cruises/DEMO
+
+python -W ignore /home/SPASSO.beta/Scripts/MAIN_OCEANCOLOR.py /home/SPASSO.beta/Cruises/DEMO/Wrk /home/SPASSO.beta/Cruises/DEMO
+
+python -W ignore /home/SPASSO.beta/Scripts/plot_OCEANCOLOR.py /home/SPASSO.beta/Cruises/DEMO/Wrk /home/SPASSO.beta/Cruises/DEMO
+
+python -W ignore /home/SPASSO.beta/Scripts/MAIN_SST.py /home/SPASSO.beta/Cruises/DEMO/Wrk /home/SPASSO.beta/Cruises/DEMO
+
+python -W ignore /home/SPASSO.beta/Scripts/plot_SST.py /home/SPASSO.beta/Cruises/DEMO/Wrk /home/SPASSO.beta/Cruises/DEMO
+
+
+########## Lagrangian analysis ########## 
+cd /home/SPASSO.beta/Data/ALTI/nrt.cmems-du.eu/Core/SEALEVEL_EUR_PHY_L4_NRT_OBSERVATIONS_008_060/dataset-duacs-nrt-europe-merged-allsat-phy-l4
+
+octave -q /home/SPASSO.beta/Scripts/Lagrangian_package/MAIN_Lagrangian.m /home/SPASSO.beta/Scripts/Lagrangian_package /home/SPASSO.beta/Data/ALTI/nrt.cmems-du.eu/Core/SEALEVEL_EUR_PHY_L4_NRT_OBSERVATIONS_008_060/dataset-duacs-nrt-europe-merged-allsat-phy-l4 /home/SPASSO.beta/Scripts/Lagrangian_package/lamta.dev /home/SPASSO.beta/Cruises/DEMO `date +%Y%m%d --date='0day ago'` nrt_cmems_med
+
+python -W ignore /home/SPASSO.beta/Scripts/Lagrangian_package/all_lagrangian_figs.py /home/SPASSO.beta/Cruises/DEMO/Wrk /home/SPASSO.beta/Cruises/DEMO
+
+
+
+########### automatic launch ###########
+cd Cruises
+./spasso.sh
+
+
+CRONTAB 
+
+run spasso
+/home/SPASSO.beta/Cruises/DEMO/mv_SPASSOlog.sh
+/home/SPASSO.beta/Cruises/DEMO/spasso.sh >> /home/SPASSO.beta/Cruises/DEMO/Logs/log.txt
+
+recup glider position
+/home/SPASSO.beta/Cruises/DEMO/cronGL_SPASSO.sh >> /home/SPASSO.beta/Scripts/logGL_SPASSO.txt
+
+recup glider position ??
+/bin/sh /home/SPASSO.beta/Scripts/GlidRecup.sh >> /home/SPASSO.beta/Scripts/logglider.txt
+
+

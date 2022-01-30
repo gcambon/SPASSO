@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of aviso_UV</title>
+  <meta name="keywords" content="aviso_UV">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; aviso_UV.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>aviso_UV
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [U,V,xvc,yvc,Ucms,Vcms]=aviso_UV(dayc,lonv,latv,delta0,product) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="aviso_load.html" class="code" title="function err=aviso_load(day0,dayf,product)">aviso_load</a>	The function choses different functions to read AVISO velocity fields</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="all_lagrangian_diags.html" class="code" title="function fname=all_lagrangian_diags(day0,product,out_path,ctday)">all_lagrangian_diags</a>	Modified from:</li><li><a href="aviso_ow.html" class="code" title="function [ow,dUdx,dUdy,dVdx,dVdy,Ucms,Vcms]=aviso_ow(dayc,lonv,latv,ds,product)">aviso_ow</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [U,V,xvc,yvc,Ucms,Vcms]=aviso_UV(dayc,lonv,latv,delta0,product)</a>
+0002 RT=6371e5;
+0003 
+0004 deltad0=8;
+0005 deltadf=8;
+0006 
+0007 daycc=datenum(dayc)-datenum([1950 1 1]);
+0008 
+0009 <span class="keyword">if</span>(~strcmp(product,<span class="string">'none'</span>))
+0010 
+0011     <span class="keyword">switch</span> product
+0012         <span class="keyword">case</span> {<span class="string">'nrt_global'</span> <span class="string">'rt_global'</span> <span class="string">'rt_med'</span> <span class="string">'nrt_med'</span>,<span class="string">'nrt_global_2010'</span>,<span class="string">'nrt_kerguelen'</span>,<span class="string">'nrt_global_2014'</span>}
+0013             deltad0=1;
+0014             deltadf=0;
+0015     <span class="keyword">end</span>
+0016 
+0017     day0=datenum(dayc)-datenum([1950 1 1])-deltad0;
+0018     dayf=datenum(dayc)-datenum([1950 1 1])+deltadf;
+0019 
+0020     <a href="aviso_load.html" class="code" title="function err=aviso_load(day0,dayf,product)">aviso_load</a>(floor(day0),ceil(dayf),product);    
+0021 <span class="keyword">end</span>
+0022 
+0023 <span class="comment">% lonv=([0 360]);</span>
+0024 <span class="comment">% latv=([-90 90]);</span>
+0025 
+0026 xvc=[lonv(1):delta0:lonv(end)];
+0027 yvc=[latv(1):delta0:latv(end)];
+0028 
+0029 [xg,yg]=meshgrid(xvc,yvc);
+0030 pts=zeros(length(xg(:))*2,1);
+0031 
+0032 pts(1:2:end)=xg(:);
+0033 pts(2:2:end)=yg(:);
+0034 
+0035 t=daycc*24*60*60;
+0036 
+0037 out=UVext_v(t,pts);
+0038 U=reshape(out(1,:),length(yvc),length(xvc));
+0039 V=reshape(out(2,:),length(yvc),length(xvc));
+0040 
+0041 Ucms=U*pi/180.*(RT.*cos(yg./180*pi));
+0042 Vcms=V/180*pi*RT;</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

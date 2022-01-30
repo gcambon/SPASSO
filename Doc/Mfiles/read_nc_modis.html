@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of read_nc_modis</title>
+  <meta name="keywords" content="read_nc_modis">
+  <meta name="description" content="Read Modis data from converted nc file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; read_nc_modis.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>read_nc_modis
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Read Modis data from converted nc file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [lon lat var] = read_nc_modis(nc_file,latN,latS,lonW,lonE); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Read Modis data from converted nc file</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="MAIN_modis.html" class="code" title="">MAIN_modis</a>	This is an octave script used in cronjob_MODIS_AVISO.bsh</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [lon lat var] = read_nc_modis(nc_file,latN,latS,lonW,lonE);</a>
+0002 <span class="comment">% Read Modis data from converted nc file</span>
+0003 nc=netcdf(nc_file,<span class="string">'r'</span>);
+0004 <span class="comment">%nc=netcdf.open(nc_file,'NOWRITE');</span>
+0005 <span class="comment">% Read the attributes:</span>
+0006 <span class="comment">% - slope and intercept needed to reconstruct the SST</span>
+0007 <span class="comment">% - min_thresh and max_thresh used to check bad values</span>
+0008 <span class="comment">% - lon_offset, lat_offset ...</span>
+0009 <span class="comment">%     lon_step,  lat_step ...</span>
+0010 <span class="comment">%     num_col and num_row  used to reconstruct lon and lat grids</span>
+0011 <span class="comment">%   IMPORTANT: MODIS are global data;</span>
+0012 <span class="comment">%              They start from 90N and -180E</span>
+0013 slope=double(nc.Slope);                                <span class="comment">% 7.1718e-04</span>
+0014 intercept=double(nc.Intercept);                        <span class="comment">% -2</span>
+0015 min_thresh=double(nc.Suggested_Image_Scaling_Minimum); <span class="comment">% -2</span>
+0016 max_thresh=double(nc.Suggested_Image_Scaling_Maximum); <span class="comment">% 45</span>
+0017 lon_offset=double(nc.Westernmost_Longitude);           <span class="comment">% -180</span>
+0018 lat_offset=double(nc.Northernmost_Latitude);           <span class="comment">% 90</span>
+0019 lon_step=double(nc.Longitude_Step);                    <span class="comment">% 0.041667</span>
+0020 lat_step=double(nc.Latitude_Step);                     <span class="comment">% 0.041667</span>
+0021 num_col=double(nc.Number_of_Columns);                  <span class="comment">% 8640</span>
+0022 num_row=double(nc.Number_of_Lines);                    <span class="comment">% 4320</span>
+0023 
+0024 
+0025 <span class="comment">% slope=ncreadatt(nc_file,'/','Slope');                           % 7.1718e-04</span>
+0026 <span class="comment">% intercept=ncreadatt(nc_file,'/','Intercept');                        % -2</span>
+0027 <span class="comment">% min_thresh=ncreadatt(nc_file,'/','Suggested_Image_Scaling_Minimum'); % -2</span>
+0028 <span class="comment">% max_thresh=ncreadatt(nc_file,'/','Suggested_Image_Scaling_Maximum'); % 45</span>
+0029 <span class="comment">% lon_offset=ncreadatt(nc_file,'/','Westernmost_Longitude');           % -180</span>
+0030 <span class="comment">% lat_offset=ncreadatt(nc_file,'/','Northernmost_Latitude');           % 90</span>
+0031 <span class="comment">% lon_step=ncreadatt(nc_file,'/','Longitude_Step');                    % 0.041667</span>
+0032 <span class="comment">% lat_step=ncreadatt(nc_file,'/','Latitude_Step');                     % 0.041667</span>
+0033 <span class="comment">% num_col=ncreadatt(nc_file,'/','Number_of_Columns');                  % 8640</span>
+0034 <span class="comment">% num_row=ncreadatt(nc_file,'/','Number_of_Lines');                    % 4320</span>
+0035 
+0036 num_col=double(num_col);
+0037 num_row=double(num_row);
+0038 
+0039 <span class="comment">%------- Prepare data -----------</span>
+0040 <span class="comment">% Calculate Lon and Lat grids</span>
+0041 Lon=lon_offset+((1:num_col)-1)*lon_step;
+0042 Lat=lat_offset-((1:num_row)-1)*lat_step;
+0043 <span class="comment">% Get the data within the boundaries</span>
+0044 col_data=find(Lon&gt;=lonW &amp; Lon&lt;=lonE);
+0045 row_data=find(Lat&gt;=latS &amp; Lat&lt;=latN);
+0046 Lon=Lon(col_data);
+0047 Lat=Lat(row_data);
+0048 [lon lat]=meshgrid(Lon,Lat);
+0049 lon=double(lon);
+0050 lat=double(lat);
+0051 
+0052 <span class="comment">% Read the data</span>
+0053 <span class="comment">% row_count=row_data(end)-row_data(1)+1;</span>
+0054 <span class="comment">% col_count=col_data(end)-col_data(1)+1;</span>
+0055 <span class="comment">% var=ncread(nc_file,'l3m_data',[col_data(1) row_data(1)],[col_count row_count]);</span>
+0056 var=nc{<span class="string">'l3m_data'</span>}(row_data,col_data); <span class="comment">%l3m_qual ??</span>
+0057 <span class="comment">% var=double(var');</span>
+0058 
+0059 Lon2=lon_offset+((1:num_col)-1)*lon_step;
+0060 lonW2=-180;
+0061 lonE2=lonE-360;
+0062 col_data2=find(Lon2&gt;=lonW2 &amp; Lon2&lt;=lonE2);
+0063 Lon2=Lon2(col_data2);
+0064 [lon2 lat2]=meshgrid(Lon2,Lat);
+0065 lon2=double(lon2);
+0066 lat2=double(lat2);
+0067 
+0068 <span class="comment">% col_count2=col_data2(end)-col_data2(1)+1;</span>
+0069 <span class="comment">% var2=ncread(nc_file,'l3m_data',[col_data2(1) row_data(1)],[col_count2 row_count]);</span>
+0070 var2=nc{<span class="string">'l3m_data'</span>}(row_data,col_data2);
+0071 <span class="comment">% var2=double(var2');</span>
+0072 
+0073 var=[var var2];
+0074 lon=[lon lon2];
+0075 lat=[lat lat2];
+0076 
+0077 <span class="comment">% Get data type</span>
+0078 type=ncdatatype(nc{<span class="string">'l3m_data'</span>});
+0079 <span class="comment">% Flag used to remove bad data</span>
+0080 bad_flag=double(nc{<span class="string">'l3m_data'</span>}.Fill);
+0081 <span class="comment">% bad_flag=ncreadatt(nc_file,'l3m_data','Fill');</span>
+0082 <span class="comment">% netcdf.close(nc);</span>
+0083 close(nc)
+0084 
+0085 <span class="comment">%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+0086 <span class="comment">% IMPORTANT: SST are saved in hdf as unsigned short (range 0 to 65535)</span>
+0087 <span class="comment">%            However ushort is unsupported by ncdump/ncgen</span>
+0088 <span class="comment">%            Thus the data are saved in the .nc file as short</span>
+0089 <span class="comment">%            (range -32,768 to +32,767)</span>
+0090 <span class="comment">%            Data need to be first flagged for bad data and then converted to</span>
+0091 <span class="comment">%            ushort values</span>
+0092 <span class="comment">%            CHL data have no such problem as they are saved as float</span>
+0093 <span class="comment">%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+0094 <span class="keyword">if</span> strcmp(type,<span class="string">'short'</span>)
+0095     var(var&lt;0)=var(var&lt;0)+65535;
+0096 <span class="keyword">end</span>
+0097 var(var==bad_flag)=NaN;
+0098 
+0099 <span class="comment">% Convert new data</span>
+0100 var=var*slope+intercept;
+0101 <span class="comment">% Remove bad data</span>
+0102 var(var&lt;min_thresh | var&gt;max_thresh)=NaN;
+0103 
+0104 <span class="comment">% Data are saved with decreasing lat so it is better to flipud var and lat</span>
+0105 <span class="comment">% (easier to plot the data afterwards)</span>
+0106 var=flipud(var);
+0107 lat=flipud(lat);
+0108 
+0109 lon(lon&lt;0)=lon(lon&lt;0)+360;
+0110 
+0111 
+0112 disp([<span class="string">'     Successfully read!!!'</span>])</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

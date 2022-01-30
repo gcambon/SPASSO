@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of save_aviso</title>
+  <meta name="keywords" content="save_aviso">
+  <meta name="description" content="Case uv">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; save_aviso.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>save_aviso
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Case uv</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function save_aviso(Wrk_path,data_type,dd,dtype,lon,lat,var) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Case uv</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="MAIN_aviso.html" class="code" title="">MAIN_aviso</a>	This is an octave script used in cronjob_MODIS_AVISO.bsh</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function save_aviso(Wrk_path,data_type,dd,dtype,lon,lat,var)</a>
+0002 
+0003 <span class="comment">% Case uv</span>
+0004 <span class="keyword">if</span> strcmp(data_type,<span class="string">'uv'</span>)
+0005     var1=var;
+0006     var2=[]; <span class="comment">% Dummy empty variable; later for for ssh</span>
+0007     fname=sprintf(<span class="string">'%s%s_AVISO_d%s_%s.mat'</span>,[Wrk_path],num2str(dd),num2str(dtype),data_type);
+0008     <span class="comment">%save('-mat-binary',fname,'lon','lat','var1','var2')</span>
+0009     save(<span class="string">'-mat-binary'</span>,fname,<span class="string">'lon'</span>,<span class="string">'lat'</span>,<span class="string">'var1'</span>) <span class="comment">%save only u and v</span>
+0010     disp([<span class="string">'     File '</span>,fname,<span class="string">' saved'</span>])
+0011 <span class="comment">% Case ssh</span>
+0012 <span class="keyword">else</span>
+0013     <span class="comment">% check if uv file for the given day already exists</span>
+0014     ls_file=sprintf(<span class="string">'%s%s_AVISO_d%s_%s.mat'</span>,[Wrk_path],num2str(dd),num2str(dtype),data_type);
+0015     ls_file=dir(ls_file);
+0016     fname=[Wrk_path,ls_file.name];
+0017     <span class="keyword">if</span> exist(fname,<span class="string">'file'</span>)
+0018         load(fname)
+0019         <span class="comment">% remove old file</span>
+0020         delete(fname)
+0021         disp([<span class="string">'     File '</span>,fname,<span class="string">' removed'</span>])
+0022         <span class="comment">% get path and extension from fname</span>
+0023         [pathstr, fname, ext] = fileparts(fname);
+0024         <span class="comment">% add new &quot;data_type&quot; to filename</span>
+0025         fname=sprintf(<span class="string">'%s/%s_%s%s'</span>,pathstr,fname,data_type,ext);
+0026         <span class="comment">% Overwrite variable</span>
+0027         var2=var;
+0028     <span class="keyword">else</span>
+0029         disp([<span class="string">'     No uv file for day '</span>,dd,<span class="string">' !!!'</span>])
+0030         <span class="comment">% Create variables to save</span>
+0031         var2=var;
+0032         var1.u=[];
+0033         var1.v=[];
+0034         <span class="comment">% Create file name</span>
+0035         fname=sprintf(<span class="string">'%s%s_AVISO_d%s_%s.mat'</span>,[Wrk_path],num2str(dd),num2str(dtype),data_type);
+0036     <span class="keyword">end</span>
+0037     <span class="comment">% save new file</span>
+0038     <span class="comment">%save('-mat-binary',fname,'lon','lat','var1','var2')</span>
+0039         save(<span class="string">'-mat-binary'</span>,fname,<span class="string">'lon'</span>,<span class="string">'lat'</span>,<span class="string">'var2'</span>) <span class="comment">%save only var2</span>
+0040     disp([<span class="string">'     File '</span>,fname,<span class="string">' saved'</span>])
+0041 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

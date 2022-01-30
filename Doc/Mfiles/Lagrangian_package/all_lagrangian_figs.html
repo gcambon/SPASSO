@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of all_lagrangian_figs</title>
+  <meta name="keywords" content="all_lagrangian_figs">
+  <meta name="description" content="function all_lagrangian_figs(fname,product,out_path,ctday)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; all_lagrangian_figs.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>all_lagrangian_figs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function all_lagrangian_figs(fname,product,out_path,ctday)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">function all_lagrangian_figs(fname,product,out_path,ctday)
+ Modified from:
+ $DATA/KEOPS2/octave/keops/analysis/realtime_cron/all_lagrangianfigs_keops2.m
+
+ Create the figures using the all_lagrangian_diags mat file</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="continenta.html" class="code" title="">continenta</a>	continenta.m from LATEX campaing</li><li><a href="plusminusmap.html" class="code" title="function cmap=plusminusmap">plusminusmap</a>	</li><li><a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>	Limits of strasse campaign</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="MAIN_Lagrangian.html" class="code" title="">MAIN_Lagrangian</a>	==============================================================================</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%function all_lagrangian_figs(fname,product,out_path,ctday)</span>
+0002 <span class="comment">% Modified from:</span>
+0003 <span class="comment">% $DATA/KEOPS2/octave/keops/analysis/realtime_cron/all_lagrangianfigs_keops2.m</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Create the figures using the all_lagrangian_diags mat file</span>
+0006 
+0007 <span class="comment">%---------------------------------------------------------</span>
+0008 <span class="comment">% % Comment function line and uncomment below to test</span>
+0009 <span class="comment">% fname='/home/ENS/apogee/r1003867/Stage_OUTPACE/OUTPACE/Wrk/20140707_nrt_global_2014_d6.mat';</span>
+0010 <span class="comment">% product='nrt_global_2014';</span>
+0011 <span class="comment">% ctday=7;</span>
+0012 <span class="comment">% out_path='/home/ENS/apogee/r1003867/Stage_OUTPACE/OUTPACE/Wrk/';</span>
+0013 <span class="comment">%---------------------------------------------------------</span>
+0014 
+0015 <span class="comment">%lvars=localvars;</span>
+0016 <span class="keyword">if</span>(~exist(fname,<span class="string">'file'</span>))
+0017     <span class="keyword">return</span>;
+0018 <span class="keyword">end</span>
+0019 
+0020 load(fname);
+0021 
+0022 <span class="comment">% Label for figure title</span>
+0023 titl=datestr(day0,1);
+0024 <span class="comment">% lon lat matrices LR : Useless !!!</span>
+0025 <span class="comment">% lonvv=lonv(1):delta0:lonv(end);</span>
+0026 <span class="comment">%latvv=latv(1):delta0:latv(end);</span>
+0027 <span class="comment">%[long,latg]=meshgrid(lonvv,latvv);</span>
+0028 
+0029 <span class="comment">% Labels for figures</span>
+0030 lab_fig={<span class="string">'OW disp'</span>,<span class="string">'OW param'</span>,<span class="string">'FSLE'</span>,<span class="string">'Lon adv'</span>,<span class="string">'Lat adv'</span>,<span class="string">'AVISO vel'</span>};
+0031 
+0032 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0033 <span class="comment">%       This command disable the output to the screen,</span>
+0034 <span class="comment">%       set it on 'on' if you want to see the figures before printing them!</span>
+0035  set (0, <span class="string">'defaultfigurevisible'</span>, <span class="string">'on'</span>);
+0036  set (0,<span class="string">'defaultaxesfontsize'</span>,20) 
+0037  set (0,<span class="string">'defaulttextfontsize'</span>,30) 
+0038 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0039 
+0040 <span class="comment">%--- OW Dipsersion ----------------</span>
+0041 <span class="comment">%  nf=1; % Counter for figure and figure labels</span>
+0042 <span class="comment">%  figure(nf)</span>
+0043 <span class="comment">%  clf</span>
+0044 <span class="comment">%  imagesc(lonv,latv,OWdispersion_b,[0 60]);</span>
+0045 <span class="comment">%  axis xy</span>
+0046 <span class="comment">%  hold on</span>
+0047 <span class="comment">%  h=plot(lonsmowadv60(1:4:end,1:2:end),latsmowadv60(1:4:end,1:2:end),'m.');</span>
+0048 <span class="comment">%  set(h,'markersize',1);</span>
+0049 <span class="comment">%  % Set axis</span>
+0050 <span class="comment">%  %axis([lonv latv]);</span>
+0051 <span class="comment">%  axis([ton_zoom lat_zoom]);</span>
+0052 <span class="comment">%  % Draw coastline</span>
+0053 <span class="comment">%  continenta</span>
+0054 <span class="comment">%  % Draw strasse domain</span>
+0055 <span class="comment">%  strasse_boundary</span>
+0056 <span class="comment">%  line([Lon(1) Lon(1) Lon(2) Lon(2) Lon(1)], ...</span>
+0057 <span class="comment">%      [Lat(1) Lat(2) Lat(2) Lat(1) Lat(1)], ...</span>
+0058 <span class="comment">%      'color','g','linewidth',10)</span>
+0059 <span class="comment">%  % Title</span>
+0060 <span class="comment">%  title([lab_fig{nf},' ',titl],'fontsize',30);</span>
+0061 <span class="comment">%  % Set colorbar</span>
+0062 <span class="comment">%  H=colorbar;</span>
+0063 
+0064  <span class="comment">%--- OW parameter -----------------</span>
+0065  nf=2;
+0066  figure(nf)
+0067  clf
+0068  <span class="comment">%imagesc(lonv,latv,((60*60*24).^2)*owmi,[-1 1])</span>
+0069  imagesc(lonv,latv,((60*60*24).^2)*owmi,[-0.3 0.3])
+0070  hold on
+0071  grid on;
+0072  <span class="comment">% Flip axis</span>
+0073  axis xy
+0074  axis([lonv latv]);
+0075  <span class="comment">%axis([lon_zoom lat_zoom]);</span>
+0076  <span class="comment">% Draw coastline</span>
+0077   <a href="continenta.html" class="code" title="">continenta</a> <span class="comment">%LR: à modifier avec les bonnes limites de la zone</span>
+0078  <span class="comment">% Title</span>
+0079  title([lab_fig{nf},<span class="string">' '</span>,titl],<span class="string">'fontsize'</span>,30);
+0080  <span class="comment">% Set colorbar</span>
+0081  colormap(<a href="plusminusmap.html" class="code" title="function cmap=plusminusmap">plusminusmap</a>);
+0082  H=colorbar;
+0083  
+0084  <span class="comment">% Print figure</span>
+0085  i=nf;
+0086  Lab_Fig=strrep(lab_fig{i},<span class="string">' '</span>,<span class="string">'_'</span>);
+0087  figname=sprintf(<span class="string">'%s/%d%02d%02d_%s_d%s_%s.png'</span>,out_path,day0(1),day0(2),day0(3),product,num2str(ctday-1),Lab_Fig);
+0088  figure(i);
+0089  <span class="comment">%print('-depsc',figname);</span>
+0090  disp(<span class="string">'%------------------'</span>)
+0091  disp(figname)
+0092  disp(<span class="string">'%------------------'</span>)
+0093  print(i,[figname],<span class="string">'-dpng'</span>);
+0094  close all
+0095  
+0096  <span class="comment">%--- FLSLE ------------------------</span>
+0097  nf=3;
+0098  figure(nf)
+0099  clf
+0100  imagesc(lonv,latv,-60*60*24*lambda,[0 .2])
+0101  hold on
+0102  grid on;
+0103  <span class="comment">% Flip axis</span>
+0104  axis xy
+0105  axis([lonv latv]);
+0106  <span class="comment">%axis([lon_zoom lat_zoom]);</span>
+0107  <span class="comment">% Draw coastline</span>
+0108  <a href="continenta.html" class="code" title="">continenta</a>
+0109  <span class="comment">% Draw strasse domain</span>
+0110  <a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>
+0111  line([Lon(1) Lon(1) Lon(2) Lon(2) Lon(1)], <span class="keyword">...</span>
+0112      [Lat(1) Lat(2) Lat(2) Lat(1) Lat(1)], <span class="keyword">...</span>
+0113      <span class="string">'color'</span>,<span class="string">'m'</span>,<span class="string">'linewidth'</span>,10)
+0114  <span class="comment">% Title</span>
+0115  title([lab_fig{nf},<span class="string">' '</span>,titl],<span class="string">'fontsize'</span>,30);
+0116  <span class="comment">% Set colorbar</span>
+0117  colormap(<a href="plusminusmap.html" class="code" title="function cmap=plusminusmap">plusminusmap</a>);
+0118  colorbar
+0119  
+0120  <span class="comment">% Print figure</span>
+0121  i=nf;
+0122  Lab_Fig=strrep(lab_fig{i},<span class="string">' '</span>,<span class="string">'_'</span>);
+0123  figname=sprintf(<span class="string">'%s/%d%02d%02d_%s_d%s_%s.png'</span>,out_path,day0(1),day0(2),day0(3),product,num2str(ctday-1),Lab_Fig);
+0124  figure(i);
+0125  <span class="comment">%print('-depsc',figname);</span>
+0126  disp(<span class="string">'%------------------'</span>)
+0127  disp(figname)
+0128  disp(<span class="string">'%------------------'</span>)
+0129  print(figname,<span class="string">'-dpng'</span>);
+0130  close all
+0131  
+0132  <span class="comment">%--- Lon Advection ----------------</span>
+0133  nf=4;
+0134  figure(nf)
+0135  clf
+0136  imagesc(lonv,latv,lonf45,lonv-5)
+0137  hold on
+0138  grid on;
+0139  <span class="comment">% flip axis</span>
+0140  axis xy
+0141  axis([lonv latv]);
+0142  <span class="comment">%axis([lon_zoom lat_zoom]);</span>
+0143  <span class="comment">% Draw coastline</span>
+0144  <a href="continenta.html" class="code" title="">continenta</a>
+0145  <span class="comment">% Draw strasse domain</span>
+0146  <a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>
+0147  line([Lon(1) Lon(1) Lon(2) Lon(2) Lon(1)], <span class="keyword">...</span>
+0148      [Lat(1) Lat(2) Lat(2) Lat(1) Lat(1)], <span class="keyword">...</span>
+0149      <span class="string">'color'</span>,<span class="string">'m'</span>,<span class="string">'linewidth'</span>,10)
+0150  <span class="comment">% Title</span>
+0151  title([lab_fig{nf},<span class="string">' '</span>,titl],<span class="string">'fontsize'</span>,30);
+0152  <span class="comment">% Set colorbar</span>
+0153  colormap(jet);
+0154  colorbar
+0155  
+0156  <span class="comment">% Print figure</span>
+0157  i=nf;
+0158  Lab_Fig=strrep(lab_fig{i},<span class="string">' '</span>,<span class="string">'_'</span>);
+0159  figname=sprintf(<span class="string">'%s/%d%02d%02d_%s_d%s_%s.png'</span>,out_path,day0(1),day0(2),day0(3),product,num2str(ctday-1),Lab_Fig);
+0160  figure(i);
+0161  <span class="comment">%print('-depsc',figname);</span>
+0162  disp(<span class="string">'%------------------'</span>)
+0163  disp(figname)
+0164  disp(<span class="string">'%------------------'</span>)
+0165  print(figname,<span class="string">'-dpng'</span>);
+0166  close all
+0167  
+0168  <span class="comment">%--- Lat Advection ----------------</span>
+0169  nf=5;
+0170  figure(nf)
+0171  clf
+0172  imagesc(lonv,latv,latf45,latv)
+0173  hold on
+0174  grid on;
+0175  <span class="comment">% Flip axis</span>
+0176  axis xy;
+0177  axis([lonv latv]);
+0178  <span class="comment">%axis([lon_zoom lat_zoom]);</span>
+0179  <span class="comment">% Draw coastline</span>
+0180  <a href="continenta.html" class="code" title="">continenta</a>
+0181  <span class="comment">% Draw strasse domain</span>
+0182  <a href="strasse_boundary.html" class="code" title="">strasse_boundary</a>
+0183  line([Lon(1) Lon(1) Lon(2) Lon(2) Lon(1)], <span class="keyword">...</span>
+0184      [Lat(1) Lat(2) Lat(2) Lat(1) Lat(1)], <span class="keyword">...</span>
+0185      <span class="string">'color'</span>,<span class="string">'m'</span>,<span class="string">'linewidth'</span>,10)
+0186  <span class="comment">% Title</span>
+0187  title([lab_fig{nf},<span class="string">' '</span>,titl],<span class="string">'fontsize'</span>,30);
+0188  <span class="comment">% Set colorbar</span>
+0189  colormap(jet);
+0190  colorbar
+0191  
+0192  <span class="comment">% Print figure</span>
+0193  i=nf;
+0194  Lab_Fig=strrep(lab_fig{i},<span class="string">' '</span>,<span class="string">'_'</span>);
+0195  figname=sprintf(<span class="string">'%s/%d%02d%02d_%s_d%s_%s.png'</span>,out_path,day0(1),day0(2),day0(3),product,num2str(ctday-1),Lab_Fig);
+0196  figure(i);
+0197  <span class="comment">%print('-depsc',figname);</span>
+0198  disp(<span class="string">'%------------------'</span>)
+0199  disp(figname)
+0200  disp(<span class="string">'%------------------'</span>)
+0201  print(figname,<span class="string">'-dpng'</span>);
+0202  close all
+0203  
+0204 <span class="comment">%--- AVISO velocities -------------</span>
+0205 nf=6;
+0206 figure(nf)
+0207 clf
+0208 imagesc(lonv,latv,sqrt(Ucms.^2+Vcms.^2),[0 100])
+0209 hold on
+0210 grid on;
+0211 <span class="comment">% Flip axis</span>
+0212 axis xy
+0213 <span class="comment">% Vector plot</span>
+0214 sq=5;
+0215 h=quiver(lonvv(1:sq:end),latvv(1:sq:end),Ucms(1:sq:<span class="keyword">end</span>,1:sq:end),Vcms(1:sq:<span class="keyword">end</span>,1:sq:end),3);
+0216 set(h,<span class="string">'color'</span>,<span class="string">'w'</span>);
+0217 <span class="comment">% Draw coastline</span>
+0218 <a href="continenta.html" class="code" title="">continenta</a>
+0219 hi=quiver(148,-28,1,0,3);
+0220 set(hi,<span class="string">'color'</span>,<span class="string">'k'</span>);
+0221 text(148,-29,<span class="string">'m/s'</span>,<span class="string">'Fontsize'</span>,10);
+0222 <span class="comment">% % Title</span>
+0223 title([lab_fig{nf},<span class="string">' '</span>,titl],<span class="string">'fontsize'</span>,30);
+0224 <span class="comment">% Set colorbar</span>
+0225 colormap(jet);
+0226 colorbar
+0227 
+0228 <span class="comment">% Print figure</span>
+0229 i=nf;
+0230 Lab_Fig=strrep(lab_fig{i},<span class="string">' '</span>,<span class="string">'_'</span>);
+0231 figname=sprintf(<span class="string">'%s/%d%02d%02d_%s_d%s_%s.png'</span>,out_path,day0(1),day0(2),day0(3),product,num2str(ctday-1),Lab_Fig);
+0232 figure(i);
+0233 <span class="comment">%print('-depsc',figname);</span>
+0234 disp(<span class="string">'%------------------'</span>)
+0235 disp(figname)
+0236 disp(<span class="string">'%------------------'</span>)
+0237 print(figname,<span class="string">'-dpng'</span>);
+0238 close all
+0239 
+0240 <span class="comment">%  % for i=1:nf</span>
+0241 <span class="comment">%  for i=2:nf</span>
+0242 <span class="comment">%      Lab_Fig=strrep(lab_fig{i},' ','_');</span>
+0243 <span class="comment">%      figname=sprintf('%s/%d%02d%02d_%s_d%s_%s.png',out_path,day0(1),day0(2),day0(3),product,num2str(ctday-1),Lab_Fig);</span>
+0244 <span class="comment">%      figure(i);</span>
+0245 <span class="comment">%      %print('-depsc',figname);</span>
+0246 <span class="comment">%      disp('%------------------')</span>
+0247 <span class="comment">%      disp(figname)</span>
+0248 <span class="comment">%      disp('%------------------')</span>
+0249 <span class="comment">%      print(figname,'-dpng');</span>
+0250 <span class="comment">%  end</span>
+0251</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

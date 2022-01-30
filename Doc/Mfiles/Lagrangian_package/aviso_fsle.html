@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of aviso_fsle</title>
+  <meta name="keywords" content="aviso_fsle">
+  <meta name="description" content="Compute FSLEs using:">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; aviso_fsle.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>aviso_fsle
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Compute FSLEs using:</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [lambda,xvc,yvc,out]=aviso_fsle(dayv,lonv,latv,delta0,delta,product,numdays) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Compute FSLEs using:
+
+ - dayv is the day when the analysis is started
+ - lonv and latv are the longitude latitude limits of the domain
+ - delta0 is the resolution of the FSLE field &amp; 
+                                 the initial distance of separation
+ - delta is the final distance of separation
+ - product is the velocity product to be ised in the analysis:
+                       if product='none' then no new velocity field is loaded
+                       and the one already in memory is used
+ - days is the total number of days when to compute trajectories</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="aviso_load.html" class="code" title="function err=aviso_load(day0,dayf,product)">aviso_load</a>	The function choses different functions to read AVISO velocity fields</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="all_lagrangian_diags.html" class="code" title="function fname=all_lagrangian_diags(day0,product,out_path,ctday)">all_lagrangian_diags</a>	Modified from:</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [lambda,xvc,yvc,out]=aviso_fsle(dayv,lonv,latv,delta0,delta,product,numdays)</a>
+0002 <span class="comment">% Compute FSLEs using:</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% - dayv is the day when the analysis is started</span>
+0005 <span class="comment">% - lonv and latv are the longitude latitude limits of the domain</span>
+0006 <span class="comment">% - delta0 is the resolution of the FSLE field &amp;</span>
+0007 <span class="comment">%                                 the initial distance of separation</span>
+0008 <span class="comment">% - delta is the final distance of separation</span>
+0009 <span class="comment">% - product is the velocity product to be ised in the analysis:</span>
+0010 <span class="comment">%                       if product='none' then no new velocity field is loaded</span>
+0011 <span class="comment">%                       and the one already in memory is used</span>
+0012 <span class="comment">% - days is the total number of days when to compute trajectories</span>
+0013 
+0014 <span class="comment">% Set total days if not defined</span>
+0015 <span class="keyword">if</span>(nargin&lt;7)
+0016     numdays=200;
+0017 <span class="keyword">end</span>
+0018 <span class="comment">% Compute initial and final day</span>
+0019 <span class="comment">% (day0&gt;dayf =&gt; backward FSLE !!! )</span>
+0020 dayf=datenum(dayv)-datenum([1950 1 1]);
+0021 day0=dayf-numdays;
+0022 
+0023 <span class="comment">% load velocity field</span>
+0024 <span class="comment">% (nothing loaded if product='none')</span>
+0025 <a href="aviso_load.html" class="code" title="function err=aviso_load(day0,dayf,product)">aviso_load</a>(floor(day0),ceil(dayf),product);    
+0026 <span class="comment">% lon lat matrices to deploy particles</span>
+0027 xvc=[lonv(1):delta0:lonv(end)];
+0028 yvc=[latv(1):delta0:latv(end)];
+0029 [xg,yg]=meshgrid(xvc,yvc);
+0030 <span class="comment">% Create vector of particle position to compute FSLE</span>
+0031 pts=zeros(length(xg(:))*2,1);
+0032 pts(1:2:end)=xg(:);
+0033 pts(2:2:end)=yg(:);
+0034 <span class="comment">% time parameters for FSLE analysis</span>
+0035 tspan=round([dayf day0]'*60*60*24);
+0036 Nstep=abs(diff(tspan))/(60*60*24)*4;
+0037 
+0038 unfreezetime();
+0039 
+0040 <span class="comment">% Compute FSLE</span>
+0041 <span class="comment">% (functions defined in lamta.dev/lamta_all.cc)</span>
+0042 out=FSLEext_v(tspan,pts,delta0,Nstep,delta);
+0043 <span class="comment">%out=FSLEn_v(tspan,pts,3,delta0,Nstep,delta);</span>
+0044 
+0045 lambda=reshape(out(1,:),length(yvc),length(xvc));</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

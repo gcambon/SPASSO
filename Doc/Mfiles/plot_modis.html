@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plot_modis</title>
+  <meta name="keywords" content="plot_modis">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Mfiles</a> &gt; plot_modis.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>plot_modis
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function plot_modis(out_path,tag,lon,lat,var,day) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="MAIN_modis.html" class="code" title="">MAIN_modis</a>	This is an octave script used in cronjob_MODIS_AVISO.bsh</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function plot_modis(out_path,tag,lon,lat,var,day)</a>
+0002 
+0003 h2=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0004 <span class="comment">%h2=figure;</span>
+0005 
+0006 lonv=lon(1,:);
+0007 latv=lat(:,1)';
+0008 <span class="comment">% In order to have flagged values black</span>
+0009 var(isnan(var))=9999;
+0010 
+0011 <span class="keyword">if</span> strcmp(tag,<span class="string">'CHL'</span>)
+0012 <span class="comment">% Chl is plotted on log scale</span>
+0013     hi=imagesc(lonv,latv,var)<span class="comment">%log10(var))</span>
+0014     unit=<span class="string">'(mg m^{-3})'</span>;
+0015 
+0016 <span class="keyword">else</span>
+0017     hi=imagesc(lon,lat,var);
+0018     <span class="keyword">if</span> strcmp(tag,<span class="string">'SST'</span>)
+0019 <span class="comment">%        caxis([-2 45]);</span>
+0020         unit=<span class="string">'°C'</span>;
+0021     <span class="keyword">end</span>
+0022 <span class="keyword">end</span>
+0023 
+0024 set(gca,<span class="string">'fontsize'</span>,20);
+0025 hold on
+0026 <span class="comment">% Flip axis</span>
+0027 axis xy
+0028 <span class="comment">% Draw coastline</span>
+0029 <span class="comment">%continenta</span>
+0030 <span class="comment">% Set axis limits</span>
+0031 xlim([min(lonv) max(lonv)])
+0032 ylim([min(latv) max(latv)])
+0033 <span class="comment">% % Draw strasse domain</span>
+0034 <span class="comment">% strasse_boundary</span>
+0035 <span class="comment">% line([Lon(1) Lon(1) Lon(2) Lon(2) Lon(1)], ...</span>
+0036 <span class="comment">%      [Lat(1) Lat(2) Lat(2) Lat(1) Lat(1)], ...</span>
+0037 <span class="comment">%     'color','m','linewidth',6)</span>
+0038 <span class="comment">% %    'color','m','linewidth',10)</span>
+0039 <span class="comment">% Use colorbar from MODIS</span>
+0040 
+0041 colordata=load([<span class="string">'colormap_modis_'</span>,tag,<span class="string">'.txt'</span>]);
+0042 colormap(colordata)
+0043 
+0044 <span class="comment">% Set colorbar</span>
+0045 <span class="comment">% if strcmp(tag,'CHL')</span>
+0046 <span class="comment">%     % set tick labels on colorbar according to log scale</span>
+0047 <span class="comment">%     set(H,'ytick',log10([0.01 0.025 0.05 0.075 0.1 0.25 0.5 0.75 1 2.5 5 7.5 10]),'yticklabel',...</span>
+0048 <span class="comment">%         [0.01 0.025 0.05 0.075 0.1 0.25 0.5 0.75 1 2.5 5 7.5 10],'tickdir','in')</span>
+0049 <span class="comment">% end</span>
+0050 
+0051 <span class="comment">%- Stations positions -% (degres east)</span>
+0052 lat_stat = -19;
+0053 lon_stat_A = 155;
+0054 lon_stat_B = 176.32;
+0055 lon_stat_C = 200; <span class="comment">%(°E)</span>
+0056 SD_stat=load(<span class="string">'SD_stations_coord.txt'</span>);
+0057 lon_stat_SD=SD_stat(2:18,2);
+0058 lat_stat_SD=SD_stat(2:18,1);
+0059 
+0060 <span class="comment">%- Plot stations -%</span>
+0061 plot(lon_stat_A,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,15);
+0062 text(lon_stat_A,lat_stat+1.5,<span class="string">'A'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0063 plot(lon_stat_B,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,15);
+0064 text(lon_stat_B,lat_stat+1.5,<span class="string">'B'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0065 plot(lon_stat_C,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,15);
+0066 text(lon_stat_C,lat_stat+1.5,<span class="string">'C'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0067 plot(lon_stat_SD,lat_stat_SD,<span class="string">'+'</span>,<span class="string">'Markersize'</span>,6,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0068 text(lon_stat_SD(1:8)-0.5,lat_stat_SD(1:8)+0.9,num2str([2:9]'),<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0069 text(lon_stat_SD(9:end)-0.5,lat_stat_SD(9:end)+0.9,num2str([11:19]'),<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0070 
+0071 <span class="comment">%- Plot territorial waters -%</span>
+0072 
+0073 <span class="comment">%- Plot VANUATU territorial water limits -%</span>
+0074 plot([165 165],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0075 plot([174.5 174.5],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0076 text(167,-21,<span class="string">'VANUATU'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0077 
+0078 <span class="comment">%- Plot TONGA territorial water limits -%</span>
+0079 plot([189 189],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0080 plot([194 194],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0081 text(188.5,-21,<span class="string">'TONGA'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0082 
+0083 <span class="comment">%- Plot ILES COOK territorial water limits -%</span>
+0084 plot([199 199],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0085 plot([209 209],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0086 text(201,-21,<span class="string">'ILES'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0087 text(201,-22,<span class="string">'COOK'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0088 
+0089 <span class="comment">%- Plot NIUE territorial water limits -%</span>
+0090 plot([194 194],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0091 plot([199 199],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0092 text(194.5,-17,<span class="string">'NIUE'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0093 
+0094 <span class="comment">%- Plot FIDJI territorial water limits -%</span>
+0095 plot([174.5 174.5],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0096 plot([189 189],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0097 text(180.5,-21,<span class="string">'FIDJI'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0098 
+0099 <span class="comment">%- Set colorbar -%</span>
+0100 <span class="keyword">if</span> (tag==<span class="string">'CHL'</span>)
+0101 <span class="comment">%    caxis([log10(0.01) log10(20)]);</span>
+0102     caxis([0 1]);
+0103     colorbar;
+0104 <span class="keyword">else</span>
+0105     caxis([25 29]);
+0106     colorbar;
+0107 <span class="keyword">end</span>
+0108 
+0109 <span class="comment">% Title</span>
+0110 title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' '</span>,unit],<span class="string">'fontsize'</span>,30);
+0111 xlabel(<span class="string">'Longtitude'</span>);
+0112 ylabel(<span class="string">'Latitude'</span>);
+0113 
+0114 hold off
+0115 
+0116 <span class="comment">%%%%%%%%%%%%%%%%%%% Figures for OUTPACE mission for each stations A,B,C %%%%%%%%</span>
+0117 <span class="comment">%</span>
+0118 <span class="comment">% Louise rousselet 18/06/2014 :add stations map</span>
+0119 <span class="comment">% louise.rousselet@etu.univ-amu.fr</span>
+0120 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0121 
+0122 <span class="keyword">if</span> strcmp(tag,<span class="string">'CHL'</span>)
+0123 <span class="comment">% %- Chl -a&gt;0.1 mg m-3</span>
+0124 <span class="comment">%         id=find(var&lt;0.1);</span>
+0125 <span class="comment">%                 for i=1:length(id)</span>
+0126 <span class="comment">%                         var(id(i))=9999; %in order to be black</span>
+0127 <span class="comment">%                 end</span>
+0128 <span class="comment">%</span>
+0129 <span class="comment">%- Set limits of the zone around station A</span>
+0130         disp([<span class="string">'%%%%% Figure for Station A %%%%'</span>]);
+0131         h3=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0132         imagesc(lonv,latv,var)
+0133         caxis([0 1]);
+0134         hold on;
+0135         xlim([lon_stat_A-0.5 159])
+0136         ylim([-21 -17])
+0137         axis xy
+0138         colordata=load([<span class="string">'colormap_modis_'</span>,tag,<span class="string">'.txt'</span>]);
+0139         colormap(colordata)
+0140         plot(lon_stat_A,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,20);
+0141         text(lon_stat_A+0.1,lat_stat+0.1,<span class="string">'A'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'fontsize'</span>,30);
+0142         colorbar;
+0143         title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station A (mg m^{-3})'</span>],<span class="string">'fontsize'</span>,30);
+0144         xlabel(<span class="string">'Longtitude'</span>);
+0145         ylabel(<span class="string">'Latitude'</span>);
+0146         hold off;
+0147 
+0148         <span class="comment">%- Save figure if CHL</span>
+0149         print(h3,[out_path,num2str(day),<span class="string">'_MODIS_stationA_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0150         disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_stationA_'</span>,tag],<span class="string">' saved'</span>])
+0151 
+0152         <span class="comment">%- Set limits of the zone around station B</span>
+0153         disp([<span class="string">'%%%%% Figure for Station B %%%%'</span>]);
+0154         h4=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0155 <span class="comment">%        imagesc(lonv,latv,log10(var))</span>
+0156 <span class="comment">%        caxis([log10(0.01) log10(20)]);</span>
+0157     imagesc(lonv,latv,var)
+0158     caxis([0 1])
+0159         hold on;
+0160         xlim([174.2 178.5]) <span class="comment">% Map from West Vanuatu limit (174.5°E) to 178.5°E for station B to be in the middle of the map</span>
+0161         ylim([-21 -17])
+0162         axis xy
+0163         colordata=load([<span class="string">'colormap_modis_'</span>,tag,<span class="string">'.txt'</span>]);
+0164         colormap(colordata)
+0165         plot(lon_stat_B,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,20);
+0166         text(lon_stat_B+0.1,lat_stat+0.1,<span class="string">'B'</span>,<span class="string">'FontSize'</span>,20,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0167         plot([174.5 174.5],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0168         text(175,-20,<span class="string">'FIDJI'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0169 
+0170     colorbar;
+0171         title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station B (mg m^{-3})'</span>],<span class="string">'fontsize'</span>,30);
+0172         xlabel(<span class="string">'Longtitude'</span>);
+0173         ylabel(<span class="string">'Latitude'</span>);
+0174         hold off;
+0175         <span class="comment">%- Save figure if CHL</span>
+0176         print(h4,[out_path,num2str(day),<span class="string">'_MODIS_stationB_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0177         disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_stationB_'</span>,tag],<span class="string">' saved'</span>])
+0178 
+0179         <span class="comment">%-Set limits of the zone around station C</span>
+0180         disp([<span class="string">'%%%%% Figure for Station C %%%%'</span>]);
+0181         h5=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0182 <span class="comment">%        imagesc(lonv,latv,log10(var))</span>
+0183 <span class="comment">%        caxis([log10(0.01) log10(20)]);</span>
+0184     imagesc(lonv,latv,var);
+0185     caxis([0 1]);
+0186         hold on;
+0187         xlim([196 lon_stat_C+0.5]) <span class="comment">% Map from 196°E to station C</span>
+0188         ylim([-21 -17])
+0189         axis xy
+0190         colordata=load([<span class="string">'colormap_modis_'</span>,tag,<span class="string">'.txt'</span>]);
+0191         colormap(colordata)
+0192         plot(lon_stat_C,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,20);
+0193         text(lon_stat_C+0.1,lat_stat+0.1,<span class="string">'C'</span>,<span class="string">'FontSize'</span>,20,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0194         plot([194 194],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0195         text(197.5,-20,<span class="string">'NIUE'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0196 
+0197         plot([199 199],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0198         text(199.5,-19.8,<span class="string">'ILES'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0199         text(199.5,-20,<span class="string">'COOK'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0200        
+0201     colorbar;
+0202         title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station C (mg m^{-3})'</span>],<span class="string">'fontsize'</span>,30);
+0203         xlabel(<span class="string">'Longtitude'</span>);
+0204         ylabel(<span class="string">'Latitude'</span>);
+0205         hold off;
+0206 <span class="comment">%set(H,'fontsize',20);</span>
+0207         <span class="comment">%- Save figure if CHL</span>
+0208         print(h5,[out_path,num2str(day),<span class="string">'_MODIS_stationC_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0209         disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_stationC_'</span>,tag],<span class="string">' saved'</span>])
+0210 
+0211 <span class="keyword">elseif</span> strcmp(tag,<span class="string">'SST'</span>)
+0212     <span class="comment">%- Set limits of the zone around station A</span>
+0213     disp([<span class="string">'%%%%% Figure for Station A %%%%'</span>]);
+0214     h3=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0215     imagesc(lon,lat,var)
+0216     caxis([25 29]);
+0217     hold on;
+0218     xlim([lon_stat_A-0.5 159])
+0219     ylim([-21 -17])
+0220     axis xy
+0221     colordata=load([<span class="string">'colormap_modis_'</span>,tag,<span class="string">'.txt'</span>]);
+0222     colormap(colordata)
+0223     plot(lon_stat_A,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,20);<span class="comment">%'markersize',10,'MarkerFaceColor','r','MarkerEdgeColor','r');</span>
+0224     text(lon_stat_A+0.1,lat_stat+0.1,<span class="string">'A'</span>,<span class="string">'FontSize'</span>,20,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0225     colorbar;
+0226     title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station A (°C)'</span>],<span class="string">'fontsize'</span>,30);
+0227     xlabel(<span class="string">'Longtitude'</span>);
+0228     ylabel(<span class="string">'Latitude'</span>);
+0229     hold off;
+0230 
+0231     <span class="comment">%- Save figure if SST</span>
+0232     print(h3,[out_path,num2str(day),<span class="string">'_MODIS_stationA_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0233     disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_stationA_'</span>,tag],<span class="string">' saved'</span>])
+0234 
+0235         <span class="comment">%- Set limits of the zone around station B</span>
+0236         disp([<span class="string">'%%%%% Figure for Station B %%%%'</span>]);
+0237     h4=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0238         imagesc(lon,lat,var)
+0239         caxis([25 29]);
+0240         hold on;
+0241         xlim([174.5 178.5]) <span class="comment">% Map from West Vanuatu limit (174.5°E) to 178.5°E for station B to be in the middle of the map</span>
+0242         ylim([-21 -17])
+0243         axis xy
+0244         colordata=load([<span class="string">'colormap_modis_'</span>,tag,<span class="string">'.txt'</span>]);
+0245         colormap(colordata)
+0246     plot(lon_stat_B,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,20);
+0247         text(lon_stat_B+0.1,lat_stat+0.1,<span class="string">'B'</span>,<span class="string">'FontSize'</span>,20,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0248         plot([174.5 174.5],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0249         text(175,-20,<span class="string">'FIDJI'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0250 
+0251     colorbar;
+0252         title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station B (°C)'</span>],<span class="string">'fontsize'</span>,30);
+0253         xlabel(<span class="string">'Longtitude'</span>);
+0254         ylabel(<span class="string">'Latitude'</span>);
+0255     hold off;
+0256         <span class="comment">%- Save figure if SST</span>
+0257         print(h4,[out_path,num2str(day),<span class="string">'_MODIS_stationB_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0258         disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_stationB_'</span>,tag],<span class="string">' saved'</span>])
+0259 
+0260     <span class="comment">%-Set limits of the zone around station C</span>
+0261         disp([<span class="string">'%%%%% Figure for Station C %%%%'</span>]);
+0262         h5=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0263         imagesc(lon,lat,var)
+0264         caxis([25 29]);
+0265         hold on;
+0266         xlim([196 lon_stat_C+0.5]) <span class="comment">% Map from 196°E to station C</span>
+0267         ylim([-21 -17])
+0268         axis xy
+0269         colordata=load([<span class="string">'colormap_modis_'</span>,tag,<span class="string">'.txt'</span>]);
+0270         colormap(colordata)
+0271         plot(lon_stat_C,lat_stat,<span class="string">'+'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="string">'Markersize'</span>,20);
+0272         text(lon_stat_C+0.1,lat_stat+0.1,<span class="string">'C'</span>,<span class="string">'FontSize'</span>,20,<span class="string">'Color'</span>,<span class="string">'w'</span>);
+0273         plot([194 194],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0274         text(197.5,-20,<span class="string">'NIUE'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0275 
+0276         plot([199 199],[-19.7 -18.3],<span class="string">'-w'</span>,<span class="string">'Linewidth'</span>,5)
+0277         text(199.5,-19.8,<span class="string">'ILES'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0278         text(199.5,-20,<span class="string">'COOK'</span>,<span class="string">'Color'</span>,<span class="string">'w'</span>)<span class="comment">%,'FontWeight','bold')</span>
+0279 
+0280     colorbar;
+0281         title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Station C (°C)'</span>],<span class="string">'fontsize'</span>,30);
+0282         xlabel(<span class="string">'Longtitude'</span>);
+0283         ylabel(<span class="string">'Latitude'</span>);
+0284         hold off;
+0285         <span class="comment">%- Save figure if SST</span>
+0286         print(h5,[out_path,num2str(day),<span class="string">'_MODIS_stationC_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0287         disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_stationC_'</span>,tag],<span class="string">' saved'</span>])
+0288 <span class="keyword">end</span>
+0289 <span class="comment">% Save figure</span>
+0290 <span class="comment">%print(h2,[out_path,'FIGURES/',num2str(day),'_MODIS_',tag,'.eps'],'-depsc')</span>
+0291 print(h2,[out_path,num2str(day),<span class="string">'_MODIS_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)<span class="comment">%,'-r250')</span>
+0292 disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_'</span>,tag],<span class="string">' saved'</span>])
+0293 
+0294 <span class="comment">%- Chl -a values &lt; 0.1 mg m-3 appears black -%</span>
+0295 <span class="keyword">if</span> strcmp(tag,<span class="string">'CHL'</span>)
+0296       idb=find(var&lt;0.1);
+0297           <span class="keyword">for</span> i=1:length(idb)
+0298               var(idb(i))=0; <span class="comment">%in order to be white</span>
+0299           <span class="keyword">end</span>
+0300      idw=find(var&gt;0.1);
+0301          <span class="keyword">for</span> j=1:length(idw)
+0302              var(idw(i))=1; <span class="comment">%in order to be black</span>
+0303          <span class="keyword">end</span>
+0304     h6=figure(<span class="string">'visible'</span>,<span class="string">'off'</span>);
+0305     a=imagesc(lonv,latv,log10(var));
+0306     set(gca,<span class="string">'fontsize'</span>,20);
+0307     hold on
+0308     <span class="comment">% Flip axis</span>
+0309     axis xy
+0310     xlim([min(lonv) max(lonv)])
+0311     ylim([min(latv) max(latv)])
+0312 <span class="comment">%    colordata=load(['colormap_modis_',tag,'.txt']);</span>
+0313     colormap(gray);
+0314 <span class="comment">%    caxis([log10(0.01) log10(20)]);</span>
+0315     caxis([0 1]);
+0316 <span class="comment">%    colorbar;</span>
+0317 <span class="comment">%    legend('Presence','Abscence');</span>
+0318     title([<span class="string">'MODIS '</span>,tag,<span class="string">' '</span>,datestr(datevec(day,<span class="string">'yyyymmdd'</span>)),<span class="string">' Presence'</span>],<span class="string">'fontsize'</span>,30);
+0319     xlabel(<span class="string">'Longitudes'</span>);
+0320     ylabel(<span class="string">'Latitudes'</span>);
+0321     print(h6,[out_path,num2str(day),<span class="string">'_MODIS_presence_'</span>,tag,<span class="string">'.png'</span>],<span class="string">'-dpng'</span>)
+0322         disp([<span class="string">'     Figure '</span>,[out_path,num2str(day),<span class="string">'_MODIS_presence2_'</span>,tag],<span class="string">' saved'</span>])
+0323 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

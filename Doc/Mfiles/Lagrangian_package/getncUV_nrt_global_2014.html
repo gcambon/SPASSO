@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of getncUV_nrt_global_2014</title>
+  <meta name="keywords" content="getncUV_nrt_global_2014">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Mfiles</a> &gt; <a href="index.html">Lagrangian_package</a> &gt; getncUV_nrt_global_2014.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Mfiles/Lagrangian_package&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>getncUV_nrt_global_2014
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Uw,Vw,lonw,latw,U,V]=getncUV_nrt_global_2014(nday,ssha) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="localvars.html" class="code" title="function lvars=localvars">localvars</a>	Previously defined in MAIN_Lagrangian.m</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="aviso_nrt_2014_load.html" class="code" title="function ret=aviso_nrt_2014_load(day0,dayf,ssha)">aviso_nrt_2014_load</a>	addpath('/home/dovidio/octave/ocean');</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Uw,Vw,lonw,latw,U,V]=getncUV_nrt_global_2014(nday,ssha)</a>
+0002 
+0003 <span class="keyword">if</span>(nargin==1)
+0004         <span class="comment">% used to distinguish if its SSH or SLA (ssa) !!!</span>
+0005         ssha=<span class="string">'ssh'</span>;
+0006 <span class="keyword">end</span>
+0007 
+0008 ncnes=datenum([1950 1 1]);
+0009 
+0010 dv=datevec(nday+ncnes);
+0011 day=sprintf(<span class="string">'%d%02d%02d'</span>,dv(1),dv(2),dv(3));
+0012 lvars=<a href="localvars.html" class="code" title="function lvars=localvars">localvars</a>;
+0013 RT=6371e5;
+0014 
+0015 <span class="comment">% Path adjusted manually !!!</span>
+0016 ncpath=sprintf(<span class="string">'%s/AVISO_uv/'</span>,lvars.datadir);
+0017 fnames=glob(sprintf(<span class="string">'%s/nrt_global_allsat_madt_uv_%s_*.nc.gz'</span>,ncpath,day));<span class="comment">% AVISO files name have changed</span>
+0018 <span class="keyword">if</span>(~isempty(fnames))
+0019         fname=fnames{end};
+0020         fnameout=sprintf(<span class="string">'%s.%08d'</span>,fname,rand(1)*10000000);
+0021 <span class="keyword">else</span>
+0022         disp(<span class="string">'File not found.'</span>);
+0023         Uw=[];
+0024         Vw=[];
+0025         lonw=[];
+0026         latw=[];
+0027         U=[];
+0028         V=[];
+0029         <span class="keyword">return</span>;
+0030 <span class="keyword">end</span>
+0031 
+0032 <span class="comment">% Unzip netcdf file</span>
+0033 cmd=sprintf(<span class="string">'gunzip -c %s &gt;%s'</span>,fname,fnameout);
+0034 system(cmd);
+0035 ncfile=sprintf(<span class="string">'%s'</span>,fnameout);
+0036 ncUV=netcdf(ncfile,<span class="string">'r'</span>);
+0037 
+0038 NbLongitudes=ncUV{<span class="string">'lon'</span>}(:);
+0039 NbLatitudes=ncUV{<span class="string">'lat'</span>}(:);
+0040 U=ncUV{<span class="string">'u'</span>}(:);
+0041 V=ncUV{<span class="string">'v'</span>}(:);
+0042 <span class="comment">% Convert 2014 aviso variables format</span>
+0043 U=squeeze(U);
+0044 V=squeeze(V);
+0045 U=(U'); <span class="comment">%matrix rotation</span>
+0046 V=(V');
+0047 
+0048 <span class="comment">% Find bad values</span>
+0049 <span class="comment">%fU=find(abs(U(:))&gt;1e15);</span>
+0050 <span class="comment">%U(fU)=0;</span>
+0051 <span class="comment">%fV=find(abs(V(:))&gt;1e15);</span>
+0052 <span class="comment">%V(fV)=0;</span>
+0053 U(U==-2147483647)=0;
+0054 V(V==-2147483647)=0;
+0055 <span class="comment">% conversion</span>
+0056 U=U.*0.0001; <span class="comment">%scale factor</span>
+0057 V=V.*0.0001;
+0058 U=U.*100;
+0059 V=V.*100; <span class="comment">%conversion m/s to cm/s</span>
+0060 
+0061 
+0062 <span class="comment">% Create lon lat matrices</span>
+0063 nlon=length(NbLongitudes);
+0064 nlat=length(NbLatitudes);
+0065 
+0066 lon=reshape(NbLongitudes,nlon,1);
+0067 lat=reshape(NbLatitudes,nlat,1);
+0068 [glon,glat]=meshgrid(lon,lat);
+0069 
+0070 <span class="comment">% Velocities in deg/s (Used in Lyap analysis)</span>
+0071 Ug=U./(RT.*cos(glat'./180*pi)).*180/pi;
+0072 Vg=V*180/pi./RT;
+0073 
+0074 lonw=lon;
+0075 Uw=Ug;
+0076 Vw=Vg;
+0077 
+0078 
+0079 fw=find(lonw&gt;180);
+0080 lonw(fw)=lonw(fw)-360;
+0081 [lonw,lonsrti]=sort(lonw);
+0082 Uw=Uw(lonsrti,:);
+0083 Vw=Vw(lonsrti,:);
+0084 Uw=Uw([(nlon-1) nlon 1:nlon 1],:);
+0085 Vw=Vw([(nlon-1) nlon 1:nlon 1],:);
+0086 lonw=lonw([(nlon-1) nlon 1:nlon 1]);
+0087 lonw(1:2)=lonw(1:2)-360;
+0088 lonw(end)=lonw(end)+360;
+0089 latw=lat;
+0090 
+0091 U=U(lonsrti,:);
+0092 V=V(lonsrti,:);
+0093 U=U([(nlon-1) nlon 1:nlon 1],:);
+0094 V=V([(nlon-1) nlon 1:nlon 1],:);
+0095 
+0096 <span class="comment">% Case of Sea Level Anomaly</span>
+0097 <span class="keyword">if</span>(ssha==<span class="string">'ssa'</span>)
+0098         [Ugmdt,Vgmdt,Umdt,Vmdt,glon,glat]=aviso_mdt();
+0099 
+0100         U=U-Umdt;
+0101         V=V-Vmdt;
+0102 
+0103         Uw=Uw-Ugmdt;
+0104         Vw=Vw-Vgmdt;
+0105 <span class="keyword">end</span>
+0106 
+0107 <span class="comment">% Remove unzipped copy of netcdf</span>
+0108 cmd=sprintf(<span class="string">'rm %s'</span>,fnameout);
+0109 system(cmd);
+0110 
+0111 ncclose(ncUV);</pre></div>
+<hr><address>Generated on Mon 07-Jul-2014 17:12:06 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
