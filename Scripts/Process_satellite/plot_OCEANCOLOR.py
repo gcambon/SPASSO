@@ -58,10 +58,15 @@ else:
     dir_cruise=sys.argv[2]
 ### END if len(args)<1:
 
-    # to load cruise configuration
-    
+# for interactive tests
+dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
+dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+
+# to load cruise configuration
+
 filelist_domain = glob.glob(dir_cruise+'/domain_limits*.py')
-execfile(dir_cruise+"/cruise_params.py")
+#execfile(dir_cruise+"/cruise_params.py")
+exec(open(dir_cruise+"/cruise_params.py").read())
 fileext=['','_zoom']
 reso_meridians = [2,1]
 
@@ -141,10 +146,11 @@ for line in dico_extra:
     
 
 #for i in range(0,9):
-for i in range(0,0):
+for i in range(0,1):
     count_domain = 0
     for file_domain in filelist_domain: 
-        execfile(file_domain)
+        #execfile(file_domain)
+        exec(open(file_domain).read())
         #define the geographical projection with Basemap
         mymap=Basemap(projection='merc',llcrnrlat=Lat[0],urcrnrlat=Lat[1],llcrnrlon=Lon[0],urcrnrlon=Lon[1],resolution='h')
         #project the stations on the figure axis
@@ -161,9 +167,9 @@ for i in range(0,0):
         #SB added 17/07/2018
         
         if (i==0):
-            #files=glob.glob(dir_wrk+'/*d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT-v*.mat')
-            files=glob.glob(dir_wrk+'/*d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT*.mat')
-
+            files=glob.glob(dir_wrk+'/*d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.mat')
+            print(files)
+            
             if (len(files)>0):
                 #define the figure setup
                 fig=plt.figure()
@@ -175,8 +181,8 @@ for i in range(0,0):
                     long,latg=np.meshgrid(lonv,latv)
                     (x,y)=mymap(long,latg)
                     
-                    Chl = np.ma.masked_where(np.isnan(Chl), Chl)
-                    cax1=mymap.pcolormesh(x,y,Chl,cmap=cmaps.viridis,zorder=-1) 
+                Chl = np.ma.masked_where(np.isnan(Chl), Chl)
+                cax1=mymap.pcolormesh(x,y,Chl,cmap=cmaps.viridis,zorder=-1) 
                 
                 if (len(chlmin) >= count_domain+1 and len(chlmax) >= count_domain+1):
                     cax1.set_clim(chlmin[count_domain],chlmax[count_domain]) 
@@ -197,30 +203,33 @@ for i in range(0,0):
                 mymap.plot(x_stations,y_stations,'-',color='r',zorder=1)
                 if count_domain>0:
                     mymap.scatter(x_stations,y_stations,s=15,color='r',zorder=1) 
-                    # draw the waypoint
-                    #mymap.plot(x_waypoint,y_waypoint,color='r',zorder=1)
-                    #mymap.plot(x_waypoint[0:6],y_waypoint[0:6],'-',color='#66ffff',zorder=1)
-                    #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
-                    #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
-                    # draw the glider trajectory
-                    mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
-                    # draw the ZEE limits
-                    mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1)
-                    # draw the S3B trajectories
-                    mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1) 
-                    mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
-                    mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
-                    mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
-                    # add the colorbar
-                    cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9) 
-                    cbar1.ax.set_ylabel('Chl [$\mu$g/L]') 
-                    # add the title
-                    filefig1=files[0]+fileext[count_domain]+'.png' 
-                    titlefig1=files[0]
-                    plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L4 - 1KM')
-                    plt.savefig(filefig1)                         
-                    filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+fileext[count_domain]+'_mat.png'
-                    plt.savefig(filefig1_d)
+
+
+                # draw the waypoint
+                #mymap.plot(x_waypoint,y_waypoint,color='r',zorder=1)
+                #mymap.plot(x_waypoint[0:6],y_waypoint[0:6],'-',color='#66ffff',zorder=1)
+                #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
+                #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
+                # draw the glider trajectory
+                mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
+                # draw the ZEE limits
+                mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1)
+                # draw the S3B trajectories
+                mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1) 
+                mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
+                mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
+                mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
+                # add the colorbar
+                cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9) 
+                cbar1.ax.set_ylabel('Chl [$\mu$g/L]') 
+                # add the title
+                filefig1=files[0]+fileext[count_domain]+'.png' 
+                titlefig1=files[0]
+                plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L4 - 1KM')
+                plt.savefig(filefig1)                         
+                filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+fileext[count_domain]+'_mat.png'
+                print(filefig1_d)
+                plt.savefig(filefig1_d)
                     
                     
             # if (i==1):

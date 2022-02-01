@@ -61,30 +61,40 @@ else:
     dir_cruise=sys.argv[2]
     ### END if len(args)<1:
 
+#for interactive test
+dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
+dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+
 # to load cruise configuration
 exec(open(dir_cruise+"/domain_limits.py").read())
 
 ######## CHL FILES #####################
 
-# ### L4 GLOBAL MULTI 4km resolution
-# #files=glob.glob(dir_wrk+'/*_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc');
-# for nc_name in files:
-#     filemat=nc_name[0:-2]+'mat'
-#     print(nc_name)
-#     #  Load netcdf data
-#     ncdata=xr.open_dataset(nc_name,decode_times='False')
+### L4 GLOBAL MULTI 4km resolution
+files=glob.glob(dir_wrk+'/*_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc');
+for nc_name in files:
+    filemat=nc_name[0:-2]+'mat'
+    print(nc_name)
+    #  Load netcdf data
+    ncdata=xr.open_dataset(nc_name,decode_times='False')
     
-#     #  extract for the domain
-#     data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[1],Lat[0]))
+    #  extract for the domain
+    data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[1],Lat[0]))
+
+    #    newdate = []
+    #    for d in data_domain['time'].values:
+    #        newdate.append(datetime.datetime(d.year, d.month, d.day, d.hour, d.minute, d.second))
+
     
-#     #  save the data in a mat file
-#     output = {'lon':data_domain['lon'].values, 
-#               'lat':np.flipud(data_domain['lat'].values),
-#               'time':data_domain['time'].values, 
-#               'Chl':np.fliplr(data_domain['CHL'].values)}
+    #  save the data in a mat file
+    output = {'lon':data_domain['lon'].values, 
+              'lat':np.flipud(data_domain['lat'].values),
+              'time':data_domain['time'].values.astype("datetime64[ns]"), 
+              'Chl':np.fliplr(data_domain['CHL'].values)}
 
-#     sio.matlab.savemat(filemat, output)
-
+    #  save the data in a mat file
+    sio.matlab.savemat(filemat, output)
+    
 
 # ### L4 MED 1KM resolution
 # files=glob.glob(dir_wrk+'/*_d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT-v02.nc');
@@ -102,21 +112,21 @@ exec(open(dir_cruise+"/domain_limits.py").read())
 
 # sio.matlab.savemat(filemat, output)
 
-### L3 MED MULTI 1KM resolution
-files=glob.glob(dir_wrk+'/*_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.nc'); 
-for nc_name in files:
-    filemat=nc_name[0:-2]+'mat'
+# ### L3 MED MULTI 1KM resolution
+# files=glob.glob(dir_wrk+'/*_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.nc'); 
+# for nc_name in files:
+#     filemat=nc_name[0:-2]+'mat'
     
-    #  Load netcdf data
-    ncdata=xr.open_dataset(nc_name,decode_times='False')
+#     #  Load netcdf data
+#     ncdata=xr.open_dataset(nc_name,decode_times='False')
     
-    #  extract for the domain
-    data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
+#     #  extract for the domain
+#     data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
     
-    #  save the data in a mat file
-    output = {'lon':data_domain['lon'].values, 'lat':data_domain['lat'].values, 'time':data_domain['time'].values, 'Chl':data_domain['CHL'].values}
+#     #  save the data in a mat file
+#     output = {'lon':data_domain['lon'].values, 'lat':data_domain['lat'].values, 'time':data_domain['time'].values, 'Chl':data_domain['CHL'].values}
     
-    sio.matlab.savemat(filemat, output)
+#     sio.matlab.savemat(filemat, output)
     
 
 # ### L3 MED OLCI_a 1KM resolution

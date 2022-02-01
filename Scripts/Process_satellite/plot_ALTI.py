@@ -59,8 +59,13 @@ else:
     dir_cruise=sys.argv[2]
     #--END if len(args)<1:
 
+# for interactive test
+dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
+dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+
 #  Load data
 filelist=glob.glob(dir_wrk+'/*allsat_phy*.mat')
+print(filelist)
 filemat=filelist[0]
 
 
