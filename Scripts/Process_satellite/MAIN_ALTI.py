@@ -66,7 +66,7 @@ else:
 filelist=glob.glob(dir_wrk+'/*allsat_phy*.nc'); 
 filenc=filelist[0]
 filemat=filenc[0:-2]+'mat'
-
+print(filenc)
 # Load netcdf data
 ncdata=xr.open_dataset(filenc,decode_times='False')
 data = ncdata.sel()

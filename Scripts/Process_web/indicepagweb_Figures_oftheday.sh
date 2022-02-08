@@ -5,7 +5,8 @@ subdir=$1
 dir=$subdir
 chmod a+r $dir/*.*
 
-cp /home/SPASSO.beta/Scripts/generate_index_Figures_oftheday.sh $dir/
+#cp /home/SPASSO.beta/Scripts/generate_index_Figures_oftheday.sh $dir/
+cp ${cruise_path}/Process_web/generate_index_Figures_oftheday.sh $dir/
 chmod a+x $dir/generate_index_Figures_oftheday.sh
 
 cd $dir

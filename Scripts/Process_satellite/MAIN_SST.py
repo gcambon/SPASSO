@@ -26,7 +26,7 @@
 #          Anais Ricout
 ###############################################################
 import os
-#to call gunzip
+
 import sys #to have argument in the script call
 from netCDF4 import Dataset
 import cmocean as cm_oc
@@ -39,73 +39,89 @@ import matplotlib.pyplot as plt
 import xarray as xr
 import matplotlib as mpl #to plot graphics
 from matplotlib.dates import DayLocator, HourLocator, DateFormatter, drange
-
 import matplotlib 
 matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
-
 import glob #to obtain file paths
-
 from mpl_toolkits.basemap import Basemap #to plot maps
 from matplotlib.patches import Polygon
-
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-from netcdftime import utime
-
+#from netcdftime import utime
+import cftime
 import time
 import datetime 
 #############################################
 args=sys.argv
 ### TEST MODE 
 if len(args)==1:
-	dir_wrk='/home/SPASSO/Cruises/DEMO/Wrk'
-	dir_cruise='/home/SPASSO/Cruises/DEMO'
+    dir_wrk='/home/SPASSO/Cruises/DEMO/Wrk'
+    dir_cruise='/home/SPASSO/Cruises/DEMO'
 ### OPERATIONAL MODE
 else:
-	dir_wrk=sys.argv[1]
-        dir_cruise=sys.argv[2]
+    dir_wrk=sys.argv[1]
+    dir_cruise=sys.argv[2]
 ### END if len(args)<1:
 
+#for interactive test
+dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
+dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+
 # to load cruise configuration
-execfile(dir_cruise+"/domain_limits.py")
+#execfile(dir_cruise+"/domain_limits.py")
+exec(open(dir_cruise+"/domain_limits.py").read())
 
 ######## SST FILES #####################
 ### L4 
-files=glob.glob(dir_wrk+'/*GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED-v02.0-fv02.0.nc'); #AR added 19/03/2019
+files=glob.glob(dir_wrk+'/*-UKMO-L4_GHRSST-SSTfnd-GMPE-GLOB-v03.0-fv03.0.nc');
 for nc_name in files:
-        filemat=nc_name[0:-2]+'mat'
-	# Load netcdf data
-	ncdata=xr.open_dataset(nc_name)
-	# extract for the domain
-	data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
-	# save the data in a mat file
-	output = {'lon':data_domain['lon'].values, 'lat':data_domain['lat'].values, 'time':data_domain['time'].values, 'sst':data_domain['analysed_sst'].values-273.15}
-	
-	sio.matlab.savemat(filemat, output)
+    filemat=nc_name[0:-2]+'mat'
+    print(nc_name)
+    # Load netcdf data
+    ncdata=xr.open_dataset(nc_name)
+    
+    # extract for the domain
+    data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
+    
+    # save the data in a mat file
+    output = {'lon':data_domain['lon'].values,
+              'lat':data_domain['lat'].values,
+              'time':data_domain['time'].values.astype("datetime64[ns]"),
+              'sst':data_domain['analysed_sst'].values-273.15}
 
-### L3
-files=glob.glob(dir_wrk+'/*-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.nc'); #AR added 19/03/2019
-for nc_name in files:
-        filemat=nc_name[0:-2]+'mat'
-	# Load netcdf data
-	ncdata=xr.open_dataset(nc_name)
-	# extract for the domain
-	data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
-	#save the data in a mat file
-	output = {'lon':data_domain['lon'].values, 'lat':data_domain['lat'].values, 'time':data_domain['time'].values, 'sst':data_domain['sea_surface_temperature'].values-273.15}
-	sio.matlab.savemat(filemat, output)
+    sio.matlab.savemat(filemat, output)
+
+# ### L3
+# files=glob.glob(dir_wrk+'/*-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.nc'); #AR added 19/03/2019
+# for nc_name in files:
+#     filemat=nc_name[0:-2]+'mat'
+
+#     # Load netcdf data
+#     ncdata=xr.open_dataset(nc_name)
+
+#     # extract for the domain
+#     data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
+
+#     #save the data in a mat file
+#     output = {'lon':data_domain['lon'].values, 'lat':data_domain['lat'].values, 'time':data_domain['time'].values, 'sst':data_domain['sea_surface_temperature'].values-273.15}
+# 	sio.matlab.savemat(filemat, output)
 
 
-### JPL Global SST L4
-files=glob.glob(dir_wrk+'/*-JPL_OUROCEAN-L4UHfnd-GLOB-v01-fv01_0-G1SST.nc')
-for nc_name in files:
-        filemat=nc_name[0:-2]+'mat'
-	# Load netcdf data
-	ncdata=xr.open_dataset(nc_name)
-	# extract for the domain
-	data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
-	# save the data in a mat file
-	output = {'lon':data_domain['lon'].values, 'lat':data_domain['lat'].values, 'time':data_domain['time'].values, 'sst':data_domain['analysed_sst'].values-273.15}
-	sio.matlab.savemat(filemat, output)
+# ### JPL Global SST L4
+# files=glob.glob(dir_wrk+'/*-JPL_OUROCEAN-L4UHfnd-GLOB-v01-fv01_0-G1SST.nc')
+# for nc_name in files:
+#     filemat=nc_name[0:-2]+'mat'
+
+#     # Load netcdf data
+#     ncdata=xr.open_dataset(nc_name)
+
+#     # extract for the domain
+#     data_domain = ncdata.sel(lon=slice(Lon[0],Lon[1]), lat=slice(Lat[0],Lat[1]))
+
+#     # save the data in a mat file
+#     output = {'lon':data_domain['lon'].values,
+#               'lat':data_domain['lat'].values,
+#               'time':data_domain['time'].values,
+#               'sst':data_domain['analysed_sst'].values-273.15}
+#     sio.matlab.savemat(filemat, output)
 
 
 

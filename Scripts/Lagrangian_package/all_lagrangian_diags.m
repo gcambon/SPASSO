@@ -25,7 +25,6 @@ ds=1/6; % Not used; What to do with this???
 %numdays=10;
 
 
-
 % parameter for OW dispersion analysis
 %tollerance=10; CHANGED FOR TESTING, SINCE WE HAVE ONLY 3 FILES - ADP: remove next two lines and comment this one later
 tollerance=1;

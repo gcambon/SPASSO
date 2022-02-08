@@ -6,7 +6,8 @@ echo $subdir
 dir=$subdir
 chmod a+r $dir/*.*
 
-cp /home/SPASSO.beta/Scripts/generate_index.sh $dir/
+#cp /home/SPASSO.beta/Scripts/generate_index.sh $dir/
+cp ${cruise_path}/Process_web/generate_index.sh $dir/
 chmod a+x $dir/generate_index.sh
 
 cd $dir

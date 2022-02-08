@@ -4,10 +4,8 @@ global DATADIR
 global LAMTADIR
 global WRKDIR
 
-
-%lvars.datadir='/home/SPASSO/Data';
-lvars.datadir=DATADIR; %LR: get datadir defined in SPASSO
-lvars.lamtadir='/home/SPASSO/Scripts/Lagrangian_package/lamta.dev/';
+lvars.datadir=DATADIR; 
+lvars.lamtadir=LAMTADIR
 lvars.wrkdir=sprintf(args);
 
 

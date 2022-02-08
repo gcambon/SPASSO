@@ -188,42 +188,58 @@ count_domain = 0
 for file_domain in filelist_domain:
     ##execfile(file_domain)
     exec(open(file_domain).read())
+    
     #define the figure setup
     fig=plt.figure()
+
     #define the geographical projection with Basemap
     mymap=Basemap(projection='merc',llcrnrlat=Lat[0],urcrnrlat=Lat[1],llcrnrlon=Lon[0],urcrnrlon=Lon[1],resolution='h')#equivalent to m_proj
+
     #project the data on the figure axis
     x, y = mymap(lon, lat) #[km]
+
     #project the stations on the figure axis
     x_stations,y_stations = mymap(lon_stations,lat_stations)
+
     #project the waypoint on the figure axis
     x_waypoint,y_waypoint = mymap(lon_waypoint,lat_waypoint)
+
     #project the glider on the figure axis
     x_gl,y_gl = mymap(lon_glider,lat_glider)
+
     #project the ZEE limits on the figure axis
     x_zee,y_zee = mymap(lon_zee,lat_zee)
     x_zee_sp,y_zee_sp = mymap(lon_zee_sp,lat_zee_sp)
+
     #project the SWOT trajectories on the figure axis
     x_extra,y_extra = mymap(lon_extra,lat_extra)        
     x_newgrid, y_newgrid = mymap(lon_newgrid, lat_newgrid)
     cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice,zorder=-1) 
+
     # plot wind vectors on projection grid.
     uproj,vproj,xx,yy = mymap.transform_vector(u_newgrid,v_newgrid,lon_newgrid_2,latitudes,48,22,returnxy=True,masked=True) 
+
     # now plot.
     Q = mymap.quiver(xx,yy,uproj,vproj,linewidth=0.05,color='y')
+
     # make quiver key.
     qk = plt.quiverkey(Q, 1.25, 1.1, 0.5, '0.5 m/s', labelpos='N', color='y')
+
     #add the coastline (data from Basemap)
     mymap.drawcoastlines()
+
     #define the tick and the grid (done for global)
     #from south pole to northen pole with a resolution of 1 degree 
     myparallels=np.arange(-90,90+1,1)
     mymeridians = np.arange(-180,180+1,reso_meridians[count_domain])
+
     #draw the ticks labels
     mymap.drawparallels(myparallels,labels=[1,0,0,0],fontsize=10)
     mymap.drawmeridians(mymeridians,labels=[0,0,0,1],fontsize=10)
+
     #draw the continent (data from Basemap)
     mymap.fillcontinents(color='0.83',lake_color='0.83',zorder=100) 
+
     #draw the stations
     mymap.plot(x_stations,y_stations,'-',color='w',zorder=1)
 
