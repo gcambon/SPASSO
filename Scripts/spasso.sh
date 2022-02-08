@@ -149,32 +149,32 @@ DOWNLOAD_DATA_YESNO=Y
 PROCESS_DATA_YESNO=Y
 
 ############# 3rd step: DATES OF FILES NAME OF DATASET #############
+# orig 0day ago
 date_alti=`date +%Y%m%d --date='0day ago'`   
 year_alti=`date +%Y --date='0day ago'`       
 month_alti=`date +%m --date='0day ago'`  
 
-#date_SST_L4=`date +%Y%m%d --date='0day ago'`  
-#year_SST_L4=`date +%Y --date='0day ago'`	 
-#month_SST_L4=`date +%m --date='0day ago'`
-date_SST_L4=`date +%Y%m%d --date='2day ago'`  
-year_SST_L4=`date +%Y --date='2day ago'`	 
-month_SST_L4=`date +%m --date='2day ago'`
+# orig 0day ago
+date_SST_L4=`date +%Y%m%d --date='0day ago'`  
+year_SST_L4=`date +%Y --date='0day ago'`	 
+month_SST_L4=`date +%m --date='0day ago'`
 
+# orig 0day ago
 date_SST_L3=`date +%Y%m%d --date='0day ago'`  
 year_SST_L3=`date +%Y --date='0day ago'`	 
 month_SST_L3=`date +%m --date='0day ago'`
 
+# orig 2day ago
 year_SST_L4_JPL=`date +%Y --date='2day ago'`
 day_SST_L4_JPL=`date +%j --date='2day ago'`  
 date_SST_L4_JPL=`date +%Y%m%d --date='2day ago'`
 
-#date_CHL_L4=`date +%Y%m%d --date='1day ago'`  
-#year_CHL_L4=`date +%Y --date='1day ago'`     
-#month_CHL_L4=`date +%m --date='1day ago'`
-date_CHL_L4=`date +%Y%m%d --date='2day ago'`  # put 3d ago with ocean color glob L4
-year_CHL_L4=`date +%Y --date='2day ago'`     
-month_CHL_L4=`date +%m --date='2day ago'`    
+# orig 1day ago
+date_CHL_L4=`date +%Y%m%d --date='1day ago'`  
+year_CHL_L4=`date +%Y --date='1day ago'`     
+month_CHL_L4=`date +%m --date='1day ago'`
 
+# orig 1day ago
 date_CHL_L3=`date +%Y%m%d --date='1day ago'`  
 year_CHL_L3=`date +%Y --date='1day ago'`     
 month_CHL_L3=`date +%m --date='1day ago'`    
