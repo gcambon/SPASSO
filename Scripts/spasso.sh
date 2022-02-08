@@ -19,23 +19,21 @@ echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo '%%                        SPASSO                         %%'
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo '%%                                                       %%'
-runday=`date`
-echo '%%     '$runday'                 %%'
 echo '%%                                                       %%'
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
 #set -e
-set -x
+#set -x
 
 ############# 1st step: DEFINE THE PATHS ############# 
 # Home
-main_path=/home/gcambon/MYGITHUB/SPASSO #echo $main_path to display it
+export main_path=/home/gcambon/HCONFIGS_SPASSO #echo $main_path to display it
 
 # Current cruise
-cruise_path=$main_path/Cruises/DEMO 
+export cruise_path=$main_path/DEMO2 
 
 # Data
-dir_data=$cruise_path/Data
+export dir_data=$cruise_path/Data
 
 #=============================
 # Dataset 
@@ -47,7 +45,7 @@ ALTI_product='nrt.cmems-du.eu/Core/SEALEVEL_EUR_PHY_L4_NRT_OBSERVATIONS_008_060/
 #-- CHL_L4
 CHL_L4_product='nrt.cmems-du.eu/Core/OCEANCOLOUR_GLO_CHL_L4_NRT_OBSERVATIONS_009_033/dataset-oc-glo-bio-multi-l4-chl_interpolated_4km_daily-rt'
 
-#-- CHL_L3
+#-- CHL_L3d
 CHL_L3_MULTI_med_product='nrt.cmems-du.eu/Core/OCEANCOLOUR_MED_CHL_L3_NRT_OBSERVATIONS_009_040/dataset-oc-med-chl-multi-l3-chl_1km_daily-rt-v02'   
 
 CHL_L3_OLCI_a_med_product='nrt.cmems-du.eu/Core/OCEANCOLOUR_MED_CHL_L3_NRT_OBSERVATIONS_009_040/dataset-oc-med-chl-olci_a-l3-chl_1km_daily-rt-v02'   
@@ -57,7 +55,7 @@ CHL_L3_MULTI_glob_product='nrt.cmems-du.eu/Core/OCEANCOLOUR_GLO_CHL_L3_NRT_OBSER
 CHL_L3_OLCI_a_glob_product='nrt.cmems-du.eu/Core/OCEANCOLOUR_GLO_CHL_L3_NRT_OBSERVATIONS_009_032/dataset-oc-glo-chl-olci_a-l3-av_4km_daily-rt-v02'
 
 #### SST ####
-SST_L4_product='nrt.cmems-du.eu/Core/SST_MED_SST_L4_NRT_OBSERVATIONS_010_004/SST_MED_SST_L4_NRT_OBSERVATIONS_010_004_a_V2' 
+SST_L4_product='nrt.cmems-du.eu/Core/SST_GLO_SST_L4_NRT_OBSERVATIONS_010_005/METOFFICE-GLO-SST-L4-NRT-OBS-GMPE-V3' 
 
 SST_L3_product='nrt.cmems-du.eu/Core/SST_MED_SST_L3S_NRT_OBSERVATIONS_010_012/SST_MED_SST_L3S_NRT_OBSERVATIONS_010_012_a' 
 
@@ -66,7 +64,7 @@ SST_L4_JPL_product='podaac-ftp.jpl.nasa.gov/OceanTemperature/ghrsst/data/L4/GLOB
 
 #=============================
 # Type of product for lagrangian diagnostics
-lagrangian_type='nrt_cmems_med' 
+lagrangian_type='nrt_cmems' 
 
 # To differentiate the paths between NRT and DT products
 product_type='nrt' 
@@ -85,9 +83,9 @@ dir_SST_L4_JPL=$dir_data/SST/$SST_L4_JPL_product/
 dir_wrk=$cruise_path/Wrk
 
 # Scripts
-dir_scripts=$main_path/Scripts
-dir_lagrang=$dir_scripts/Lagrangian_package
-dir_lamta=$dir_scripts/Lagrangian_package/lamta.dev/
+dir_scripts=$cruise_path/Process_satellite
+dir_lagrang=$cruise_path/Lagrangian_package
+dir_lamta=$cruise_path/Lagrangian_package/lamta.dev/
 
 # Processed data
 dir_PROC=$cruise_path/Processed
@@ -102,7 +100,7 @@ dir_FIG=$cruise_path/Figures
 logs_dir=$cruise_path/Logs
 
 # Web 
-web_path=$main_path/Web/DEMO  
+web_path=$cruise_path/Web
 dir_FIG_web=$web_path/Figures_web
 dir_FIG_web_oftheday=$web_path/Figures_web_oftheday
 dir_PROC_web=$web_path/Processed_web
@@ -119,7 +117,7 @@ user_chl_l4=gcambon
 pwd_chl_l4=JOpozono@2931 
 CHL_data=( CHL ) 
 
-CHL_L3_med_YESNO=N         
+CHL_L3_med_YESNO=N
 user_chl_l3=gcambon 
 pwd_chl_l3=JOpozono@2931
 CHL_data=( CHL ) 
@@ -129,7 +127,7 @@ user_chl_l3=gcambon
 pwd_chl_l3=JOpozono@2931
 CHL_data=( CHL )
 #===================================================
-SST_L4_YESNO=N
+SST_L4_YESNO=Y
 user_sst_l4=gcambon 
 pwd_sst_l4=JOpozono@2931 
 SST_data=( sst ) 
@@ -143,42 +141,43 @@ SST_L4_JPL_YESNO=N
 SST_data=( sst ) 
 #===================================================
 # Extra Options [Y/N]
-LAGRANGIAN_YESNO=N
-WEB_YESNO=N
+LAGRANGIAN_YESNO=Y
+WEB_YESNO=Y
 MAILING_YESNO=N
 
-DOWNLOAD_DATA_YESNO=N
-PROCESS_DATA_YESNO=N
-
-
+DOWNLOAD_DATA_YESNO=Y
+PROCESS_DATA_YESNO=Y
 
 ############# 3rd step: DATES OF FILES NAME OF DATASET #############
 date_alti=`date +%Y%m%d --date='0day ago'`   
 year_alti=`date +%Y --date='0day ago'`       
 month_alti=`date +%m --date='0day ago'`  
 
-date_SST_L4=`date +%Y%m%d --date='0day ago'`  
-year_SST_L4=`date +%Y --date='0day ago'`	 
-month_SST_L4=`date +%m --date='0day ago'` 	 
+#date_SST_L4=`date +%Y%m%d --date='0day ago'`  
+#year_SST_L4=`date +%Y --date='0day ago'`	 
+#month_SST_L4=`date +%m --date='0day ago'`
+date_SST_L4=`date +%Y%m%d --date='2day ago'`  
+year_SST_L4=`date +%Y --date='2day ago'`	 
+month_SST_L4=`date +%m --date='2day ago'`
 
 date_SST_L3=`date +%Y%m%d --date='0day ago'`  
 year_SST_L3=`date +%Y --date='0day ago'`	 
-month_SST_L3=`date +%m --date='0day ago'` 	 
-
-#date_CHL_L4=`date +%Y%m%d --date='1day ago'`  
-#year_CHL_L4=`date +%Y --date='1day ago'`     
-#month_CHL_L4=`date +%m --date='1day ago'`
-date_CHL_L4=`date +%Y%m%d --date='3day ago'`  # put 3d ago with ocean color glob L4
-year_CHL_L4=`date +%Y --date='3day ago'`     
-month_CHL_L4=`date +%m --date='3day ago'`    
-
-date_CHL_L3=`date +%Y%m%d --date='1day ago'`  
-year_CHL_L3=`date +%Y --date='1day ago'`     
-month_CHL_L3=`date +%m --date='1day ago'`    
+month_SST_L3=`date +%m --date='0day ago'`
 
 year_SST_L4_JPL=`date +%Y --date='2day ago'`
 day_SST_L4_JPL=`date +%j --date='2day ago'`  
 date_SST_L4_JPL=`date +%Y%m%d --date='2day ago'`
+
+#date_CHL_L4=`date +%Y%m%d --date='1day ago'`  
+#year_CHL_L4=`date +%Y --date='1day ago'`     
+#month_CHL_L4=`date +%m --date='1day ago'`
+date_CHL_L4=`date +%Y%m%d --date='2day ago'`  # put 3d ago with ocean color glob L4
+year_CHL_L4=`date +%Y --date='2day ago'`     
+month_CHL_L4=`date +%m --date='2day ago'`    
+
+date_CHL_L3=`date +%Y%m%d --date='1day ago'`  
+year_CHL_L3=`date +%Y --date='1day ago'`     
+month_CHL_L3=`date +%m --date='1day ago'`    
 
 date_day=`date +%D --date='1day ago'` 
 
@@ -189,7 +188,7 @@ if [ "$DOWNLOAD_DATA_YESNO" == Y ]; then
     mkdir $dir_wrk/oftheday 
     
     ############# 4th step: START DOWNLOADING DATA #############
-    cd  $dirdata
+    cd  $dir_data
     
     # Download NRT (Near-real-time) SSH and velocity data
     if [ "$ALTI_YESNO" == Y ]; then \
@@ -208,8 +207,9 @@ if [ "$DOWNLOAD_DATA_YESNO" == Y ]; then
 	echo
 	wget -r --mirror -nd --directory-prefix=$dir_data/CHL/$CHL_L4_product/  -nv --no-proxy --user=$user_chl_l4 --password=$pwd_chl_l4  ftp://$CHL_L4_product/${year_CHL_L4}/${month_CHL_L4}/${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc
 	cp $dir_data/CHL/$CHL_L4_product/${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc $dir_wrk/
+	
     fi
-
+    
     if [ "$CHL_L3_med_YESNO" == Y ]; then 
 	echo '------------------ DOWNLOAD CHL L3 med FILES in Data/ and make a copy in Wrk/-------------------'
 	echo
@@ -227,9 +227,9 @@ fi
     # Download NRT (Near-real-time) Sea_Surface_Temperature data
     if [ "$SST_L4_YESNO" == Y ]; then 
 	echo '------------------ DOWNLOAD SST L4 FILES in Data/ and make a copy in Wrk/-------------------'
-    echo
-    wget -r --mirror -nd --directory-prefix=$dir_data/SST/$SST_L4_product/  -nv --no-proxy --user=$user_sst_l4 --password=$pwd_sst_l4 ftp://$SST_L4_product/${year_SST_L4}/${month_SST_L4}/${date_SST_L4}000000-GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED-v02.0-fv02.0.nc 
-    cp $dir_data/SST/$SST_L4_product/${date_SST_L4}000000-GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED-v02.0-fv02.0.nc $dir_wrk/ 
+    echo 
+    wget -r --mirror -nd --directory-prefix=$dir_data/SST/$SST_L4_product/  -nv --no-proxy --user=$user_sst_l4 --password=$pwd_sst_l4 ftp://$SST_L4_product/${year_SST_L4}/${month_SST_L4}/${date_SST_L4}120000-UKMO-L4_GHRSST-SSTfnd-GMPE-GLOB-v03.0-fv03.0.nc 
+    cp $dir_data/SST/$SST_L4_product/${date_SST_L4}120000-UKMO-L4_GHRSST-SSTfnd-GMPE-GLOB-v03.0-fv03.0.nc $dir_wrk/ 
     fi
     
     if [ "$SST_L3_YESNO" == Y ]; then 
@@ -239,7 +239,6 @@ fi
 	cp $dir_data/SST/$SST_L3_product/${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.nc $dir_wrk/ 
     fi
 
-    #cd  $main_path/Data
     if [ "$SST_L4_JPL_YESNO" == Y ]; then 
 	echo '------------------ DOWNLOAD SST L4 JPL FILES in Data/ and make a copy in Wrk/-------------------'
 	echo
@@ -266,7 +265,7 @@ if [ "$PROCESS_DATA_YESNO" == Y ]; then
     fi
     
     # Process CHL DATA 
-    if [ "$CHL_L4_YESNO" == Y ]; then 		
+    if [ "$CHL_L4_YESNO" == Y ] || [ "$CHL_L3_med_YESNO" == Y ]; then
 	for data in ${CHL_data[@]}			
 	do 						
 	    echo ' Process CHL '${data}  
@@ -276,7 +275,7 @@ if [ "$PROCESS_DATA_YESNO" == Y ]; then
     fi
     
     # Process SST DATA 		 			
-    if [ "$SST_L3_YESNO" == Y ]; then			
+    if [ "$SST_L3_YESNO" == Y ] || [ "$SST_L4_YESNO" == Y ] ; then			
 	for data in ${SST_data[@]}			
 	do					
 	    echo ' Process SST '${data}   				
@@ -294,9 +293,10 @@ if [ "$WEB_YESNO" == Y ]; then
     echo '---------------PUTTING FIGURES ON A WEBSITE-----------------'
     
     rsync -auv --include '*.png' --exclude '*' $dir_wrk/ $dir_FIG_web/
-    /bin/sh $cruise_path/indicepagweb.sh $dir_FIG_web/
+    /bin/sh $cruise_path/Process_web/indicepagweb.sh $dir_FIG_web/
+
     rsync -auv --include '*.png' --exclude '*' $dir_wrk/oftheday/ $dir_FIG_web_oftheday/
-    /bin/sh $cruise_path/indicepagweb_Figures_oftheday.sh $dir_FIG_web_oftheday/
+    /bin/sh $cruise_path/Process_web/indicepagweb_Figures_oftheday.sh $dir_FIG_web_oftheday/
     
     rsync -auv $dir_PROC/ $dir_PROC_web/
     
@@ -314,51 +314,52 @@ if [ "$LAGRANGIAN_YESNO" == Y ]; then
     echo '----------------- END LAGRANGIAN ANALYSIS ----------------------------'
 fi
 
-############# 6th step: Compressing and coying phases #############
-echo
-echo '--------COMPRESS ORIGINAL DATA FILES in DATA/ ------------------'
-cd $dir_Data   
+if [ "$PROCESS_DATA_YESNO" == Y ]; then
+    ############# 6th step: Compressing and coying phases #############
+    echo
+    echo '--------COMPRESS ORIGINAL DATA (SST and CHL ) FILES in DATA/ ------------------'
+    cd $dir_data   
 
-# SST data 
-if [ "$SST_L3_YESNO" == Y ]; then 	  
-    cd $dir_SST_L4 
-    /bin/gzip -f ${date_SST_L4}000000-GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED-v02.0-fv02.0.nc  
+    # SST data 
+    if [ "$SST_L4_YESNO" == Y ]; then 	  
+	cd $dir_SST_L4 
+	/bin/gzip -f ${date_SST_L4}120000-UKMO-L4_GHRSST-SSTfnd-GMPE-GLOB-v03.0-fv03.0.nc 
+    fi
     
-    cd $dir_SST_L3
-    /bin/gzip -f ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.nc 
-fi
+    if [ "$SST_L3_YESNO" == Y ]; then 	
+	cd $dir_SST_L3
+	/bin/gzip -f ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.nc 
+    fi
 
-if [ "$SST_L4_JPL_YESNO" == Y ]; then 
-    cd $dir_SST_L4_JPL 
-    /bin/gzip -f ${date_SST_L4_JPL}-JPL_OUROCEAN-L4UHfnd-GLOB-v01-fv01_0-G1SST.nc 
-fi
+    if [ "$SST_L4_JPL_YESNO" == Y ]; then 
+	cd $dir_SST_L4_JPL 
+	/bin/gzip -f ${date_SST_L4_JPL}-JPL_OUROCEAN-L4UHfnd-GLOB-v01-fv01_0-G1SST.nc 
+    fi
 
-# CHL data
-if [ "$CHL_L4_YESNO" == Y ]; then 	
-    cd $dir_CHL_L4 
-    /bin/gzip  -f ${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc
-fi
+    # CHL data
+    if [ "$CHL_L4_YESNO" == Y ]; then 	
+	cd $dir_CHL_L4
+	/bin/gzip -f -v ${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc
+    fi
+    if [ "$CHL_L3_glob_YESNO" == Y ]; then 	
+	cd $dir_CHL_L3_MULTI_glob 
+	/bin/gzip  -f ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v02.nc 
+	
+	cd $dir_CHL_L3_OLCI_a_glob  
+	/bin/gzip  -f ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.nc
+    fi
 
-if [ "$CHL_L3_med_YESNO" == Y ]; then 
-    cd $dir_CHL_L3_MULTI_med 
-    /bin/gzip  -f ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.nc 
-    
-    cd $dir_CHL_L3_OLCI_a_med 
-    /bin/gzip  -f ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_Oa_1KM-MED-NRT-v02.nc 
-fi
-
-if [ "$CHL_L3_glob_YESNO" == Y ]; then 	
-    cd $dir_CHL_L3_MULTI_glob 
-    /bin/gzip  -f ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v02.nc 
-    
-    cd $dir_CHL_L3_OLCI_a_glob  
-    /bin/gzip  -f ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.nc
+    if [ "$CHL_L3_med_YESNO" == Y ]; then 
+	cd $dir_CHL_L3_MULTI_med 
+	/bin/gzip  -f ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.nc 	
+	#	cd $dir_CHL_L3_OLCI_a_med 
+	#	/bin/gzip  -f ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_Oa_1KM-MED-NRT-v02.nc 
+    fi
 fi
 
 echo
 echo '--------COMPRESS AND COPY .MAT DATA FILES FROM WRK/ to PROCESSED/ ------------------'
 cd $dir_wrk
-
 #### ALTI DATA
 if [ "$ALTI_YESNO" == Y ]; then 
     /bin/gzip *_allsat_phy_*.mat
@@ -375,52 +376,47 @@ fi
 #
 #### SST DATA
 if [ "$SST_L4_YESNO" == Y ]; then 
-    /bin/gzip ${date_SST_L4}000000-GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED-v02.0-fv02.0.mat  
-    cp ${date_SST_L4}000000-GOS-L4_GHRSST-SSTfnd-OISST_HR_NRT-MED-v02.0-fv02.0.mat.gz $dir_PROC 
+    /bin/gzip ${date_SST_L4}120000-UKMO-L4_GHRSST-SSTfnd-GMPE-GLOB-v03.0-fv03.0.mat  
+    cp -v ${date_SST_L4}120000-UKMO-L4_GHRSST-SSTfnd-GMPE-GLOB-v03.0-fv03.0.mat.gz $dir_PROC 
 fi
 #
 if [ "$SST_L3_YESNO" == Y ]; then 
     /bin/gzip ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.mat 
-    cp ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.mat.gz $dir_PROC 
+    cp -v ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.mat.gz $dir_PROC 
 fi
 #
 if [ "$SST_L4_JPL_YESNO" == Y ]; then 
     /bin/gzip  ${date_SST_L4_JPL}-JPL_OUROCEAN-L4UHfnd-GLOB-v01-fv01_0-G1SST.mat  
-    cp ${date_SST_L4_JPL}-JPL_OUROCEAN-L4UHfnd-GLOB-v01-fv01_0-G1SST.mat.gz $dir_PROC
+    cp -v ${date_SST_L4_JPL}-JPL_OUROCEAN-L4UHfnd-GLOB-v01-fv01_0-G1SST.mat.gz $dir_PROC
 fi
 
 #### CHL DATA
-if [ "$CHL_L4_YESNO" == Y ]; then 
-    /bin/gzip  ${date_CHL_L4}_d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT-v02.mat 
-    cp ${date_CHL_L4}_d-OC_CNR-L4-CHL-INTERP_MULTI_1KM-MED-NRT-v02.mat.gz $dir_PROC 
+if [ "$CHL_L4_YESNO" == Y ]; then     
+    /bin/gzip  ${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc
+    cp -v ${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.nc.gz $dir_PROC 
 fi
-# attention ici ! 
 if [ "$CHL_L3_med_YESNO" == Y ]; then 
     /bin/gzip  ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.mat 
-    cp ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.mat.gz $dir_PROC
+    cp -v ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.mat.gz $dir_PROC
 fi
-# attention ici ! 
 if [ "$CHL_L3_med_YESNO" == Y ]; then
     /bin/gzip  ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4Ad4_Oa_1KM-MED-NRT-v02.mat 
-    cp ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4Ad4_Oa_1KM-MED-NRT-v02.mat.gz $dir_PROC 
+    cp -v ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4Ad4_Oa_1KM-MED-NRT-v02.mat.gz $dir_PROC 
 fi
 
 if [ "$CHL_L3_glob_YESNO" == Y ]; then 
     /bin/gzip  ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v02.mat 
-    cp ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v02.mat.gz $dir_PROC 
+    cp -v ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v02.mat.gz $dir_PROC 
     
-    /bin/gzip  ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat 
-    cp ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat.gz $dir_PROC 
+    #/bin/gzip  ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat 
+    #cp -v ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat.gz $dir_PROC 
 fi
 
 echo
 echo '------------------ COPY FILES FROM WRK/ to FIGURES/ ------------------'
-
-cp *.png $dir_FIG
-#cp *.gif $dir_FIG
-
-#tar -zcvf spasso_figures_${date_alti}.tar.gz *.png *.gif      
+cp *.png $dir_FIG   
 tar -zcvf spasso_figures_${date_alti}.tar.gz *.png
+
 cp spasso_figures_${date_alti}.tar.gz  $dir_FIG_web
 
 
@@ -430,21 +426,22 @@ if [ "$WEB_YESNO" == Y ]; then
     echo '---------------PUTTING FIGURES ON A WEBSITE-----------------'
 
     rsync -auv --include '*.png' --exclude '*' $dir_wrk/ $dir_FIG_web/
-    /bin/sh $cruise_path/indicepagweb.sh $dir_FIG_web/
+    /bin/sh $cruise_path/Process_web/indicepagweb.sh $dir_FIG_web/
+    #=> of the day
     rsync -auv --include '*.png' --exclude '*' $dir_wrk/oftheday/ $dir_FIG_web_oftheday/
-    /bin/sh $cruise_path/indicepagweb_Figures_oftheday.sh $dir_FIG_web_oftheday/
-    
+    /bin/sh $cruise_path/Process_web/indicepagweb_Figures_oftheday.sh $dir_FIG_web_oftheday/
+
     # syncrhonization for processed data on the web
     rsync -auv $dir_PROC/ $dir_PROC_web/
-    /bin/sh $cruise_path/indicepagweb_Processed.sh $dir_PROC_web/
+    /bin/sh $cruise_path/Process_web/indicepagweb_Processed.sh $dir_PROC_web/
     
     # syncrhonization for bulletion on the web 
     rsync -auv $dir_BUL/ $dir_BUL_web/
-    /bin/sh $cruise_path/indicepagweb_BULLETIN.sh $dir_BUL_web/
+    /bin/sh $cruise_path/Process_web/indicepagweb_BULLETIN.sh $dir_BUL_web/
     
-    # syncrhonize gliderMap on the web
-    rsync -auv /home/glider/realTimePosition/gliderMap.html $web_path/Glider_web/gliderMap.html
-    /bin/sh $cruise_path/indicepagweb_Glider.sh $web_path/Glider_web/
+    # # syncrhonize gliderMap on the web
+    # rsync -auv /home/glider/realTimePosition/gliderMap.html $web_path/Glider_web/gliderMap.html
+    # /bin/sh $cruise_path/Process_web/indicepagweb_Glider.sh $web_path/Glider_web/
     echo '---------------END PUTTING ON A WEBSITE-----------------'
 fi
 
@@ -471,8 +468,6 @@ echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo '%%                    END SPASSO                         %%'
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo '%%                                                       %%'
-runday=`date`
-echo '%%             '$runday'               %%'
 echo '%%                                                       %%'
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo
