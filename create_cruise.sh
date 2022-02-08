@@ -8,7 +8,7 @@ set -e
 SPASSO_SOURCES=/home/gcambon/MYGITHUB/SPASSO/
 
 HOMEDIR_SPASSO=/home/gcambon/HCONFIGS_SPASSO/
-OUTDIR_SPASSO=/local/tmp/3/gcambon/CONFIGS_SPASSO/
+OUTDIR_SPASSO=/net/spica/local/tmp/3/gcambon/CONFIGS_SPASSO/
 CRUISE_NAME=DEMO2
 #===========================================================
 
