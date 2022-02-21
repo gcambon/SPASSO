@@ -39,7 +39,8 @@ export dir_data=$cruise_path/Data
 # Dataset 
 
 ##### ALT #####
-ALTI_product='nrt.cmems-du.eu/Core/SEALEVEL_EUR_PHY_L4_NRT_OBSERVATIONS_008_060/dataset-duacs-nrt-europe-merged-allsat-phy-l4'
+#ALTI_product='nrt.cmems-du.eu/Core/SEALEVEL_EUR_PHY_L4_NRT_OBSERVATIONS_008_060/dataset-duacs-nrt-europe-merged-allsat-phy-l4'
+ALTI_product='nrt.cmems-du.eu/Core/SEALEVEL_GLO_PHY_L4_NRT_OBSERVATIONS_008_046/dataset-duacs-nrt-global-merged-allsat-phy-l4'
 
 #### CHL #####
 #-- CHL_L4
@@ -141,7 +142,7 @@ SST_L4_JPL_YESNO=N
 SST_data=( sst ) 
 #===================================================
 # Extra Options [Y/N]
-LAGRANGIAN_YESNO=Y
+LAGRANGIAN_YESNO=N
 WEB_YESNO=Y
 MAILING_YESNO=N
 
@@ -155,9 +156,9 @@ year_alti=`date +%Y --date='0day ago'`
 month_alti=`date +%m --date='0day ago'`  
 
 # orig 0day ago
-date_SST_L4=`date +%Y%m%d --date='0day ago'`  
-year_SST_L4=`date +%Y --date='0day ago'`	 
-month_SST_L4=`date +%m --date='0day ago'`
+date_SST_L4=`date +%Y%m%d --date='2day ago'`  
+year_SST_L4=`date +%Y --date='2day ago'`	 
+month_SST_L4=`date +%m --date='2day ago'`
 
 # orig 0day ago
 date_SST_L3=`date +%Y%m%d --date='0day ago'`  

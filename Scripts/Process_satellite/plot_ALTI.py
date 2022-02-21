@@ -59,9 +59,9 @@ else:
     dir_cruise=sys.argv[2]
     #--END if len(args)<1:
 
-# for interactive test
-dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
-dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+## for interactive test
+##dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
+##dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
 
 #  Load data
 filelist=glob.glob(dir_wrk+'/*allsat_phy*.mat')
@@ -76,8 +76,8 @@ reso_meridians = [2,1]
 
 # to load cruise configuration
 filelist_domain = glob.glob(dir_cruise+'/domain_limits*.py')
-##execfile(dir_cruise+"/cruise_params.py")
 exec(open(dir_cruise+"/cruise_params.py").read())
+
 # load the SST data and extract lon and lat from the projection
 data_aviso=sio.loadmat(filemat)
 lon = data_aviso['lon'][0]
@@ -101,44 +101,43 @@ for line in dico_waypoint:
     lon_waypoint.append(float(xxx))
     lat_waypoint.append(float(yyy))
     
-#load the glider trajectory
+# #load the glider trajectory
+# dico_glider_lon=open(dir_cruise+'/gliderLon.txt') 
+# dico_glider_lat=open(dir_cruise+'/gliderLat.txt')
 
-dico_glider_lon=open(dir_cruise+'/gliderLon.txt') 
-dico_glider_lat=open(dir_cruise+'/gliderLat.txt')
+# lon_glider=[]
+# lat_glider=[]
+# for line in dico_glider_lon:
+#     x_gl= float(line)
+#     lon_glider.append(float(x_gl))
+# for line in dico_glider_lat:
+#     y_gl= float(line)
+#     lat_glider.append(float(y_gl))
 
-lon_glider=[]
-lat_glider=[]
-for line in dico_glider_lon:
-    x_gl= float(line)
-    lon_glider.append(float(x_gl))
-for line in dico_glider_lat:
-    y_gl= float(line)
-    lat_glider.append(float(y_gl))
+# #load the ZEE limits
+# dico_zee=open(dir_cruise+'/Algeria.txt')
+# lon_zee=[]
+# lat_zee=[]
+# for line in dico_zee:
+#     xxxx,yyyy=line.split()
+#     lon_zee.append(float(xxxx))
+#     lat_zee.append(float(yyyy))
 
-#load the ZEE limits
-dico_zee=open(dir_cruise+'/Algeria.txt')
-lon_zee=[]
-lat_zee=[]
-for line in dico_zee:
-    xxxx,yyyy=line.split()
-    lon_zee.append(float(xxxx))
-    lat_zee.append(float(yyyy))
+# dico_zee_spain=open(dir_cruise+'/Spain.txt')
+# lon_zee_sp=[]
+# lat_zee_sp=[]
+# for line in dico_zee_spain:
+#     xxxx_sp,yyyy_sp=line.split()
+#     lon_zee_sp.append(float(xxxx_sp))
+#     lat_zee_sp.append(float(yyyy_sp))
 
-dico_zee_spain=open(dir_cruise+'/Spain.txt')
-lon_zee_sp=[]
-lat_zee_sp=[]
-for line in dico_zee_spain:
-    xxxx_sp,yyyy_sp=line.split()
-    lon_zee_sp.append(float(xxxx_sp))
-    lat_zee_sp.append(float(yyyy_sp))
-
-dico_zee_spain=open(dir_cruise+'/Italy_ZEE_allwithoutcoast.txt')
-lon_zee_sp=[]
-lat_zee_sp=[]
-for line in dico_zee_spain:
-    xxxx_sp,yyyy_sp=line.split()
-    lon_zee_sp.append(float(xxxx_sp))
-    lat_zee_sp.append(float(yyyy_sp))
+# dico_zee_spain=open(dir_cruise+'/Italy_ZEE_allwithoutcoast.txt')
+# lon_zee_sp=[]
+# lat_zee_sp=[]
+# for line in dico_zee_spain:
+#     xxxx_sp,yyyy_sp=line.split()
+#     lon_zee_sp.append(float(xxxx_sp))
+#     lat_zee_sp.append(float(yyyy_sp))
 
 #load the SWOT trajectories  
 #dico_extra=open(dir_cruise+'/extra_coord.txt')
@@ -149,14 +148,14 @@ for line in dico_zee_spain:
 #       lon_extra.append(float(xxxxx))
 #       lat_extra.append(float(yyyyy))
 
-#load the S3B trajectories
-dico_extra=open(dir_cruise+'/S3B.txt') 
-lon_extra=[]
-lat_extra=[]
-for line in dico_extra:
-    xxxxx,yyyyy=line.split()
-    lon_extra.append(float(xxxxx))
-    lat_extra.append(float(yyyyy))
+# #load the S3B trajectories
+# dico_extra=open(dir_cruise+'/S3B.txt') 
+# lon_extra=[]
+# lat_extra=[]
+# for line in dico_extra:
+#     xxxxx,yyyyy=line.split()
+#     lon_extra.append(float(xxxxx))
+#     lat_extra.append(float(yyyyy))
     
 #data 
 lon, lat = np.meshgrid(lon, lat)
@@ -204,15 +203,16 @@ for file_domain in filelist_domain:
     #project the waypoint on the figure axis
     x_waypoint,y_waypoint = mymap(lon_waypoint,lat_waypoint)
 
-    #project the glider on the figure axis
-    x_gl,y_gl = mymap(lon_glider,lat_glider)
+    # #project the glider on the figure axis
+    # x_gl,y_gl = mymap(lon_glider,lat_glider)
 
-    #project the ZEE limits on the figure axis
-    x_zee,y_zee = mymap(lon_zee,lat_zee)
-    x_zee_sp,y_zee_sp = mymap(lon_zee_sp,lat_zee_sp)
+    # #project the ZEE limits on the figure axis
+    # x_zee,y_zee = mymap(lon_zee,lat_zee)
+    # x_zee_sp,y_zee_sp = mymap(lon_zee_sp,lat_zee_sp)
 
-    #project the SWOT trajectories on the figure axis
-    x_extra,y_extra = mymap(lon_extra,lat_extra)        
+    # #project the SWOT trajectories on the figure axis
+    # x_extra,y_extra = mymap(lon_extra,lat_extra)        
+
     x_newgrid, y_newgrid = mymap(lon_newgrid, lat_newgrid)
     cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice,zorder=-1) 
 
@@ -251,17 +251,17 @@ for file_domain in filelist_domain:
     #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
     #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
 
-    #draw the glider
-    mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1) 
+    # #draw the glider
+    # mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1) 
 
-    #draw the ZEE limits 
-    mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1) 
+    # #draw the ZEE limits 
+    # mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1) 
 
-    #draw the swot trajectories
-    mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1)
-    mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
-    mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
-    mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
+    # #draw the swot trajectories
+    # mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1)
+    # mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
+    # mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
+    # mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
 
     #add the colorbar
     if (len(adtmin) >= count_domain+1 and len(adtmax) >= count_domain+1):

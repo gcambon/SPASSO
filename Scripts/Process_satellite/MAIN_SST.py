@@ -62,8 +62,8 @@ else:
 ### END if len(args)<1:
 
 #for interactive test
-dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
-dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+##dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
+##dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
 
 # to load cruise configuration
 #execfile(dir_cruise+"/domain_limits.py")
