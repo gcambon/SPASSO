@@ -27,7 +27,10 @@
 #          Anais Ricout
 ###############################################################
 import matplotlib
-matplotlib.use('Agg')
+
+#matplotlib.use('Agg')
+matplotlib.use('Tkagg')
+
 import sys 
 import cmocean as cm_oc
 import colormaps as cmaps
@@ -45,6 +48,11 @@ import glob
 from mpl_toolkits.basemap import Basemap, shiftgrid 
 from matplotlib.patches import Polygon
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+import warnings
+import matplotlib.cbook
+warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
+
+
 #from netcdftime import utime
 #from cftime import utime
 #############################################
@@ -60,8 +68,16 @@ else:
     #--END if len(args)<1:
 
 ## for interactive test
-##dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
-##dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+interactive=0
+if interactive == 1:
+    print ('INTERACTIVE TEST IS ON')
+    dir_wrk='/home/gcambon/HCONFIGS_SPASSO/RESILIENCE/Wrk'
+    dir_cruise='/home/gcambon/HCONFIGS_SPASSO/RESILIENCE'
+    plt.ion()
+    plt.close('all')
+    print('DIR_WRK:',dir_wrk)
+    
+
 
 #  Load data
 filelist=glob.glob(dir_wrk+'/*allsat_phy*.mat')
@@ -214,16 +230,17 @@ for file_domain in filelist_domain:
     # x_extra,y_extra = mymap(lon_extra,lat_extra)        
 
     x_newgrid, y_newgrid = mymap(lon_newgrid, lat_newgrid)
-    cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice,zorder=-1) 
-
+    #cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice,zorder=-1) 
+    cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice)
+    
     # plot wind vectors on projection grid.
     uproj,vproj,xx,yy = mymap.transform_vector(u_newgrid,v_newgrid,lon_newgrid_2,latitudes,48,22,returnxy=True,masked=True) 
 
     # now plot.
-    Q = mymap.quiver(xx,yy,uproj,vproj,linewidth=0.05,color='y')
+    Q = mymap.quiver(xx,yy,uproj,vproj,linewidth=0.05,color='r')
 
     # make quiver key.
-    qk = plt.quiverkey(Q, 1.25, 1.1, 0.5, '0.5 m/s', labelpos='N', color='y')
+    qk = plt.quiverkey(Q, 1.25, 1.1, 0.5, '0.5 m/s', labelpos='N', color='r')
 
     #add the coastline (data from Basemap)
     mymap.drawcoastlines()
@@ -268,23 +285,19 @@ for file_domain in filelist_domain:
         cax1.set_clim(adtmin[count_domain],adtmax[count_domain]) 
     else:
         cax1.set_clim(adtmin[len(adtmin)-1],adtmax[len(adtmax)-1])
-        cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9)
-        cbar1.ax.set_ylabel('ADT [m]')
 
+
+    cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9)
+    cbar1.ax.set_ylabel('ADT [m]')
+    
     #add the title
-    plt.title(filemat[len(dir_wrk)+9:-4]) 
-
+    plt.title(filemat[len(dir_wrk)+1:-4]) 
+    
     plt.savefig(filefig[count_domain]) 
-    plt.savefig(filefig_d[count_domain]) 
+    plt.savefig(filefig_d[count_domain])
+    
 
     count_domain = count_domain +1
-
-
-
-
-
-
-
 
 
 

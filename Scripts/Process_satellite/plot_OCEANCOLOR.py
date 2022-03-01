@@ -27,7 +27,8 @@
 #          Anais Ricout
 ###############################################################
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
+matplotlib.use('Tkagg')
 import sys 
 import cmocean as cm_oc
 import colormaps as cmaps
@@ -46,6 +47,10 @@ from mpl_toolkits.basemap import Basemap, shiftgrid
 from matplotlib.patches import Polygon
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from cftime import utime
+import warnings
+import matplotlib.cbook
+warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
+
 #############################################
 args=sys.argv
 ### TEST MODE 
@@ -58,12 +63,17 @@ else:
     dir_cruise=sys.argv[2]
 ### END if len(args)<1:
 
-## # for interactive tests
-## dir_wrk='/home/gcambon/HCONFIGS_SPASSO/DEMO2/Wrk'
-## dir_cruise='/home/gcambon/HCONFIGS_SPASSO/DEMO2'
+# for interactive tests
+interactive=0
+if interactive == 1:
+    print ('INTERACTIVE TEST IS ON')
+    dir_wrk='/home/gcambon/HCONFIGS_SPASSO/RESILIENCE/Wrk'
+    dir_cruise='/home/gcambon/HCONFIGS_SPASSO/RESILIENCE'
+    plt.ion()
+    plt.close('all')
+    print('DIR_WRK:',dir_wrk)
 
 # to load cruise configuration
-
 filelist_domain = glob.glob(dir_cruise+'/domain_limits*.py')
 exec(open(dir_cruise+"/cruise_params.py").read())
 fileext=['','_zoom']
@@ -143,9 +153,8 @@ for line in dico_waypoint:
 #     lon_extra.append(float(xxxxx))
 #     lat_extra.append(float(yyyyy))
     
+for i in range(0,2):
 
-#for i in range(0,9):
-for i in range(0,1):
     count_domain = 0
     for file_domain in filelist_domain: 
         exec(open(file_domain).read())
@@ -169,7 +178,12 @@ for i in range(0,1):
         # #project the S3B trajectories on the figure axis
         # x_extra,y_extra = mymap(lon_extra,lat_extra)
 
+
         if (i==0):
+        #############
+        # L4 CHL DATA
+        #############
+            print(' ')
             files=glob.glob(dir_wrk+'/*d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.mat')
             print(files)
             
@@ -233,253 +247,99 @@ for i in range(0,1):
                 cbar1.ax.set_ylabel('Chl [$\mu$g/L]') 
 
                 # add the title
-                filefig1=files[0]+fileext[count_domain]+'.png' 
+                filefig1=files[0]+fileext[count_domain]+'.png'
+                print('filefig is '+ filefig1)
                 titlefig1=files[0]
                 plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L4 - 1KM')
-                plt.savefig(filefig1)                         
-                filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+fileext[count_domain]+'_mat.png'
+                plt.savefig(filefig1)
+                
+                #filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+'_mat'+fileext[count_domain]+'.png'
+                filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8]+'.mat'+fileext[count_domain]+'.png'
                 print(filefig1_d)
                 plt.savefig(filefig1_d)
-                
-    count_domain = count_domain+1        
 
-
-            # if (i==1):
-            #     files=glob.glob(dir_wrk+'/*d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v*.mat')
-            #     if (len(files)>0):
-            #         #define the figure setup
-            #         fig=plt.figure()
-            #         variables=sio.loadmat(files[0])
-            #         lonv=variables['lon']
-            #         latv=variables['lat']
-            #         Chl=np.squeeze(variables['Chl'])
-            #         if (len(lonv)>0):
-            #             long,latg=np.meshgrid(lonv,latv)
-            #             (x,y)=mymap(long,latg)
-
-            #             Chl = np.ma.masked_where(np.isnan(Chl), Chl) 
-            #             cax1=mymap.pcolormesh(x,y,Chl,cmap=cmaps.viridis,zorder=-1) 
-            #             if (len(chlmin) >= count_domain+1 and len(chlmax) >= count_domain+1):
-            #                 cax1.set_clim(chlmin[count_domain],chlmax[count_domain]) 
-            #             else:
-            #                 cax1.set_clim(chlmin[len(chlmin)-1],chlmax[len(chlmax)-1])            
-
-            #             mymap.drawcoastlines()
-            #             #define the tick and the grid (done for global)
-            #             #from south pole to nortehn pole with a resolution of 1 degree
-            #             myparallels=range(-90,90+1,1)
-            #             #mymeridians = range(-180,180+1,1)
-            #             mymeridians = np.arange(-180,180+1,reso_meridians[count_domain]) 
-            #             #draw the ticks labels
-            #             mymap.drawparallels(myparallels,labels=[1,0,0,0],fontsize=10)
-            #             mymap.drawmeridians(mymeridians,labels=[0,0,0,1],fontsize=10)
-            #             #draw the continent (data from Basemap)
-            #             mymap.fillcontinents(color='0.83',lake_color='0.83',zorder=100)
-            #             #AD#draw the stations
-            #             mymap.plot(x_stations,y_stations,'-',color='r',zorder=1)
-
-            #             if count_domain>0:
-            #                 mymap.scatter(x_stations,y_stations,s=15,color='r',zorder=1) 
-            #                 # draw the waypoint
-            #                 #mymap.plot(x_waypoint,y_waypoint,color='r',zorder=1)
-            #                 #mymap.plot(x_waypoint[0:6],y_waypoint[0:6],'-',color='#66ffff',zorder=1)
-            #                 #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
-            #                 #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
-            #                 # draw the glider trajectory
-            #                 mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
-            #                 # draw the ZEE limits
-            #                 mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1) 
-            #                 # draw the swot trajectories
-            #                 mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                 mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                 mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                 mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                 #add the colorbar
-            #                 cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9)
-            #                 cbar1.ax.set_ylabel('Chl [$\mu$g/L]') 
-            #                 # add the title
-            #                 filefig1=files[0]+fileext[count_domain]+'.png'
-            #                 titlefig1=files[0]
-            #                 plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L3 - 1KM')
-            #                 plt.savefig(filefig1)
-            #                 filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+fileext[count_domain]+'_mat.png' 
-            #                 plt.savefig(filefig1_d)
-
-            # #     if (i==2):
-            # #         files=glob.glob(dir_wrk+'/*d-OC_CNR-L3-CHL-MedOC4Ad4_Oa_1KM-MED-NRT-v*.mat')
-            # #         if (len(files)>0):
-            # #                 #define the figure setup
-            # #                 fig=plt.figure()
-            # #                 variables=sio.loadmat(files[0])
-            # #                 lonv=variables['lon']
-            # #                 latv=variables['lat']
-            # #                 Chl=np.squeeze(variables['Chl'])
-            # #                 if (len(lonv)>0):
-            # #                         long,latg=np.meshgrid(lonv,latv)
-            # #                         (x,y)=mymap(long,latg)
-
-            #                 Chl = np.ma.masked_where(np.isnan(Chl), Chl) 
-            #                 cax1=mymap.pcolormesh(x,y,Chl,cmap=cmaps.viridis,zorder=-1) 
-            #                 if (len(chlmin) >= count_domain+1 and len(chlmax) >= count_domain+1):
-            #                         cax1.set_clim(chlmin[count_domain],chlmax[count_domain]) 
-            #                 else:
-            #                         cax1.set_clim(chlmin[len(chlmin)-1],chlmax[len(chlmax)-1])            
-
-            #                 mymap.drawcoastlines()
-            #                 #define the tick and the grid (done for global)
-            #                 #from south pole to nortehn pole with a resolution of 1 degree
-            #                 myparallels=range(-90,90+1,1)
-            #                 #mymeridians = range(-180,180+1,1)
-            #                 mymeridians = np.arange(-180,180+1,reso_meridians[count_domain]) 
-            #                 #draw the ticks labels
-            #                 mymap.drawparallels(myparallels,labels=[1,0,0,0],fontsize=10)
-            #                 mymap.drawmeridians(mymeridians,labels=[0,0,0,1],fontsize=10)
-            #                 #draw the continent (data from Basemap)
-            #                 mymap.fillcontinents(color='0.83',lake_color='0.83',zorder=100)
-            #                 #AD#draw the stations
-            #                 mymap.plot(x_stations,y_stations,'-',color='r',zorder=1)
-            #                 if count_domain>0:
-            #                         mymap.scatter(x_stations,y_stations,s=15,color='r',zorder=1) 
-            #                         # draw the waypoint
-            #                         #mymap.plot(x_waypoint,y_waypoint,color='r',zorder=1)
-            #                         #mymap.plot(x_waypoint[0:6],y_waypoint[0:6],'-',color='#66ffff',zorder=1)
-            #                         #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
-            #                         #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
-            #                         # draw the glider trajectory
-            #                         mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
-            #                         # draw the ZEE limits
-            #                         mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1) 
-            #                         # draw the swot trajectories
-            #                         mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                         mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                         mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                         mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                         #add the colorbar
-            #                         cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9)
-            #                         cbar1.ax.set_ylabel('Chl [$\mu$g/L]') 
-            #                         # add the title
-            #                         filefig1=files[0]+fileext[count_domain]+'.png'
-            #                         titlefig1=files[0]
-            #                         plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL Oa - L3 - 1KM') 
-            #                         plt.savefig(filefig1)
-            #                         filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+fileext[count_domain]+'_mat.png'
-            #                         plt.savefig(filefig1_d) 
-
-            # if (i==3):
-            #         files=glob.glob(dir_wrk+'/*_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v*.mat')
-            #         for file in files:
-            #                 #define the figure setup
-            #                 fig=plt.figure()        
-            #                 variables=sio.loadmat(file)
-            #                 lonv=variables['lon']
-            #                 latv=variables['lat']
-            #                 Chl=np.squeeze(variables['Chl'])                             
-            #                 long,latg=np.meshgrid(lonv,latv)
-            #                 (x,y)=mymap(long,latg)                               
-            #                 Chl = np.ma.masked_where(np.isnan(Chl), Chl)
-            #                 cax1=mymap.pcolormesh(x,y,Chl,cmap=cmaps.viridis,zorder=-1) 
-            #                 if (len(chlmin) >= count_domain+1 and len(chlmax) >= count_domain+1):
-            #                         cax1.set_clim(chlmin[count_domain],chlmax[count_domain]) 
-            #                 else:
-            #                         cax1.set_clim(chlmin[len(chlmin)-1],chlmax[len(chlmax)-1])
-
-            #                 mymap.drawcoastlines()
-            #                 # define the tick and the grid (done for global)
-            #                 # from south pole to nortehn pole with a resolution of 1 degree 
-            #                 myparallels=np.arange(-90,90+1,1)
-            #                 mymeridians = np.arange(-180,180+1,reso_meridians[count_domain])
-            #                 #draw the ticks labels
-            #                 mymap.drawparallels(myparallels,labels=[1,0,0,0],fontsize=10)
-            #                 mymap.drawmeridians(mymeridians,labels=[0,0,0,1],fontsize=10)
-            #                 # draw the continent (data from Basemap)
-            #                 mymap.fillcontinents(color='0.83',lake_color='0.83',zorder=100)
-            #                 # draw the stations
-            #                 mymap.plot(x_stations,y_stations,'-',color='r',zorder=1)
-
-            #                 if count_domain>0:
-            #                         mymap.scatter(x_stations,y_stations,s=15,color='r',zorder=1)
-            #                         # draw the waypoint
-            #                         #mymap.plot(x_waypoint,y_waypoint,color='r',zorder=1)
-            #                         #mymap.plot(x_waypoint[0:6],y_waypoint[0:6],'-',color='#66ffff',zorder=1)
-            #                         #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
-            #                         #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
-            #                         # draw the glider trajectory
-            #                         mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
-            #                         # draw the ZEE limits
-            #                         mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1)             
-            #                         # draw the S3B trajectories
-            #                         mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                         mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                         mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                         mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                         # add the colorbar
-            #                         cbar1=fig.colorbar(cax1,orientation='vertical',shrink=0.9) 
-            #                         cbar1.ax.set_ylabel('Chl [$\mu$g/L]')
-            #                         # add the title
-            #                         filefig1=file+fileext[count_domain]+'.png'  
-            #                         titlefig1=file
-            #                         plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L3 - 4KM') 
-            #                         plt.savefig(filefig1)
-            #                         filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+fileext[count_domain]+'_mat.png'
-            #                         plt.savefig(filefig1_d) 
-
-            # if (i==4):
-            #         files=glob.glob(dir_wrk+'/*_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v*.mat')
-            #         for file in files:
-            #                 #define the figure setup
-            #                 fig=plt.figure()        
-            #                 variables=sio.loadmat(file)
-            #                 lonv=variables['lon']
-            #                 latv=variables['lat']
-            #                 Chl=np.squeeze(variables['Chl'])                             
-            #                 long,latg=np.meshgrid(lonv,latv)
-            #                 (x,y)=mymap(long,latg)                               
-            #                 Chl = np.ma.masked_where(np.isnan(Chl), Chl)
-            #                 cax1=mymap.pcolormesh(x,y,Chl,cmap=cmaps.viridis,zorder=-1) 
-            #                 if (len(chlmin) >= count_domain+1 and len(chlmax) >= count_domain+1):
-            #                         cax1.set_clim(chlmin[count_domain],chlmax[count_domain]) 
-            #                 else:
-            #                         cax1.set_clim(chlmin[len(chlmin)-1],chlmax[len(chlmax)-1])
-
-            #                 mymap.drawcoastlines()
-            #                 # define the tick and the grid (done for global)
-            #                 # from south pole to nortehn pole with a resolution of 1 degree 
-            #                 myparallels=np.arange(-90,90+1,1)
-            #                 mymeridians = np.arange(-180,180+1,reso_meridians[count_domain])
-            #                 #draw the ticks labels
-            #                 mymap.drawparallels(myparallels,labels=[1,0,0,0],fontsize=10)
-            #                 mymap.drawmeridians(mymeridians,labels=[0,0,0,1],fontsize=10)
-            #                 # draw the continent (data from Basemap)
-            #                 mymap.fillcontinents(color='0.83',lake_color='0.83',zorder=100)
-            #                 # draw the stations
-            #                 mymap.plot(x_stations,y_stations,'-',color='r',zorder=1)
-            #                 if count_domain>0:
-            #                         mymap.scatter(x_stations,y_stations,s=15,color='r',zorder=1)
-            #                         # draw the waypoint
-            #                         #mymap.plot(x_waypoint,y_waypoint,color='r',zorder=1)
-            #                         #mymap.plot(x_waypoint[0:6],y_waypoint[0:6],'-',color='#66ffff',zorder=1)
-            #                         #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
-            #                         #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
-            #                         # draw the glider trajectory
-            #                         mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
-            #                         # draw the ZEE limits
-            #                         mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1)             
-            #                         # draw the S3B trajectories
-            #                         mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                         mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
-            #                         mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                         mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
-            #                         # add the colorbar
-            #                         cbar1=fig.colorbar(cax1,orientation='vertical',shrink=0.9) 
-            #                         cbar1.ax.set_ylabel('Chl [$\mu$g/L]')
-            #                         # add the title
-            #                         filefig1=file+fileext[count_domain]+'.png'  
-            #                         titlefig1=file
-            #                         plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL Oa - L3 - 4KM')
-            #                         plt.savefig(filefig1)
-            #                         filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+fileext[count_domain]+'_mat.png' 
-            #                         plt.savefig(filefig1_d)
+        #############
+        # L3 CHL DATA
+        #############
+        if (i==1):
+            print(' ')
+            files=glob.glob(dir_wrk+'/*d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT.mat')
+            print(files)
             
+            if (len(files)>0):
+                #define the figure setup
+                fig=plt.figure()
+                variables=sio.loadmat(files[0])
+                lonv=variables['lon']
+                latv=variables['lat']
+                Chl=np.squeeze(variables['Chl'])
+                if (len(lonv)>0):
+                    long,latg=np.meshgrid(lonv,latv)
+                    (x,y)=mymap(long,latg)
+                    
+                Chl = np.ma.masked_where(np.isnan(Chl), Chl)
+                cax1=mymap.pcolormesh(x,y,Chl,cmap=cmaps.viridis,zorder=-1) 
+                
+                if (len(chlmin) >= count_domain+1 and len(chlmax) >= count_domain+1):
+                    cax1.set_clim(chlmin[count_domain],chlmax[count_domain]) 
+                else:
+                    cax1.set_clim(chlmin[len(chlmin)-1],chlmax[len(chlmax)-1])
+                    
+                mymap.drawcoastlines()
+
+                #define the tick and the grid (done for global)
+                #from south pole to nortehn pole with a resolution of 1 degree
+                myparallels=range(-90,90+1,1)
+                mymeridians = np.arange(-180,180+1,reso_meridians[count_domain]) 
+                
+                #draw the ticks labels
+                mymap.drawparallels(myparallels,labels=[1,0,0,0],fontsize=10)
+                mymap.drawmeridians(mymeridians,labels=[0,0,0,1],fontsize=10)
+                
+                #draw the continent (data from Basemap)
+                mymap.fillcontinents(color='0.83',lake_color='0.83',zorder=100) 
+                
+                #draw the stations
+                mymap.plot(x_stations,y_stations,'-',color='r',zorder=1)
+                if count_domain>0:
+                    mymap.scatter(x_stations,y_stations,s=15,color='r',zorder=1) 
+                    
+                # draw the waypoint
+                #mymap.plot(x_waypoint,y_waypoint,color='r',zorder=1)
+                #mymap.plot(x_waypoint[0:6],y_waypoint[0:6],'-',color='#66ffff',zorder=1)
+                #mymap.plot(x_waypoint[7:13],y_waypoint[7:13],'-',color='#66ccff',zorder=1)
+                #mymap.plot(x_waypoint[13:18],y_waypoint[13:18],'-',color='#0000ff',zorder=1)
+                # draw the glider trajectory
+                #mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
+                
+                # # draw the ZEE limits
+                # mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1)
+                
+                # # draw the S3B trajectories
+                # mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1) 
+                # mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
+                # mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
+                # mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
+                
+                # add the colorbar
+                cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9) 
+                cbar1.ax.set_ylabel('Chl [$\mu$g/L]') 
+                
+                # add the title
+                filefig1=files[0]+fileext[count_domain]+'.png'
+                print('filefig is '+ filefig1)
+                titlefig1=files[0]
+                plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L3 - 1KM')
+                plt.savefig(filefig1)
+                
+                #filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+'_mat'+fileext[count_domain]+'.png'
+                filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8]+'.mat'+fileext[count_domain]+'.png'
+                print(filefig1_d)
+                plt.savefig(filefig1_d)
+
+        ######################
+        ######################                   
+        count_domain = count_domain+1
 
 
 
