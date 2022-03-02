@@ -102,6 +102,7 @@ dir_FIG=$cruise_path/Figures
 # Logs dir
 logs_dir=$cruise_path/Logs
 
+
 # Web 
 web_path=$cruise_path/Web
 dir_FIG_web=$web_path/Figures_web
@@ -111,33 +112,33 @@ dir_BUL_web=$web_path/Bulletin_web
 
 ############# 2d step: CHOICE OF DATA [Y/N] #############
 ALTI_YESNO=Y          
-user_alti=gcambon 
-pwd_alti=JOpozono@2931 
+user_alti=XXX 
+pwd_alti=XXX 
 ALTI_data=( phy ) 
 #===================================================
 CHL_L4_YESNO=Y
-user_chl_l4=gcambon 
-pwd_chl_l4=JOpozono@2931 
+user_chl_l4=XXX
+pwd_chl_l4=XXX 
 CHL_data=( CHL ) 
 
 CHL_L3_glob_YESNO=Y        
-user_chl_l3=gcambon 
-pwd_chl_l3=JOpozono@2931
+user_chl_l3=XXX 
+pwd_chl_l3=XXX
 CHL_data=( CHL )
 
 CHL_L3_med_YESNO=N
-user_chl_l3=gcambon 
-pwd_chl_l3=JOpozono@2931
+user_chl_l3=XXX 
+pwd_chl_l3=XXX
 CHL_data=( CHL ) 
 #===================================================
 SST_L4_YESNO=Y
-user_sst_l4=gcambon 
-pwd_sst_l4=JOpozono@2931 
+user_sst_l4=XXX 
+pwd_sst_l4=XXX 
 SST_data=( sst ) 
 
 SST_L3_YESNO=Y         
-user_sst_l3=gcambon 
-pwd_sst_l3=JOpozono@2931 
+user_sst_l3=XXX 
+pwd_sst_l3=XXX 
 SST_data=( sst ) 
 
 SST_L4_JPL_YESNO=N   
