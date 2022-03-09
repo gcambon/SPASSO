@@ -69,7 +69,7 @@ else:
 ### END if len(args)<1:
 
 # for interactive tests
-interactive=1
+interactive=0
 if interactive == 1:
     print ('INTERACTIVE TEST IS ON')
     dir_wrk='/home/gcambon/HCONFIGS_SPASSO/RESILIENCE/Wrk'
@@ -82,7 +82,7 @@ if interactive == 1:
 filelist_domain = glob.glob(dir_cruise+'/domain_limits*.py')
 exec(open(dir_cruise+"/cruise_params.py").read())
 fileext=['','_zoom']
-reso_meridians = [2,1] 
+reso_meridians = [3,2] 
 
 #load the cruise stations
 dico_stations=open(dir_cruise+'/station_coord.txt')

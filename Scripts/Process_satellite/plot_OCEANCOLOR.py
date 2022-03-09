@@ -77,7 +77,7 @@ if interactive == 1:
 filelist_domain = glob.glob(dir_cruise+'/domain_limits*.py')
 exec(open(dir_cruise+"/cruise_params.py").read())
 fileext=['','_zoom']
-reso_meridians = [2,1]
+reso_meridians = [3,2]
 
 #load the cruise stations
 dico_stations=open(dir_cruise+'/station_coord.txt')
@@ -250,7 +250,7 @@ for i in range(0,2):
                 filefig1=files[0]+fileext[count_domain]+'.png'
                 print('filefig is '+ filefig1)
                 titlefig1=files[0]
-                plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L4 - 1KM')
+                plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L4 - 4KM')
                 plt.savefig(filefig1)
                 
                 #filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+'_mat'+fileext[count_domain]+'.png'
@@ -329,7 +329,7 @@ for i in range(0,2):
                 filefig1=files[0]+fileext[count_domain]+'.png'
                 print('filefig is '+ filefig1)
                 titlefig1=files[0]
-                plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L3 - 1KM')
+                plt.title(titlefig1[len(dir_wrk)+1:len(dir_wrk)+9]+' - CHL MULTI - L3 - 4KM')
                 plt.savefig(filefig1)
                 
                 #filefig1_d=dir_wrk+'/oftheday/'+titlefig1[len(dir_wrk)+10:-8].replace('.','_')+'_mat'+fileext[count_domain]+'.png'

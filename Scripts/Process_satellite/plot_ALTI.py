@@ -88,7 +88,7 @@ filemat=filelist[0]
 filefig=[filemat[0:-3]+'png', filemat[0:-4]+'_zoom.png'] 
 filefig_d=[dir_wrk+'/oftheday/'+filemat[len(dir_wrk):-22]+'.png', dir_wrk+'/oftheday/'+filemat[len(dir_wrk):-22]+'_zoom.png'] 
 
-reso_meridians = [2,1] 
+reso_meridians = [3,2] 
 
 # to load cruise configuration
 filelist_domain = glob.glob(dir_cruise+'/domain_limits*.py')
@@ -234,7 +234,8 @@ for file_domain in filelist_domain:
     cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice)
     
     # plot wind vectors on projection grid.
-    uproj,vproj,xx,yy = mymap.transform_vector(u_newgrid,v_newgrid,lon_newgrid_2,latitudes,48,22,returnxy=True,masked=True) 
+    scale_quiv = 2
+    uproj,vproj,xx,yy = mymap.transform_vector(u_newgrid,v_newgrid,lon_newgrid_2,latitudes,48*scale_quiv,22*scale_quiv,returnxy=True,masked=True) 
 
     # now plot.
     Q = mymap.quiver(xx,yy,uproj,vproj,linewidth=0.05,color='r')

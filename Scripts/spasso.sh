@@ -22,7 +22,7 @@ echo '%%                                                       %%'
 echo '%%                                                       %%'
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
-set -e
+#set -e
 #set -x
 
 ############# 1st step: DEFINE THE PATHS ############# 
@@ -102,7 +102,6 @@ dir_FIG=$cruise_path/Figures
 # Logs dir
 logs_dir=$cruise_path/Logs
 
-
 # Web 
 web_path=$cruise_path/Web
 dir_FIG_web=$web_path/Figures_web
@@ -159,35 +158,39 @@ COMPRESS_DATAMAT_YESNO=N
 # Y is for prod
 
 ############# 3rd step: DATES OF FILES NAME OF DATASET #############
-# orig ALTI 0day ago
+# orig ALTI 0day ago arrive des données 0daysago ALT CMEMS L4 00h00 
 date_alti=`date +%Y%m%d --date='0day ago'`   
 year_alti=`date +%Y --date='0day ago'`       
 month_alti=`date +%m --date='0day ago'`  
 
-# orig SST_L4 0day ago
+# orig SST_L4 arrive des données -1daysago SST CMEMS L4& L3S
+# a midi-2days ago OK
 date_SST_L4=`date +%Y%m%d --date='2day ago'`  
 year_SST_L4=`date +%Y --date='2day ago'`	 
 month_SST_L4=`date +%m --date='2day ago'`
 
-# orig SST_L3 0day ago
-date_SST_L3=`date +%Y%m%d --date='1day ago'`  
-year_SST_L3=`date +%Y --date='1day ago'`	 
-month_SST_L3=`date +%m --date='1day ago'`
+# orig SST_L3 arrive des données -1daysago SST CMEMS L4& L3S
+# a midi -2days ago OK
+date_SST_L3=`date +%Y%m%d --date='2day ago'`  
+year_SST_L3=`date +%Y --date='2day ago'`	 
+month_SST_L3=`date +%m --date='2day ago'`
 
-# orig SST_JPL_L42day ago
+# orig SST_JPL_L4
 year_SST_L4_JPL=`date +%Y --date='2day ago'`
 day_SST_L4_JPL=`date +%j --date='2day ago'`  
 date_SST_L4_JPL=`date +%Y%m%d --date='2day ago'`
 
 # orig CHL_L4 1day ago
+# a midi -2days ago OK
 date_CHL_L4=`date +%Y%m%d --date='2day ago'`  
 year_CHL_L4=`date +%Y --date='2day ago'`     
 month_CHL_L4=`date +%m --date='2day ago'`
 
 # orig CHL_L3 1day ago
-date_CHL_L3=`date +%Y%m%d --date='1day ago'`  
-year_CHL_L3=`date +%Y --date='1day ago'`     
-month_CHL_L3=`date +%m --date='1day ago'`    
+# a midi -2days ago OK
+date_CHL_L3=`date +%Y%m%d --date='2day ago'`  
+year_CHL_L3=`date +%Y --date='2day ago'`     
+month_CHL_L3=`date +%m --date='2day ago'`    
 
 date_day=`date +%D --date='1day ago'` 
 
