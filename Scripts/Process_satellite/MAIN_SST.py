@@ -61,7 +61,7 @@ else:
     dir_cruise=sys.argv[2]
 ### END if len(args)<1:
 
-interactive=1
+interactive=0
 if interactive == 1:
     print ('INTERACTIVE TEST IS ON')
     dir_wrk='/home/gcambon/HCONFIGS_SPASSO/RESILIENCE/Wrk'
