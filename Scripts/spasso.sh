@@ -116,6 +116,12 @@ dir_FIG_web=$web_path/Figures_web
 dir_FIG_web_oftheday=$web_path/Figures_web_oftheday
 dir_PROC_web=$web_path/Processed_web
 dir_BUL_web=$web_path/Bulletin_web
+#
+web_path_remote=yy@xx.fr:XX/public_html/SPASSO/Web
+dir_FIG_web_remote=$web_path_remote/Figures_web
+dir_FIG_web_oftheday_remote=$web_path_remote/Figures_web_oftheday
+dir_PROC_web_remote=$web_path_remote/Processed_web
+dir_BUL_web_remote=$web_path_remote/Bulletin_web
 
 ############# 2d step: CHOICE OF DATA [Y/N] #############
 ALTI_YESNO=Y          
@@ -452,43 +458,82 @@ cd -
 
 # 7th step: Putting figures and data on the website #############
 if [ "$WEB_YESNO" == Y ]; then
+# #ORIG
+#     echo
+#     echo '---------------PUTTING FIGURES ON A WEBSITE-----------------'
+
+#     rsync -auv --include '*.png' --exclude '*' $dir_wrk/ $dir_FIG_web/
+#     /bin/sh $cruise_path/Process_web/indicepagweb.sh $dir_FIG_web/
+#     #=> of the day
+#     rsync -auv --include '*.png' --exclude '*' $dir_wrk/oftheday/ $dir_FIG_web_oftheday/
+#     /bin/sh $cruise_path/Process_web/indicepagweb_Figures_oftheday.sh $dir_FIG_web_oftheday/
+
+#     # syncrhonization for processed data on the web
+#     rsync -auv $dir_PROC/ $dir_PROC_web/
+#     /bin/sh $cruise_path/Process_web/indicepagweb_Processed.sh $dir_PROC_web/
+    
+#     # syncrhonization for bulletion on the web 
+#     rsync -auv $dir_BUL/ $dir_BUL_web/
+#     /bin/sh $cruise_path/Process_web/indicepagweb_BULLETIN.sh $dir_BUL_web/
+    
+#     # # syncrhonize gliderMap on the web
+#     # rsync -auv /home/glider/realTimePosition/gliderMap.html $web_path/Glider_web/gliderMap.html
+#     # /bin/sh $cruise_path/Process_web/indicepagweb_Glider.sh $web_path/Glider_web/
+#     echo '---------------END PUTTING ON A WEBSITE-----------------'
+# fi
+#ON MY WEBSITE
     echo
     echo '---------------PUTTING FIGURES ON A WEBSITE-----------------'
-
-    rsync -auv --include '*.png' --exclude '*' $dir_wrk/ $dir_FIG_web/
+    # local rsync
+    RSYNC_CMD="rsync -auv"
+    ${RSYNC_CMD} --include '*.png' --exclude '*' $dir_wrk/ $dir_FIG_web/
     /bin/sh $cruise_path/Process_web/indicepagweb.sh $dir_FIG_web/
     #=> of the day
-    rsync -auv --include '*.png' --exclude '*' $dir_wrk/oftheday/ $dir_FIG_web_oftheday/
+    ${RSYNC_CMD} --include '*.png' --exclude '*' $dir_wrk/oftheday/ $dir_FIG_web_oftheday/
     /bin/sh $cruise_path/Process_web/indicepagweb_Figures_oftheday.sh $dir_FIG_web_oftheday/
 
     # syncrhonization for processed data on the web
-    rsync -auv $dir_PROC/ $dir_PROC_web/
+    ${RSYNC_CMD} $dir_PROC/ $dir_PROC_web/
     /bin/sh $cruise_path/Process_web/indicepagweb_Processed.sh $dir_PROC_web/
     
     # syncrhonization for bulletion on the web 
-    rsync -auv $dir_BUL/ $dir_BUL_web/
+    ${RSYNC_CMD} $dir_BUL/ $dir_BUL_web/
     /bin/sh $cruise_path/Process_web/indicepagweb_BULLETIN.sh $dir_BUL_web/
     
     # # syncrhonize gliderMap on the web
-    # rsync -auv /home/glider/realTimePosition/gliderMap.html $web_path/Glider_web/gliderMap.html
+    # ${RSYNC_CMD} /home/glider/realTimePosition/gliderMap.html $web_path/Glider_web/gliderMap.html
     # /bin/sh $cruise_path/Process_web/indicepagweb_Glider.sh $web_path/Glider_web/
+    echo '---------------END LOCAL RSYNC        -----------------'
+
+    
+    RSYNC_REMOTE_CMD="rsync -e ssh -av"
+    ${RSYNC_REMOTE_CMD} $dir_FIG_web/ $dir_FIG_web_remote
+
+    ${RSYNC_REMOTE_CMD} $dir_FIG_web_oftheday/ $dir_FIG_web_oftheday_remote
+
+    ${RSYNC_REMOTE_CMD} $dir_PROC_web/ $dir_PROC_web_remote
+
+    ${RSYNC_REMOTE_CMD} $dir_BUL_web/ $dir_BUL_web_remote
+    
     echo '---------------END PUTTING ON A WEBSITE-----------------'
 fi
-
+    
 ############# 8th step:EMAILING #############
 if [ "$MAILING_YESNO" == Y ]; then
     echo
     echo '-------------------EMAILING--------------------'
     cd $dir_wrk
 
-    mailing_list="gildas.cambon@ird.fr"
+    mailing_list="xx@xx,yy@yy"
     
-    tar -zcvf spasso_DEMO_Lagr_figures_${date_ALTI}.tar.gz *adv*png OW*png FSLE*.png *vel*.png
-    tar -zcvf spasso_DEMO_figures_${date_ALTI}.tar.gz nrt_*.png *SST*.png *CHL*.png 
+    #tar -zcvf spasso_DEMO_Lagr_figures_${date_ALTI}.tar.gz *adv*png OW*png FSLE*.png *vel*.png
+    tar -zcvf spasso_RESILIENCE_figures_${date_ALTI}.tar.gz nrt_*.png *SST*.png *CHL*.png 
     
-    echo "Please, find attached the SPASSO Lagrangian figures of the day for the DEMO cruise." | mutt -s "[DEMO]: SPASSO Lagrangian Figures" $mailing_list -a spasso_DEMO_Lagr_figures_${date_ALTI}.tar.gz
-    echo "Please, find attached the SPASSO figures of the day for the DEMO cruise." | mutt -s "[DEMO]: SPASSO Figures" $mailing_list -a spasso_DEMO_figures_${date_ALTI}.tar.gz
-    echo "Please, find attached the SEA003 Glider positions until today for the DEMO cruise." | mutt -s "[DEMO]: SEA003 Glider positions" $mailing_list -a /home/glider/realTimePosition/gliderLon.txt /home/glider/realTimePosition/gliderLat.txt
+    #echo "Please, find attached the SPASSO Lagrangian figures of the day for the DEMO cruise." | mutt -s "[DEMO]: SPASSO Lagrangian Figures" $mailing_list -a spasso_DEMO_Lagr_figures_${date_ALTI}.tar.gz
+    
+    echo "Please, find attached the SPASSO figures of the day for the RESILIENCE cruise." | mutt -s "[RESILIENCE]: SPASSO Figures" $mailing_list -a spasso_RESILIENCE_figures_${date_ALTI}.tar.gz
+    
+    #echo "Please, find attached the SEA003 Glider positions until today for the DEMO cruise." | mutt -s "[DEMO]: SEA003 Glider positions" $mailing_list -a /home/glider/realTimePosition/gliderLon.txt /home/glider/realTimePosition/gliderLat.txt
 
     echo '---------------END EMAILING     -----------------'
     cd -
