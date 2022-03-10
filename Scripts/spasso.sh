@@ -22,6 +22,14 @@ echo '%%                                                       %%'
 echo '%%                                                       %%'
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
+echo
+echo
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo '%%                    Python ENV activation              %%'
+source ~/.bash_profile
+conda activate mypy37_base
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+
 #set -e
 #set -x
 
@@ -346,7 +354,7 @@ if [ "$COMPRESS_DATANC_YESNO" == Y ]; then
     
     if [ "$SST_L3_YESNO" == Y ]; then 	
 	cd $dir_SST_L3
-	/bin/gzip -f ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.nc 
+	/bin/gzip -f ${date_SST_L3}-IFR-L3C_GHRSST-SSTsubskin-ODYSSEA-GLOB_010_adjusted-v2.0-fv1.0.nc
     fi
 
     if [ "$SST_L4_JPL_YESNO" == Y ]; then 
@@ -401,8 +409,8 @@ if [ "$COMPRESS_DATAMAT_YESNO" == Y ]; then
     fi
     #
     if [ "$SST_L3_YESNO" == Y ]; then 
-	/bin/gzip ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.mat 
-	cp -v ${date_SST_L3}000000-GOS-L3S_GHRSST-SSTsubskin-night_SST_HR_NRT-MED-v02.0-fv01.0.mat.gz $dir_PROC 
+	/bin/gzip ${date_SST_L3}-IFR-L3C_GHRSST-SSTsubskin-ODYSSEA-GLOB_010_adjusted-v2.0-fv1.0.mat
+	cp -v ${date_SST_L3}-IFR-L3C_GHRSST-SSTsubskin-ODYSSEA-GLOB_010_adjusted-v2.0-fv1.0.mat.gz $dir_PROC 
     fi
     #
     if [ "$SST_L4_JPL_YESNO" == Y ]; then 
@@ -415,6 +423,14 @@ if [ "$COMPRESS_DATAMAT_YESNO" == Y ]; then
 	/bin/gzip  ${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.mat
 	cp -v ${date_CHL_L4}_d-ACRI-L4-CHL-MULTI_4KM-GLO-NRT.mat.gz $dir_PROC 
     fi
+    if [ "$CHL_L3_glob_YESNO" == Y ]; then 
+	/bin/gzip  ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT.mat
+	cp -v ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT.mat.gz $dir_PROC 
+	
+	#/bin/gzip  ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat 
+	#cp -v ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat.gz $dir_PROC 
+    fi
+    
     if [ "$CHL_L3_med_YESNO" == Y ]; then 
 	/bin/gzip  ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.mat 
 	cp -v ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4AD4_MULTI_1KM-MED-NRT-v02.mat.gz $dir_PROC
@@ -422,14 +438,6 @@ if [ "$COMPRESS_DATAMAT_YESNO" == Y ]; then
     if [ "$CHL_L3_med_YESNO" == Y ]; then
 	/bin/gzip  ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4Ad4_Oa_1KM-MED-NRT-v02.mat 
 	cp -v ${date_CHL_L3}_d-OC_CNR-L3-CHL-MedOC4Ad4_Oa_1KM-MED-NRT-v02.mat.gz $dir_PROC 
-    fi
-    
-    if [ "$CHL_L3_glob_YESNO" == Y ]; then 
-	/bin/gzip  ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v02.mat 
-	cp -v ${date_CHL_L3}_d-ACRI-L3-CHL-MULTI_4KM-GLO-NRT-v02.mat.gz $dir_PROC 
-	
-	#/bin/gzip  ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat 
-	#cp -v ${date_CHL_L3}_d-ACRI-L3-CHL-AV_Oa_4KM-GLO-NRT-v02.mat.gz $dir_PROC 
     fi
     cd -
 fi  #end COMPRESS_DATAMAT_YESNO
