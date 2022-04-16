@@ -117,7 +117,7 @@ dir_FIG_web_oftheday=$web_path/Figures_web_oftheday
 dir_PROC_web=$web_path/Processed_web
 dir_BUL_web=$web_path/Bulletin_web
 #
-web_path_remote=yy@xx.fr:XX/public_html/SPASSO/Web
+web_path_remote=cambon@mespages.univ-brest.fr:/home-compellent/c/cambon/public_html/SPASSO/Web
 dir_FIG_web_remote=$web_path_remote/Figures_web
 dir_FIG_web_oftheday_remote=$web_path_remote/Figures_web_oftheday
 dir_PROC_web_remote=$web_path_remote/Processed_web
@@ -220,7 +220,7 @@ if [ "$DOWNLOAD_DATA_YESNO" == Y ]; then
     ################################################
     # Download NRT (Near-real-time) SSH and velocity data
     ################################################
-    if [ "$ALTI_YESNO" == Y ]; then \
+    if [ "$ALTI_YESNO" == Y ]; then
 	echo
 	echo '------------------ DOWNLOAD ALTI FILES in Data/ and make a copy in Wrk/-------------------'
 	for data in ${ALTI_data[@]}  

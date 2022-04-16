@@ -28,8 +28,8 @@
 ###############################################################
 import matplotlib
 
-#matplotlib.use('Agg')
-matplotlib.use('Tkagg')
+matplotlib.use('Agg')
+##matplotlib.use('Tkagg') # interactive only
 
 import sys 
 import cmocean as cm_oc
@@ -206,7 +206,8 @@ for file_domain in filelist_domain:
     
     #define the figure setup
     fig=plt.figure()
-
+    #fig,ax=plt.subplots()
+    
     #define the geographical projection with Basemap
     mymap=Basemap(projection='merc',llcrnrlat=Lat[0],urcrnrlat=Lat[1],llcrnrlon=Lon[0],urcrnrlon=Lon[1],resolution='h')#equivalent to m_proj
 
@@ -223,25 +224,31 @@ for file_domain in filelist_domain:
     # x_gl,y_gl = mymap(lon_glider,lat_glider)
 
     # #project the ZEE limits on the figure axis
-    # x_zee,y_zee = mymap(lon_zee,lat_zee)
-    # x_zee_sp,y_zee_sp = mymap(lon_zee_sp,lat_zee_sp)
+    lon_zee = zee[:,0]
+    lat_zee = zee[:,1]
+    x_zee,y_zee = mymap(lon_zee,lat_zee)
+    #x_zee_sp,y_zee_sp = mymap(lon_zee_sp,lat_zee_sp)
 
     # #project the SWOT trajectories on the figure axis
     # x_extra,y_extra = mymap(lon_extra,lat_extra)        
 
     x_newgrid, y_newgrid = mymap(lon_newgrid, lat_newgrid)
-    #cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice,zorder=-1) 
-    cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid,cmap=cm_oc.cm.ice)
+    cax1=mymap.pcolormesh(x_newgrid,y_newgrid,adt_newgrid*100,cmap=cm_oc.cm.ice,zorder=-1)
+
+    clevels_adt=np.arange(adtmin[count_domain],adtmax[count_domain]+adt_int,adt_int)
+    cax2=mymap.contour(x_newgrid,y_newgrid,adt_newgrid*100,levels=clevels_adt,colors='grey')
+    plt.clabel(cax2,cax2.levels,inline=True, fmt='%1.0f', fontsize=9,colors='black')
+    #ax.clabel(CS, inline=1, fontsize=10, manual=manual_locations)
     
-    # plot wind vectors on projection grid.
-    scale_quiv = 2
-    uproj,vproj,xx,yy = mymap.transform_vector(u_newgrid,v_newgrid,lon_newgrid_2,latitudes,48*scale_quiv,22*scale_quiv,returnxy=True,masked=True) 
+    # # plot wind vectors on projection grid.
+    # scale_quiv = 2
+    # uproj,vproj,xx,yy = mymap.transform_vector(u_newgrid,v_newgrid,lon_newgrid_2,latitudes,48*scale_quiv,22*scale_quiv,returnxy=True,masked=True) 
 
-    # now plot.
-    Q = mymap.quiver(xx,yy,uproj,vproj,linewidth=0.05,color='r')
+    # # now plot.
+    # Q = mymap.quiver(xx,yy,uproj,vproj,linewidth=0.05,color='r')
 
-    # make quiver key.
-    qk = plt.quiverkey(Q, 1.25, 1.1, 0.5, '0.5 m/s', labelpos='N', color='r')
+    # # make quiver key.
+    # qk = plt.quiverkey(Q, 1.25, 1.1, 0.5, '0.5 m/s', labelpos='N', color='r')
 
     #add the coastline (data from Basemap)
     mymap.drawcoastlines()
@@ -273,8 +280,8 @@ for file_domain in filelist_domain:
     # mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1) 
 
     # #draw the ZEE limits 
-    # mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1) 
-
+    mymap.plot(x_zee,y_zee,'--',color='firebrick',lw=2,zorder=1)
+    
     # #draw the swot trajectories
     # mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1)
     # mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
@@ -289,7 +296,7 @@ for file_domain in filelist_domain:
 
 
     cbar1=fig.colorbar(cax1, orientation='vertical',shrink=0.9)
-    cbar1.ax.set_ylabel('ADT [m]')
+    cbar1.ax.set_ylabel('ADT [cm]')
     
     #add the title
     plt.title(filemat[len(dir_wrk)+1:-4]) 

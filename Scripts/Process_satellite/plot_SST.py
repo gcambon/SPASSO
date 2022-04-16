@@ -27,8 +27,8 @@
 #          Anais Ricout
 ###############################################################
 import matplotlib
-#matplotlib.use('Agg')
-matplotlib.use('Tkagg')
+matplotlib.use('Agg')
+#matplotlib.use('Tkagg') # interactive only
 import os 
 import sys 
 from netCDF4 import Dataset
@@ -83,6 +83,20 @@ filelist_domain = glob.glob(dir_cruise+'/domain_limits*.py')
 exec(open(dir_cruise+"/cruise_params.py").read())
 fileext=['','_zoom']
 reso_meridians = [3,2] 
+
+#to add SSH to the plot
+filelist_ssh=glob.glob(dir_wrk+'/*allsat_phy*.mat')
+print(filelist_ssh)
+filemat=filelist_ssh[0]
+data_aviso=sio.loadmat(filemat)
+#  data
+adt = data_aviso['adt']
+longitudes=data_aviso['lon'][0]
+latitudes=data_aviso['lat'][0]
+#  datagrid for lon [-180;180] (example: mediterranean product)
+adt_newgrid = adt 
+lon_newgrid, lat_newgrid = np.meshgrid(longitudes, latitudes)
+adt_newgrid = np.ma.masked_where(np.isnan(adt_newgrid), adt_newgrid)
 
 #load the cruise stations
 dico_stations=open(dir_cruise+'/station_coord.txt')
@@ -176,7 +190,10 @@ for i in range(0,2):
         # x_gl,y_gl = mymap(lon_glider,lat_glider)
 
         # #project the ZEE limits on the figure axis
-        # x_zee,y_zee = mymap(lon_zee,lat_zee)
+        lon_zee = zee[:,0]
+        lat_zee = zee[:,1]
+        x_zee,y_zee = mymap(lon_zee,lat_zee)
+     
         # x_zee_sp,y_zee_sp = mymap(lon_zee_sp,lat_zee_sp)
 
         # #project the SWOT trajectories on the figure axis
@@ -199,6 +216,14 @@ for i in range(0,2):
                 sst = np.ma.masked_where(np.isnan(sst), sst) 
                 cax1=mymap.pcolormesh(x,y,np.squeeze(sst),cmap=cm_oc.cm.thermal,zorder=-1,vmin=sstmin[0],vmax=sstmax[0])
                 mymap.drawcoastlines()
+
+                #Add ssh contour of the day
+                #  clevels_adt
+                clevels_adt=np.arange(adtmin[count_domain],adtmax[count_domain]+adt_int,adt_int)
+                # contour
+                x_newgrid, y_newgrid = mymap(lon_newgrid, lat_newgrid)
+                cax2=mymap.contour(x_newgrid,y_newgrid,adt_newgrid*100,levels=clevels_adt,colors='grey',zorder=1)
+                plt.clabel(cax2,cax2.levels,inline=True, fmt='%1.0f', fontsize=9,colors='black')
 
                 # define the tick and the grid (done for global)
                 # from south pole to northern pole with a reso of 1 degree 
@@ -227,12 +252,16 @@ for i in range(0,2):
 
                 # # draw the ZEE limits
                 # mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1) 	
-
+                mymap.plot(x_zee,y_zee,'--',color='firebrick',lw=2,zorder=1)
+                
                 # # draw the S3B trajectories
                 # mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1)
                 # mymap.plot(x_extra[33:62],y_extra[33:62],'-',color=(1, 0.6, 0.6), zorder=1) 
                 # mymap.plot(x_extra[63:92],y_extra[63:92],'-',color=(1, 0.6, 0.6), zorder=1)
                 # mymap.plot(x_extra[93:126],y_extra[93:126],'-',color=(1, 0.6, 0.6), zorder=1)
+
+                # Add the SSH
+                
 
                 # add the colorbar
                 if (len(sstmin) >= count_domain+1 and len(sstmax) >= count_domain+1):
@@ -275,6 +304,13 @@ for i in range(0,2):
                 cax1=mymap.pcolormesh(x,y,np.squeeze(sst),cmap=cm_oc.cm.thermal,zorder=-1,vmin=sstmin[0],vmax=sstmax[0])
                 mymap.drawcoastlines()
 
+                #Add ssh contour of the day
+                #  clevels_adt
+                clevels_adt=np.arange(adtmin[count_domain],adtmax[count_domain]+adt_int,adt_int)
+                x_newgrid, y_newgrid = mymap(lon_newgrid, lat_newgrid)
+                cax2=mymap.contour(x_newgrid,y_newgrid,adt_newgrid*100,levels=clevels_adt,colors='grey',zorder=1)
+                plt.clabel(cax2,cax2.levels,inline=True, fmt='%1.0f', fontsize=9,colors='black')
+                
                 # define the tick and the grid (done for global)
                 # from south pole to northern pole with a reso of 1 degree 
                 myparallels=np.arange(-90,90+1,1) 
@@ -301,7 +337,8 @@ for i in range(0,2):
                 #mymap.plot(x_gl,y_gl,'*',color='r',markersize=0.5,zorder=1)
 
                 # # draw the ZEE limits
-                # mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1) 	
+                # mymap.plot(x_zee_sp,y_zee_sp,color='w',lw=0.5,zorder=1)
+                mymap.plot(x_zee,y_zee,'--',color='firebrick',lw=2,zorder=1)
 
                 # # draw the S3B trajectories
                 # mymap.plot(x_extra[0:32],y_extra[0:32],'-',color=(1, 0.6, 0.6), zorder=1)
@@ -330,7 +367,8 @@ for i in range(0,2):
                 print(filefig1_d)
                 plt.savefig(filefig1_d)
 
-                
+        ######################
+        ######################     
         count_domain = count_domain+1        
 
     
